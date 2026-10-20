@@ -1,5 +1,7 @@
 # Coursekit
 
+![A generated course board: fourteen stages in the sidebar, a 0% mastery ring, one expanded stage showing nine knowledge-point tags, a homework row with a grading button, and four action buttons; later stages remain locked](docs/board.png)
+
 `coursekit` is an installable, portable agent skill package that turns a learning goal into a
 course that actually runs: a dependency-ordered syllabus, a self-contained interactive board,
 written lessons, gradable homework, mastery-gated progression, spaced review, and a periodic
