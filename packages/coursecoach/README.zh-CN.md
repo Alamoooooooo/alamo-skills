@@ -67,6 +67,8 @@ YAML 字段。
 | 导出成教材 | `python scripts/export.py --course <课程目录> [--format docx]` | 一次读完整门课，或打印、发给别人 |
 | 任何文本编辑器 | 记事本也能打开 | 只想搜一个词、抄一段代码 |
 
+![讲义在网页内弹出阅读面板：背景是暗下去的课程主页，中间浮层里是排好版的标题、有序列表、要点框和一段向量算例——机器上没有装 Obsidian](docs/lesson-reader.png)
+
 > 主页里的阅读面板是**编译时预渲染**的：不需要装任何软件、不需要联网。把课程文件夹发给别人，
 > 对方双击 `课程主页.html` 就能点开讲义读到排好版的内容——**不装 Obsidian 也成立**。
 > Obsidian 提供的额外东西是双链、图谱和概念卡跳转，不是"能不能读讲义"。
@@ -140,6 +142,7 @@ packages/coursecoach/
 ├── INSTALL.zh-CN.md        安装与 15 分钟试玩
 ├── metadata.json           机器可读的包描述
 ├── docs/board.png          课程看板截图
+├── docs/lesson-reader.png  讲义阅读面板截图
 └── coursecoach/            skill 本体（安装时用这个名字）
     ├── SKILL.md            7 个阶段、动作协议、批改口径、脚本参数
     ├── references/         8 份分册，按需加载

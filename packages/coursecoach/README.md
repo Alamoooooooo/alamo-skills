@@ -68,6 +68,8 @@ and re-run `sync.py` to fix every path inside. No database, no server, no accoun
 | As an exported textbook | `python scripts/export.py --course <dir> [--format docx]` | Reading the whole course in one pass, printing, sending to someone |
 | Any text editor | Notepad works | Searching for one term, copying a snippet |
 
+![A lesson opened in the in-page reader: the course board dimmed behind a centred panel that shows a typeset heading, a numbered list, a key-idea box and a worked vector example — with no Obsidian installed](docs/lesson-reader.png)
+
 > The in-page reader is **pre-rendered at compile time**: no software to install, no network. Hand the
 > course folder to someone else, they double-click `课程主页.html` and read fully formatted lessons —
 > **Obsidian is not required**. What Obsidian adds is backlinks, the graph, and concept-card jumps —
