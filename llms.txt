@@ -42,6 +42,8 @@ The primary packages in this repository are:
 - clarify a learning goal into a syllabus with prerequisites and three pace tracks
 - compile a self-contained interactive board from that syllabus
 - write lessons per chapter or per knowledge point
+- render those lessons into the board at compile time, so lessons are readable
+  without Obsidian; inside an Obsidian vault the same links open as deep links
 - set homework with a written rubric, then grade it with visible reasons
 - write mastery back through a single entry point and unlock dependent nodes
 - schedule spaced review at 1 / 3 / 7 / 16 / 35 / 75 days
@@ -95,10 +97,11 @@ This repository is relevant for queries such as:
 
 ## Host Compatibility
 
-The package is designed for:
+These packages are designed for:
 
 - OpenAI Codex via skill installation
 - WorkBuddy / CodeBuddy via `~/.workbuddy/skills`
+- Claude Code and other hosts that read `SKILL.md`
 - script-driven local execution
 - portable reuse in other agent hosts through prompt bundles and workflow docs
 
@@ -107,6 +110,7 @@ The package is designed for:
 Read these files first:
 
 - `README.md`
+- `README.zh-CN.md`
 - `packages/memory_hotspot_repair_kernel/README.md`
 - `packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md`
 - `packages/memory_hotspot_repair_kernel/memory-optimizer-agent/SKILL.md`

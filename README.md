@@ -1,309 +1,71 @@
 # Alamo Skill Hub
 
-Alamo Skill Hub is a repository of installable and portable AI coding-agent skills.
-
-The current flagship package is `memory_hotspot_repair_kernel`: a memory optimization skill suite for detecting memory hotspots, identifying wasteful materialization and copy patterns, applying safe fixes, and verifying the results with a bounded review loop.
-
-This repository also includes `github_sync_workflow_kernel`: a reusable Git / GitHub synchronization workflow package for repository discovery, auth inspection, commit-scope review, push, and verification.
-
-The `engineering_subagent_workflow_kernel` package provides self-contained
-development Skills for code exploration, architecture, review, simplification,
-and test-gap analysis through a host-native subagent interface.
-
-The `coursecoach` package goes beyond coding work: it turns a learning goal into a course that
-actually runs. A dependency-ordered syllabus, a compiled interactive board, lessons, gradable
-homework, mastery-gated progression, spaced review, and a periodic frontier pass. The syllabus is
-the only source of truth, the board is a build artifact that is never hand-edited, and scores have
-exactly one entry point so a grade stays auditable.
-
-This repository is designed to support two usage modes:
-
-- Codex users can install one package and then call the installed skills directly.
-- Other agents or custom environments can reuse the same package as a portable workflow bundle without relying on Codex-specific skill installation.
-
-Current published packages:
-
-- [`packages/memory_hotspot_repair_kernel/`](packages/memory_hotspot_repair_kernel/)
-- [Memory Skill Suite Wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md)
-- [`packages/github_sync_workflow_kernel/`](packages/github_sync_workflow_kernel/)
-- [GitHub Sync Workflow Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md)
-- [`packages/engineering_subagent_workflow_kernel/`](packages/engineering_subagent_workflow_kernel/)
-- [`packages/coursecoach/`](packages/coursecoach/) — installable skill name: `coursecoach` · [中文说明](packages/coursecoach/README.zh-CN.md)
-
-## Discovery Positioning
-
-If someone asks an AI or searches GitHub for any of the following, this repository is intended to be a relevant match:
-
-- Codex memory optimization skill
-- AI agent for memory hotspot detection
-- automatic memory leak and allocation analysis workflow
-- bounded check-fix-review loop for Python memory bottlenecks
-- portable coding-agent skill for memory optimization
-- AI skill that turns a learning goal into a full course
-- adaptive study plan agent with homework grading and spaced review
-- mastery-based progression skill with a generated progress dashboard
-- portable self-study curriculum generator without a backend
-
-In practical terms, this repository is not just "a prompt".
-
-It is an agent workflow package that combines:
-
-1. memory hotspot inspection
-2. targeted remediation
-3. focused validation
-4. post-fix review
-5. bounded iteration with explicit stop conditions
-
-## When To Use This Repository
-
-Use this repository when you want an AI coding agent to help with problems such as:
-
-- Python service memory keeps growing over time
-- batch job RSS spikes during joins, pandas materialization, or model scoring
-- fake chunking still loads the whole dataset
-- repeated full scans or broad reads create avoidable RAM pressure
-- you want a reusable memory optimization workflow instead of a one-off prompt
-- you want a skill package that works in Codex and can also be adapted to other agent hosts
-
-## Repository Structure
-
-This repository is organized for multiple skill packages:
-
-```text
-alamo_skillhub/
-├── README.md
-├── .gitignore
-├── LICENSE
-├── packages/
-│   ├── memory_hotspot_repair_kernel/
-│   │   ├── memory-check/
-│   │   ├── memory-fix/
-│   │   ├── memory-review/
-│   │   ├── memory-optimizer-agent/
-│   │   ├── references/
-│   │   ├── scripts/
-│   │   ├── wiki/
-│   │   └── PORTABLE_USAGE.md
-│   ├── github_sync_workflow_kernel/
-│   │   ├── github-sync-agent/
-│   │   ├── scripts/
-│   │   ├── metadata.json
-│   │   ├── README.md
-│   │   └── PORTABLE_USAGE.md
-│   ├── engineering_subagent_workflow_kernel/
-│   │   ├── code-explorer/
-│   │   ├── code-architect/
-│   │   ├── code-reviewer/
-│   │   ├── code-simplifier/
-│   │   ├── pr-test-analyzer/
-│   │   ├── scripts/
-│   │   ├── metadata.json
-│   │   ├── README.md
-│   │   └── PORTABLE_USAGE.md
-│   └── coursecoach/
-│       ├── coursecoach/
-│       │   ├── SKILL.md
-│       │   ├── references/
-│       │   ├── scripts/
-│       │   ├── assets/
-│       │   └── examples/ai-fullstack/
-│       ├── docs/board.png
-│       ├── metadata.json
-│       ├── README.md
-│       ├── README.zh-CN.md
-│       ├── PORTABLE_USAGE.md
-│       └── INSTALL.zh-CN.md
-└── examples/
-    └── memory_hotspot_repair_kernel/
-        └── partitioned_batch_pipeline/
-            ├── overlays/
-            │   ├── memory-check/
-            │   ├── memory-fix/
-            │   └── memory-review/
-            ├── partitioned_batch_pipeline.prompt_bundle.yaml
-            ├── partitioned_batch_pipeline.run.yaml
-            └── partitioned_batch_pipeline.run.linux.yaml
-```
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+[![Packages: 4](https://img.shields.io/badge/packages-4-6f42c1)](#what-is-in-here)
+[![Portable agent skills](https://img.shields.io/badge/agent%20skills-portable-2ea44f)](#four-things-they-share)
 
-Use `packages/` for installable skill packages.
+**English** | [简体中文](README.zh-CN.md)
 
-Use `examples/` for optional repo-specific examples, overlays, and sample run configurations.
+Four installable agent skills. Not prompt collections — each package ships a written manual, deterministic scripts that do the mechanical work, and an explicit statement of what it cannot do.
 
-## What To Use
+They solve four unrelated problems: Python memory blowing up, a repository that needs committing and pushing correctly, engineering work that should be delegated, and a learning goal that has to become a course that actually runs.
 
-If you only want the portable skill package, focus on:
+## What Is In Here
 
-- `packages/memory_hotspot_repair_kernel/`
+| Package | Installs as | Solves | Entry point |
+|:--|:--|:--|:--|
+| [`memory_hotspot_repair_kernel`](packages/memory_hotspot_repair_kernel/) | 4 skills | Python memory hotspots: find, fix, validate, review, stop | `$memory-optimizer-agent` |
+| [`github_sync_workflow_kernel`](packages/github_sync_workflow_kernel/) | 1 skill | Finding the real repo, checking auth, scoping the commit, pushing, verifying | `$github-sync-agent` |
+| [`engineering_subagent_workflow_kernel`](packages/engineering_subagent_workflow_kernel/) | 5 skills | Exploration, architecture, review, simplification, test-gap analysis via host subagents | `$code-explorer` and siblings |
+| [`coursecoach`](packages/coursecoach/) | 1 skill | Turning a learning goal into a runnable course | `/coursecoach` |
 
-If you want a complete example of how the package can be adapted to a specific repository, also inspect:
+All four are Apache-2.0, pure Python 3.8+ standard library plus `pyyaml`, and carry no backend.
 
-- `examples/memory_hotspot_repair_kernel/`
+## Four Things They Share
 
-If you are sharing this repository with others, the important rule is:
+**1. A manual plus scripts, not a prompt.** Every package has a `SKILL.md` or `README.md` that states the rules, and a `scripts/` directory that performs the mechanical steps. The model decides *what*; the script decides *where it goes*. This is why the output is repeatable across sessions and models.
 
-- `packages/` is the product
-- `examples/` is optional reference material
+**2. One writer per piece of state.** In `coursecoach` only `grade.py` may write a score. In `memory_hotspot_repair_kernel` the loop is driven by `orchestrate.py`, not by the model's sense of when to stop. A second writer is how state starts disagreeing with itself.
 
-## Package
+**3. Bounded by construction.** The memory loop is capped at 2 rounds (3 only if asked). The GitHub workflow ends at a verified remote state. Spaced review uses fixed 1/3/7/16/35/75-day intervals. None of these run until "good enough" — they stop at a declared point.
 
-The installable packages currently included are:
+**4. Portable, and honest about it.** Each package carries `PORTABLE_USAGE.md` and `metadata.json`, names the hosts it targets, and states what degrades on a host that lacks a capability. No package silently assumes Codex.
 
-- `packages/memory_hotspot_repair_kernel/`
-- `packages/github_sync_workflow_kernel/`
-- `packages/engineering_subagent_workflow_kernel/`
+## The Packages
 
-This package contains four coordinated skills:
+### memory_hotspot_repair_kernel
 
-- `memory-check`
-- `memory-fix`
-- `memory-review`
-- `memory-optimizer-agent`
+For Python services whose RSS keeps climbing, batch jobs that spike during joins or model scoring, and pipelines where "chunking" still loads the whole dataset.
 
-The GitHub sync package contains one coordinated entry point:
+Four coordinated skills: `memory-check` inspects and ranks hotspots, `memory-fix` remediates the highest-value one, `memory-review` reviews the change independently, and `memory-optimizer-agent` orchestrates all four into one bounded loop with explicit stop conditions. The other three also run standalone.
 
-- `github-sync-agent`
-
-The engineering subagent package contains five independent development Skills:
-
-- `code-explorer`
-- `code-architect`
-- `code-reviewer`
-- `code-simplifier`
-- `pr-test-analyzer`
-
-If you want the long-form background, design rationale, or sharing-style writeups, jump to:
-
-- [Memory Skill Suite Wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md)
-- [GitHub Sync Workflow Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md)
-
-## Recommended Entry Point
-
-The recommended primary entry point is:
-
-- `memory-optimizer-agent`
-
-Use it when you want one bounded loop that can:
-
-1. inspect memory hotspots
-2. select the highest-value fix
-3. run focused validation
-4. run post-fix review
-5. stop safely when the main risks are reduced
-
-The other three skills can also be used independently:
-
-- `memory-check`: hotspot inspection only
-- `memory-fix`: targeted remediation only
-- `memory-review`: independent post-fix review only
-
-For repository synchronization work, the recommended primary entry point is:
-
-- `github-sync-agent`
-
-Use it when you want one reusable workflow that can:
-
-1. find the real target repository
-2. inspect remotes and auth setup
-3. review commit scope
-4. create the intended commit
-5. push and verify final state
-
-## Machine-Readable Entry Points
-
-This repository includes multiple machine-readable discovery surfaces:
-
-- root `llms.txt` for AI-readable repository summary
-- package metadata in each package's `metadata.json`
-- skill frontmatter in each `SKILL.md`
-- host adapter descriptors in `agents/openai.yaml`
-
-These files are meant to help both humans and tools understand:
-
-- what the package does
-- when it should be used
-- which hosts it targets
-- which entry point is primary
-
-In other words:
-
-- use one entry point when you want the whole check -> fix -> validate -> review loop
-- use a single sub-skill when you only need one stage
-
-## Can This Repository Run a Full Loop
-
-Yes, but the exact form depends on the host environment.
-
-### In Codex
-
-This repository supports a real bounded loop through:
-
-- the installed entry point `$memory-optimizer-agent`
-- the executable orchestrator `memory-optimizer-agent/scripts/orchestrate.py`
-
-In this mode, users can trigger one main entry point and let it coordinate:
-
-1. `memory-check`
-2. `memory-fix`
-3. validation
-4. `memory-review`
-5. stop-or-continue decision
-
-The default behavior is a bounded loop rather than an open-ended optimization pass:
-
-- default: up to `2` rounds
-- optional aggressive mode: up to `3` rounds when explicitly requested
-
-### In Other Agents or Custom Environments
-
-This repository still supports the same loop logic, but usually as a portable workflow rather than a guaranteed host-native auto-runner.
-
-That means:
-
-- the loop design is reusable
-- the check -> fix -> validate -> review sequence is preserved
-- the target host may need to execute each stage using prompts, configs, or local automation
-
-So the portable package is loop-capable, but whether the loop runs fully automatically depends on the target host.
-
-### Practical Interpretation
-
-If a user asks, "Can I use one entry point to run the whole process?", the short answer is:
-
-- `yes` in Codex and script-driven usage
-- `yes in method`, but not always `yes in automatic execution`, in more general agent environments
-
-## Installation
-
-### For Codex
-
-Use this path if the target environment is Codex and supports skill installation into `$CODEX_HOME/skills`.
-
-From this repository:
+Read: [package README](packages/memory_hotspot_repair_kernel/README.md) · [long-form wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md) · [portable usage](packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md)
 
 ```bash
 cd packages/memory_hotspot_repair_kernel
 python3 scripts/sync_to_codex_home.py
 ```
 
-This installs the four skills into:
+### github_sync_workflow_kernel
 
-- `$CODEX_HOME/skills`
-- or `~/.codex/skills` when `CODEX_HOME` is not set
+For the step everyone gets wrong once: deciding which directory is the real repository, whether the remote and auth are actually working, which changes belong in this commit and which are line-ending noise, and whether the push landed.
 
-To preview the sync without copying files:
+`github-sync-agent` runs repository discovery, auth and remote inspection, commit-scope review, commit, push, and post-push verification as one workflow. The wiki documents the failure modes it was built against.
+
+Read: [package README](packages/github_sync_workflow_kernel/README.md) · [wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md) · [portable usage](packages/github_sync_workflow_kernel/PORTABLE_USAGE.md)
 
 ```bash
-cd packages/memory_hotspot_repair_kernel
-python3 scripts/sync_to_codex_home.py --dry-run
+cd packages/github_sync_workflow_kernel
+python3 scripts/sync_to_codex_home.py
 ```
 
-After installation, the recommended main entry point is:
+### engineering_subagent_workflow_kernel
 
-- `$memory-optimizer-agent`
+Five development skills that delegate through the host's own subagent mechanism instead of an external runner binary: `code-explorer`, `code-architect`, `code-reviewer`, `code-simplifier`, `pr-test-analyzer`.
 
-You do not need to install the four skills one by one. The sync script installs the whole package in one step.
+Each skill is self-contained — its role reference ships with it. It does not install helper binaries, spawn nested agent processes, choose a model, or weaken the host's approval and sandbox policy. Hosts without native subagents fall back to in-session execution and report `fallback_in_session` so the difference is visible.
 
-To install or update the five host-native development Skills:
+Read: [package README](packages/engineering_subagent_workflow_kernel/README.md) · [portable usage](packages/engineering_subagent_workflow_kernel/PORTABLE_USAGE.md)
 
 ```bash
 cd packages/engineering_subagent_workflow_kernel
@@ -311,152 +73,100 @@ python3 scripts/sync_to_codex_home.py --dry-run
 python3 scripts/sync_to_codex_home.py
 ```
 
-This replaces wrappers with the same names. Each installed Skill includes its
-own role reference and uses native subagent tools when available, with an
-explicit `fallback_in_session` path otherwise.
+### coursecoach
 
-### For Other Agents
+The odd one out — it is not about code. Give it a topic and a daily time budget and it produces a course that runs: a dependency-ordered syllabus, a compiled interactive board you double-click, written lessons, gradable homework, mastery-gated unlocking, spaced review, and a periodic frontier pass that keeps the syllabus from going stale.
 
-Use this path if the target environment is not Codex, does not support `$CODEX_HOME/skills`, or does not understand skill tokens such as `$memory-check`.
+The syllabus is the only source of truth. The board is a build artifact and is never hand-edited. Only `grade.py` may write a score, so every grade stays traceable to a rubric line and a physical location in the file. A course is a folder: copy it to duplicate, zip it to share.
 
-Do not treat this repository as a Codex-only installable artifact.
+![A generated course board: fourteen stages in the sidebar, a 0% mastery ring, one expanded stage showing nine knowledge-point tags, a homework row with a grading button, and four action buttons; later stages remain locked](packages/coursecoach/docs/board.png)
 
-In that case, use:
+![A lesson opened in the in-page reader: the board dimmed behind a centred panel showing a typeset heading, a numbered list, a key-idea box and a worked example — with no Obsidian installed](packages/coursecoach/docs/lesson-reader.png)
 
-- `packages/memory_hotspot_repair_kernel/` as the portable method package
-- `packages/memory_hotspot_repair_kernel/memory-optimizer-agent/references/generic.prompt_bundle.yaml` as the host-neutral starting point
-- `packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md` as the non-Codex usage guide
-
-No Codex skill installation is required for this path.
-
-You also do not need `examples/` in order to start. The portable core lives entirely under `packages/memory_hotspot_repair_kernel/`.
-
-## Usage
-
-### For Codex
-
-Recommended first-use flow:
-
-1. install the package with `python3 scripts/sync_to_codex_home.py`
-2. open Codex in the target repository
-3. use the primary entry point `memory-optimizer-agent`
-
-Typical entry-point requests:
-
-- `Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.`
-- `Use $memory-optimizer-agent to run one bounded memory optimization pass and summarize residual risks.`
-
-Independent skill requests:
-
-- `Use $memory-check to produce a structured memory-hotspot report.`
-- `Use $memory-fix to remediate the highest-priority hotspot.`
-- `Use $memory-review to review the memory-related change independently.`
-
-### For Other Agents
-
-For non-Codex environments, the recommended entry point is still the logic of `memory-optimizer-agent`, but the delivery form is different:
-
-1. use the portable package under `packages/memory_hotspot_repair_kernel/`
-2. start from `memory-optimizer-agent/references/generic.prompt_bundle.yaml`
-3. generate or adapt the check / fix / review prompts for the local host
-4. run them in sequence using the target agent or CLI
-
-If the target host does not support Codex-style skill tokens such as `$memory-check`, remove the `$...` token and keep the prompt body and workflow instructions.
-
-Recommended execution order in non-Codex environments:
-
-1. `memory-check`
-2. `memory-fix`
-3. validation
-4. `memory-review`
-
-The logical main entry point remains `memory-optimizer-agent`, but its portable form is the workflow and configuration rather than a Codex-only installation step.
-
-## Distribution Guidance
-
-If another user downloads this repository:
-
-- they can use the whole repo directly
-- Codex users should follow the installation flow under `packages/memory_hotspot_repair_kernel/`
-- non-Codex users should read `packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md`
-
-If you want to distribute only the minimal reusable artifact:
-
-- distribute `packages/memory_hotspot_repair_kernel/`
-- optionally include `examples/memory_hotspot_repair_kernel/` only as supplemental reference material
-
-This means users do not need to separately install both a package and an example. The example is optional and is not part of the required installation path.
-
-## Quick Start
-
-### 3-Minute Start for Codex
+Read: [package README](packages/coursecoach/README.md) · [中文说明](packages/coursecoach/README.zh-CN.md) · [install and 15-minute trial](packages/coursecoach/INSTALL.zh-CN.md) · [portable usage](packages/coursecoach/PORTABLE_USAGE.md)
 
 ```bash
-git clone <repo>
+cp -r packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+pip install pyyaml
+```
+
+## Pick Your Starting Point
+
+| You want to | Install | Then say |
+|:--|:--|:--|
+| Stop a Python job from OOM-ing | `memory_hotspot_repair_kernel` | `Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.` |
+| Commit and push without guessing | `github_sync_workflow_kernel` | `Use $github-sync-agent to sync this repository.` |
+| Hand a broad task to a subagent | `engineering_subagent_workflow_kernel` | `Use $code-explorer to trace how feature X is wired.` |
+| Learn something properly | `coursecoach` | `I want to learn X, one hour a day.` |
+
+## Install
+
+### Codex
+
+```bash
+git clone https://github.com/Alamoooooooo/alamo_skillhub.git
 cd alamo_skillhub/packages/memory_hotspot_repair_kernel
 python3 scripts/sync_to_codex_home.py
 ```
 
-Then in Codex:
+`sync_to_codex_home.py` copies into `$CODEX_HOME/skills`, or `~/.codex/skills` when `CODEX_HOME` is unset. Add `--dry-run` to preview. The three kernel packages each have their own copy of this script; install only the ones you want.
 
-```text
-Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.
-```
-
-If you only want one stage instead of the full loop, call one of:
-
-```text
-Use $memory-check to inspect memory hotspots in the current codebase.
-Use $memory-fix to remediate the highest-priority memory hotspot.
-Use $memory-review to review the memory-related change independently.
-```
-
-### 3-Minute Start for Other Agents
+### WorkBuddy, CodeBuddy, Claude Code, or any host that reads `SKILL.md`
 
 ```bash
-git clone <repo>
-cd alamo_skillhub/packages/memory_hotspot_repair_kernel
+git clone https://github.com/Alamoooooooo/alamo_skillhub.git
+cp -r alamo_skillhub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
-Then:
+The installable unit is always the directory that contains `SKILL.md` — `coursecoach/coursecoach/`, `memory-optimizer-agent/`, `github-sync-agent/`, and so on. `pip install pyyaml` is required by `coursecoach`; `export.py --format docx` additionally needs `python-docx`.
 
-1. read `PORTABLE_USAGE.md`
-2. start from `memory-optimizer-agent/references/generic.prompt_bundle.yaml`
-3. execute the workflow in the target host
+For hosts that understand neither skill installation nor `$name` tokens, read the relevant `PORTABLE_USAGE.md`: it explains how to feed the manual and run the scripts by hand.
 
-A practical interpretation is:
+## Repository Layout
 
-1. copy or adapt the generic prompt bundle
-2. run the check stage in your host agent
-3. run the fix stage
-4. run a local validation command
-5. run the review stage
+```text
+alamo_skillhub/
+├── README.md                          English (this file)
+├── README.zh-CN.md                    简体中文
+├── AGENTS.md                          conventions for agents working on this repo itself
+├── llms.txt                           machine-readable summary for AI crawlers
+├── TODO_codex_plugin_marketplace.md   unfinished plan to ship these as a Codex plugin
+├── LICENSE                            Apache-2.0
+├── packages/                          ← the products
+│   ├── memory_hotspot_repair_kernel/
+│   │   ├── memory-optimizer-agent/    orchestrator (primary entry point)
+│   │   ├── memory-check/  memory-fix/  memory-review/
+│   │   ├── references/  scripts/  wiki/
+│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   ├── github_sync_workflow_kernel/
+│   │   ├── github-sync-agent/
+│   │   ├── scripts/  wiki/
+│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   ├── engineering_subagent_workflow_kernel/
+│   │   ├── code-explorer/  code-architect/  code-reviewer/
+│   │   ├── code-simplifier/  pr-test-analyzer/
+│   │   ├── scripts/
+│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   └── coursecoach/
+│       ├── coursecoach/               the skill itself (SKILL.md, references, scripts, examples)
+│       ├── docs/                      board.png, lesson-reader.png
+│       └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
+└── examples/                          ← optional, never required to install
+    └── memory_hotspot_repair_kernel/
+        └── partitioned_batch_pipeline/    one repo-specific adaptation: overlays + run configs
+```
 
-## Notes on Examples and Overlays
+`packages/` is the product. `examples/` shows one adaptation of the generic memory package to a specific repository — useful when you write your own overlays, irrelevant if you do not.
 
-Some files reference `partitioned_batch_pipeline`. These materials are treated as optional examples.
+## Other Files
 
-They are stored under:
+| File | What it is |
+|:--|:--|
+| `AGENTS.md` | Rules for an AI agent working *on this repository*: how to distinguish packages from examples, how to update docs and install paths. Not part of any product. |
+| `llms.txt` | A flat summary of all four packages for AI crawlers and search. Same content as this README, optimised for machine reading. |
+| `TODO_codex_plugin_marketplace.md` | An unimplemented plan to package the memory suite for the Codex plugin marketplace. Kept for reference; nothing here depends on it. |
+| `metadata.json` (per package) | Machine-readable descriptor: entry point, keywords, supported hosts, script list. |
 
-- `examples/memory_hotspot_repair_kernel/partitioned_batch_pipeline/`
+## License
 
-This examples tree currently includes:
-
-- example repo-specific run configs
-- example repo-specific overlays for `memory-check`, `memory-fix`, and `memory-review`
-
-They are not required for installation and do not block use of the portable core skills in other repositories.
-
-They exist for two purposes:
-
-- to show one concrete adaptation of the generic package
-- to provide reusable patterns when you need repo-specific overlays later
-
-## Documentation
-
-Background design documentation is available at:
-
-- `llms.txt`
-- `packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md`
-- `packages/memory_hotspot_repair_kernel/README.md`
-- `packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md`
+Apache-2.0. See [LICENSE](LICENSE).

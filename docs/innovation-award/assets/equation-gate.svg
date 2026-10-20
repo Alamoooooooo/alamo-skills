@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="250" viewBox="0 0 1200 250">
-  <rect width="1200" height="250" fill="#ffffff"/>
-  <rect x="45" y="35" width="1110" height="180" rx="12" fill="#f1eefb" stroke="#afa1d5" stroke-width="2"/>
-  <text x="90" y="78" font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="20" font-weight="700" fill="#42366d">（5）优化结论证据门禁</text>
-  <text x="600" y="125" text-anchor="middle" font-family="Georgia,serif" font-size="26" font-style="italic" fill="#242039">AcceptedOptimization = ScopeGate ∧ OutputGate ∧ ValidationGate</text>
-  <text x="600" y="160" text-anchor="middle" font-family="Georgia,serif" font-size="26" font-style="italic" fill="#242039">∧ MeasurementGate ∧ ReviewGate</text>
-  <text x="600" y="195" text-anchor="middle" font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="16" fill="#5e5579">范围、输出、验证、测量和复核五项同时通过，才可形成正式改善结论</text>
-</svg>
