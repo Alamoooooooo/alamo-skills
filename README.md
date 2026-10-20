@@ -2,13 +2,9 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Packages: 4](https://img.shields.io/badge/packages-4-6f42c1)](#what-is-in-here)
-[![Portable agent skills](https://img.shields.io/badge/agent%20skills-portable-2ea44f)](#four-things-they-share)
+![Portable agent skills](https://img.shields.io/badge/agent%20skills-portable-2ea44f)
 
 **English** | [简体中文](README.zh-CN.md)
-
-Four installable agent skills. Not prompt collections — each package ships a written manual, deterministic scripts that do the mechanical work, and an explicit statement of what it cannot do.
-
-They solve four unrelated problems: Python memory blowing up, a repository that needs committing and pushing correctly, engineering work that should be delegated, and a learning goal that has to become a course that actually runs.
 
 ## What Is In Here
 
@@ -20,16 +16,6 @@ They solve four unrelated problems: Python memory blowing up, a repository that 
 | [`coursecoach`](packages/coursecoach/) | 1 skill | Turning a learning goal into a runnable course | `/coursecoach` |
 
 All four are Apache-2.0, pure Python 3.8+ standard library plus `pyyaml`, and carry no backend.
-
-## Four Things They Share
-
-**1. A manual plus scripts, not a prompt.** Every package has a `SKILL.md` or `README.md` that states the rules, and a `scripts/` directory that performs the mechanical steps. The model decides *what*; the script decides *where it goes*. This is why the output is repeatable across sessions and models.
-
-**2. One writer per piece of state.** In `coursecoach` only `grade.py` may write a score. In `memory_hotspot_repair_kernel` the loop is driven by `orchestrate.py`, not by the model's sense of when to stop. A second writer is how state starts disagreeing with itself.
-
-**3. Bounded by construction.** The memory loop is capped at 2 rounds (3 only if asked). The GitHub workflow ends at a verified remote state. Spaced review uses fixed 1/3/7/16/35/75-day intervals. None of these run until "good enough" — they stop at a declared point.
-
-**4. Portable, and honest about it.** Each package carries `PORTABLE_USAGE.md` and `metadata.json`, names the hosts it targets, and states what degrades on a host that lacks a capability. No package silently assumes Codex.
 
 ## The Packages
 
