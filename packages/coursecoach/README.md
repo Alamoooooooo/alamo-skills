@@ -147,6 +147,8 @@ packages/coursecoach/
 ├── PORTABLE_USAGE.md       host-agnostic usage and degradation notes
 ├── INSTALL.zh-CN.md        install + 15-minute trial run (Chinese)
 ├── metadata.json           machine-readable package descriptor
+├── docs/board.png          board screenshot
+├── docs/lesson-reader.png  in-page lesson reader screenshot
 └── coursecoach/            the skill itself (installed under this name)
     ├── SKILL.md            7 phases, action protocol, grading rules, script parameters
     ├── references/         8 deep docs, loaded on demand
