@@ -8,56 +8,16 @@
 
 ## What Is In Here
 
-| Package | Installs as | Solves | Entry point |
-|:--|:--|:--|:--|
-| [`memory_hotspot_repair_kernel`](packages/memory_hotspot_repair_kernel/) | 4 skills | Python memory hotspots: find, fix, validate, review, stop | `$memory-optimizer-agent` |
-| [`github_sync_workflow_kernel`](packages/github_sync_workflow_kernel/) | 1 skill | Finding the real repo, checking auth, scoping the commit, pushing, verifying | `$github-sync-agent` |
-| [`engineering_subagent_workflow_kernel`](packages/engineering_subagent_workflow_kernel/) | 5 skills | Exploration, architecture, review, simplification, test-gap analysis via host subagents | `$code-explorer` and siblings |
-| [`coursecoach`](packages/coursecoach/) | 1 skill | Turning a learning goal into a runnable course | `/coursecoach` |
+| Package | Installs as | Solves | Entry point | Developed |
+|:--|:--|:--|:--|:--|
+| [`coursecoach`](packages/coursecoach/) | 1 skill | Turning a learning goal into a runnable course | `/coursecoach` | 2026-10-20 |
+| [`engineering_subagent_workflow_kernel`](packages/engineering_subagent_workflow_kernel/) | 5 skills | Exploration, architecture, review, simplification, test-gap analysis via host subagents | `$code-explorer` and siblings | 2026-10-20 |
+| [`github_sync_workflow_kernel`](packages/github_sync_workflow_kernel/) | 1 skill | Finding the real repo, checking auth, scoping the commit, pushing, verifying | `$github-sync-agent` | 2026-07-21 → 07-22 |
+| [`memory_hotspot_repair_kernel`](packages/memory_hotspot_repair_kernel/) | 4 skills | Python memory hotspots: find, fix, validate, review, stop | `$memory-optimizer-agent` | 2026-07-03 → 07-22 |
 
 All four are Apache-2.0, pure Python 3.8+ standard library plus `pyyaml`, and carry no backend.
 
 ## The Packages
-
-### memory_hotspot_repair_kernel
-
-For Python services whose RSS keeps climbing, batch jobs that spike during joins or model scoring, and pipelines where "chunking" still loads the whole dataset.
-
-Four coordinated skills: `memory-check` inspects and ranks hotspots, `memory-fix` remediates the highest-value one, `memory-review` reviews the change independently, and `memory-optimizer-agent` orchestrates all four into one bounded loop with explicit stop conditions. The other three also run standalone.
-
-Read: [package README](packages/memory_hotspot_repair_kernel/README.md) · [long-form wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md) · [portable usage](packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md)
-
-```bash
-cd packages/memory_hotspot_repair_kernel
-python3 scripts/sync_to_codex_home.py
-```
-
-### github_sync_workflow_kernel
-
-For the step everyone gets wrong once: deciding which directory is the real repository, whether the remote and auth are actually working, which changes belong in this commit and which are line-ending noise, and whether the push landed.
-
-`github-sync-agent` runs repository discovery, auth and remote inspection, commit-scope review, commit, push, and post-push verification as one workflow. The wiki documents the failure modes it was built against.
-
-Read: [package README](packages/github_sync_workflow_kernel/README.md) · [wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md) · [portable usage](packages/github_sync_workflow_kernel/PORTABLE_USAGE.md)
-
-```bash
-cd packages/github_sync_workflow_kernel
-python3 scripts/sync_to_codex_home.py
-```
-
-### engineering_subagent_workflow_kernel
-
-Five development skills that delegate through the host's own subagent mechanism instead of an external runner binary: `code-explorer`, `code-architect`, `code-reviewer`, `code-simplifier`, `pr-test-analyzer`.
-
-Each skill is self-contained — its role reference ships with it. It does not install helper binaries, spawn nested agent processes, choose a model, or weaken the host's approval and sandbox policy. Hosts without native subagents fall back to in-session execution and report `fallback_in_session` so the difference is visible.
-
-Read: [package README](packages/engineering_subagent_workflow_kernel/README.md) · [portable usage](packages/engineering_subagent_workflow_kernel/PORTABLE_USAGE.md)
-
-```bash
-cd packages/engineering_subagent_workflow_kernel
-python3 scripts/sync_to_codex_home.py --dry-run
-python3 scripts/sync_to_codex_home.py
-```
 
 ### coursecoach
 
@@ -76,14 +36,54 @@ cp -r packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
+### engineering_subagent_workflow_kernel
+
+Five development skills that delegate through the host's own subagent mechanism instead of an external runner binary: `code-explorer`, `code-architect`, `code-reviewer`, `code-simplifier`, `pr-test-analyzer`.
+
+Each skill is self-contained — its role reference ships with it. It does not install helper binaries, spawn nested agent processes, choose a model, or weaken the host's approval and sandbox policy. Hosts without native subagents fall back to in-session execution and report `fallback_in_session` so the difference is visible.
+
+Read: [package README](packages/engineering_subagent_workflow_kernel/README.md) · [portable usage](packages/engineering_subagent_workflow_kernel/PORTABLE_USAGE.md)
+
+```bash
+cd packages/engineering_subagent_workflow_kernel
+python3 scripts/sync_to_codex_home.py --dry-run
+python3 scripts/sync_to_codex_home.py
+```
+
+### github_sync_workflow_kernel
+
+For the step everyone gets wrong once: deciding which directory is the real repository, whether the remote and auth are actually working, which changes belong in this commit and which are line-ending noise, and whether the push landed.
+
+`github-sync-agent` runs repository discovery, auth and remote inspection, commit-scope review, commit, push, and post-push verification as one workflow. The wiki documents the failure modes it was built against.
+
+Read: [package README](packages/github_sync_workflow_kernel/README.md) · [wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md) · [portable usage](packages/github_sync_workflow_kernel/PORTABLE_USAGE.md)
+
+```bash
+cd packages/github_sync_workflow_kernel
+python3 scripts/sync_to_codex_home.py
+```
+
+### memory_hotspot_repair_kernel
+
+For Python services whose RSS keeps climbing, batch jobs that spike during joins or model scoring, and pipelines where "chunking" still loads the whole dataset.
+
+Four coordinated skills: `memory-check` inspects and ranks hotspots, `memory-fix` remediates the highest-value one, `memory-review` reviews the change independently, and `memory-optimizer-agent` orchestrates all four into one bounded loop with explicit stop conditions. The other three also run standalone.
+
+Read: [package README](packages/memory_hotspot_repair_kernel/README.md) · [long-form wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md) · [portable usage](packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md)
+
+```bash
+cd packages/memory_hotspot_repair_kernel
+python3 scripts/sync_to_codex_home.py
+```
+
 ## Pick Your Starting Point
 
 | You want to | Install | Then say |
 |:--|:--|:--|
-| Stop a Python job from OOM-ing | `memory_hotspot_repair_kernel` | `Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.` |
-| Commit and push without guessing | `github_sync_workflow_kernel` | `Use $github-sync-agent to sync this repository.` |
-| Hand a broad task to a subagent | `engineering_subagent_workflow_kernel` | `Use $code-explorer to trace how feature X is wired.` |
 | Learn something properly | `coursecoach` | `I want to learn X, one hour a day.` |
+| Hand a broad task to a subagent | `engineering_subagent_workflow_kernel` | `Use $code-explorer to trace how feature X is wired.` |
+| Commit and push without guessing | `github_sync_workflow_kernel` | `Use $github-sync-agent to sync this repository.` |
+| Stop a Python job from OOM-ing | `memory_hotspot_repair_kernel` | `Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.` |
 
 ## Install
 
@@ -119,24 +119,24 @@ alamo_skillhub/
 ├── TODO_codex_plugin_marketplace.md   unfinished plan to ship these as a Codex plugin
 ├── LICENSE                            Apache-2.0
 ├── packages/                          ← the products
-│   ├── memory_hotspot_repair_kernel/
-│   │   ├── memory-optimizer-agent/    orchestrator (primary entry point)
-│   │   ├── memory-check/  memory-fix/  memory-review/
-│   │   ├── references/  scripts/  wiki/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
-│   ├── github_sync_workflow_kernel/
-│   │   ├── github-sync-agent/
-│   │   ├── scripts/  wiki/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   ├── coursecoach/
+│   │   ├── coursecoach/               the skill itself (SKILL.md, references, scripts, examples)
+│   │   ├── docs/                      board.png, lesson-reader.png
+│   │   └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
 │   ├── engineering_subagent_workflow_kernel/
 │   │   ├── code-explorer/  code-architect/  code-reviewer/
 │   │   ├── code-simplifier/  pr-test-analyzer/
 │   │   ├── scripts/
 │   │   └── README.md  PORTABLE_USAGE.md  metadata.json
-│   └── coursecoach/
-│       ├── coursecoach/               the skill itself (SKILL.md, references, scripts, examples)
-│       ├── docs/                      board.png, lesson-reader.png
-│       └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
+│   ├── github_sync_workflow_kernel/
+│   │   ├── github-sync-agent/
+│   │   ├── scripts/  wiki/
+│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   └── memory_hotspot_repair_kernel/
+│       ├── memory-optimizer-agent/    orchestrator (primary entry point)
+│       ├── memory-check/  memory-fix/  memory-review/
+│       ├── references/  scripts/  wiki/
+│       └── README.md  PORTABLE_USAGE.md  metadata.json
 └── examples/                          ← optional, never required to install
     └── memory_hotspot_repair_kernel/
         └── partitioned_batch_pipeline/    one repo-specific adaptation: overlays + run configs

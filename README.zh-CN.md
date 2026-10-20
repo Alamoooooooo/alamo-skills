@@ -8,56 +8,16 @@
 
 ## 仓库里有什么
 
-| 包 | 装完叫什么 | 解决什么 | 主要入口 |
-| :--- | :--- | :--- | :--- |
-| [`memory_hotspot_repair_kernel`](packages/memory_hotspot_repair_kernel/) | 4 个 skill | Python 内存热点：找、修、验、复核、停 | `$memory-optimizer-agent` |
-| [`github_sync_workflow_kernel`](packages/github_sync_workflow_kernel/) | 1 个 skill | 找对真仓库、查鉴权、圈定提交范围、推送、验证 | `$github-sync-agent` |
-| [`engineering_subagent_workflow_kernel`](packages/engineering_subagent_workflow_kernel/) | 5 个 skill | 代码探索、架构、评审、简化、测试缺口，走宿主原生子代理 | `$code-explorer` 等 |
-| [`coursecoach`](packages/coursecoach/) | 1 个 skill | 把学习目标变成一门能跑起来的课 | `/coursecoach` |
+| 包 | 装完叫什么 | 解决什么 | 主要入口 | 开发时间 |
+| :--- | :--- | :--- | :--- | :--- |
+| [`coursecoach`](packages/coursecoach/) | 1 个 skill | 把学习目标变成一门能跑起来的课 | `/coursecoach` | 2026-10-20 |
+| [`engineering_subagent_workflow_kernel`](packages/engineering_subagent_workflow_kernel/) | 5 个 skill | 代码探索、架构、评审、简化、测试缺口，走宿主原生子代理 | `$code-explorer` 等 | 2026-10-20 |
+| [`github_sync_workflow_kernel`](packages/github_sync_workflow_kernel/) | 1 个 skill | 找对真仓库、查鉴权、圈定提交范围、推送、验证 | `$github-sync-agent` | 2026-07-21 → 07-22 |
+| [`memory_hotspot_repair_kernel`](packages/memory_hotspot_repair_kernel/) | 4 个 skill | Python 内存热点：找、修、验、复核、停 | `$memory-optimizer-agent` | 2026-07-03 → 07-22 |
 
 四个包都是 Apache-2.0，都只依赖 Python 3.8+ 标准库加 `pyyaml`，都不需要后端。
 
 ## 四个包
-
-### memory_hotspot_repair_kernel
-
-给这几类问题用：Python 服务的 RSS 一路涨；批处理在 join 或模型打分阶段内存尖峰；号称分了块、实际上还是把整份数据读进内存的流水线。
-
-四个协同的 skill：`memory-check` 检查并给热点排序，`memory-fix` 修价值最高的那个，`memory-review` 独立复核改动，`memory-optimizer-agent` 把四步编成一个带显式停止条件的有界循环。另外三个也可以单独用。
-
-深入读：[包 README](packages/memory_hotspot_repair_kernel/README.md) · [长篇设计说明 Wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md) · [跨宿主用法](packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md)
-
-```bash
-cd packages/memory_hotspot_repair_kernel
-python3 scripts/sync_to_codex_home.py
-```
-
-### github_sync_workflow_kernel
-
-给这一步用——几乎每个人都会错一次的那步：哪个目录才是真仓库、远端和鉴权是不是真的通、哪些改动该进这次提交、哪些是换行符噪音、以及推上去到底成没成。
-
-`github-sync-agent` 把仓库发现、鉴权与远端检查、提交范围评审、提交、推送、推送后验证串成一条流程。那份 Wiki 记录的就是它针对的失败模式。
-
-深入读：[包 README](packages/github_sync_workflow_kernel/README.md) · [Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md) · [跨宿主用法](packages/github_sync_workflow_kernel/PORTABLE_USAGE.md)
-
-```bash
-cd packages/github_sync_workflow_kernel
-python3 scripts/sync_to_codex_home.py
-```
-
-### engineering_subagent_workflow_kernel
-
-五个开发用 skill，走宿主自己的子代理机制，不依赖外部 runner 可执行文件：`code-explorer`、`code-architect`、`code-reviewer`、`code-simplifier`、`pr-test-analyzer`。
-
-每个 skill 自带角色说明。它不安装辅助二进制、不派生嵌套的 agent 进程、不替你选模型、也不削弱宿主的审批与沙箱策略。宿主没有原生子代理时会退回当前会话内执行，并显式报告 `fallback_in_session`，让这个差别是可见的。
-
-深入读：[包 README](packages/engineering_subagent_workflow_kernel/README.md) · [跨宿主用法](packages/engineering_subagent_workflow_kernel/PORTABLE_USAGE.md)
-
-```bash
-cd packages/engineering_subagent_workflow_kernel
-python3 scripts/sync_to_codex_home.py --dry-run
-python3 scripts/sync_to_codex_home.py
-```
 
 ### coursecoach
 
@@ -76,14 +36,54 @@ cp -r packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
+### engineering_subagent_workflow_kernel
+
+五个开发用 skill，走宿主自己的子代理机制，不依赖外部 runner 可执行文件：`code-explorer`、`code-architect`、`code-reviewer`、`code-simplifier`、`pr-test-analyzer`。
+
+每个 skill 自带角色说明。它不安装辅助二进制、不派生嵌套的 agent 进程、不替你选模型、也不削弱宿主的审批与沙箱策略。宿主没有原生子代理时会退回当前会话内执行，并显式报告 `fallback_in_session`，让这个差别是可见的。
+
+深入读：[包 README](packages/engineering_subagent_workflow_kernel/README.md) · [跨宿主用法](packages/engineering_subagent_workflow_kernel/PORTABLE_USAGE.md)
+
+```bash
+cd packages/engineering_subagent_workflow_kernel
+python3 scripts/sync_to_codex_home.py --dry-run
+python3 scripts/sync_to_codex_home.py
+```
+
+### github_sync_workflow_kernel
+
+给这一步用——几乎每个人都会错一次的那步：哪个目录才是真仓库、远端和鉴权是不是真的通、哪些改动该进这次提交、哪些是换行符噪音、以及推上去到底成没成。
+
+`github-sync-agent` 把仓库发现、鉴权与远端检查、提交范围评审、提交、推送、推送后验证串成一条流程。那份 Wiki 记录的就是它针对的失败模式。
+
+深入读：[包 README](packages/github_sync_workflow_kernel/README.md) · [Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md) · [跨宿主用法](packages/github_sync_workflow_kernel/PORTABLE_USAGE.md)
+
+```bash
+cd packages/github_sync_workflow_kernel
+python3 scripts/sync_to_codex_home.py
+```
+
+### memory_hotspot_repair_kernel
+
+给这几类问题用：Python 服务的 RSS 一路涨；批处理在 join 或模型打分阶段内存尖峰；号称分了块、实际上还是把整份数据读进内存的流水线。
+
+四个协同的 skill：`memory-check` 检查并给热点排序，`memory-fix` 修价值最高的那个，`memory-review` 独立复核改动，`memory-optimizer-agent` 把四步编成一个带显式停止条件的有界循环。另外三个也可以单独用。
+
+深入读：[包 README](packages/memory_hotspot_repair_kernel/README.md) · [长篇设计说明 Wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md) · [跨宿主用法](packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md)
+
+```bash
+cd packages/memory_hotspot_repair_kernel
+python3 scripts/sync_to_codex_home.py
+```
+
 ## 你该从哪个开始
 
 | 你想干的事 | 装这个包 | 然后说 |
 | :--- | :--- | :--- |
-| 让一个 Python 任务别再 OOM | `memory_hotspot_repair_kernel` | `Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.` |
-| 提交并推送，不靠猜 | `github_sync_workflow_kernel` | `Use $github-sync-agent to sync this repository.` |
-| 把一个面很宽的任务丢给子代理 | `engineering_subagent_workflow_kernel` | `Use $code-explorer to trace how feature X is wired.` |
 | 认真学一门东西 | `coursecoach` | `我想学 X，每天一小时` |
+| 把一个面很宽的任务丢给子代理 | `engineering_subagent_workflow_kernel` | `Use $code-explorer to trace how feature X is wired.` |
+| 提交并推送，不靠猜 | `github_sync_workflow_kernel` | `Use $github-sync-agent to sync this repository.` |
+| 让一个 Python 任务别再 OOM | `memory_hotspot_repair_kernel` | `Use $memory-optimizer-agent to optimize memory hotspots in the current codebase.` |
 
 ## 安装
 
@@ -112,31 +112,31 @@ cp -r alamo_skillhub/packages/coursecoach/coursecoach ~/.workbuddy/skills/course
 
 ```text
 alamo_skillhub/
-├── README.md                          英文首页（本文件的中文对应版是下一行）
-├── README.zh-CN.md                    简体中文
+├── README.md                          英文首页
+├── README.zh-CN.md                    简体中文首页（本文件）
 ├── AGENTS.md                          在这个仓库里干活时 agent 该遵守的规范
 ├── llms.txt                           给 AI 爬虫/检索用的机器可读摘要
 ├── TODO_codex_plugin_marketplace.md   把内存套件打成 Codex 插件的计划（未做）
 ├── LICENSE                            Apache-2.0
 ├── packages/                          ← 产品面
-│   ├── memory_hotspot_repair_kernel/
-│   │   ├── memory-optimizer-agent/    编排入口（主要入口）
-│   │   ├── memory-check/  memory-fix/  memory-review/
-│   │   ├── references/  scripts/  wiki/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
-│   ├── github_sync_workflow_kernel/
-│   │   ├── github-sync-agent/
-│   │   ├── scripts/  wiki/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   ├── coursecoach/
+│   │   ├── coursecoach/               skill 本体（SKILL.md、references、scripts、examples）
+│   │   ├── docs/                      board.png、lesson-reader.png
+│   │   └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
 │   ├── engineering_subagent_workflow_kernel/
 │   │   ├── code-explorer/  code-architect/  code-reviewer/
 │   │   ├── code-simplifier/  pr-test-analyzer/
 │   │   ├── scripts/
 │   │   └── README.md  PORTABLE_USAGE.md  metadata.json
-│   └── coursecoach/
-│       ├── coursecoach/               skill 本体（SKILL.md、references、scripts、examples）
-│       ├── docs/                      board.png、lesson-reader.png
-│       └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
+│   ├── github_sync_workflow_kernel/
+│   │   ├── github-sync-agent/
+│   │   ├── scripts/  wiki/
+│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   └── memory_hotspot_repair_kernel/
+│       ├── memory-optimizer-agent/    编排入口（主要入口）
+│       ├── memory-check/  memory-fix/  memory-review/
+│       ├── references/  scripts/  wiki/
+│       └── README.md  PORTABLE_USAGE.md  metadata.json
 └── examples/                          ← 可选，安装时完全不需要
     └── memory_hotspot_repair_kernel/
         └── partitioned_batch_pipeline/    一个具体仓库的适配：overlay + 运行配置
