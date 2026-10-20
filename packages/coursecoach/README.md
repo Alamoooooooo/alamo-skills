@@ -57,6 +57,22 @@ and re-run `sync.py` to fix every path inside. No database, no server, no accoun
 | `resources/资料库.md` | the agent | yes — curated, with a cost note per entry |
 | two automations | `schedule.py` recipe + host | no — host state, rebuilt on demand |
 
+## Four Ways to Read a Lesson
+
+`lessons/*.md` is plain Markdown, so the same lesson can be read wherever you already are:
+
+| Way | How | Good for |
+|:--|:--|:--|
+| From the course board | Click "📄 打开本章讲义" / "📄 阅读本章讲义" under a chapter | Reading alongside the syllabus. With Obsidian installed it opens in the vault; without it, a reader panel opens right in the page |
+| Any Markdown editor | Open `lessons/xxx.md` in VS Code / Typora / Obsidian | Annotating, highlighting, taking notes |
+| As an exported textbook | `python scripts/export.py --course <dir> [--format docx]` | Reading the whole course in one pass, printing, sending to someone |
+| Any text editor | Notepad works | Searching for one term, copying a snippet |
+
+> The in-page reader is **pre-rendered at compile time**: no software to install, no network. Hand the
+> course folder to someone else, they double-click `课程主页.html` and read fully formatted lessons —
+> **Obsidian is not required**. What Obsidian adds is backlinks, the graph, and concept-card jumps —
+> not the ability to read a lesson at all.
+
 ## The Closed Loop
 
 ```

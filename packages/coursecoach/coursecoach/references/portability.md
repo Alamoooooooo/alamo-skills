@@ -35,7 +35,7 @@ coursecoach/
 | Python 3.8+ | ✅ | 只用标准库 + pyyaml，无第三方框架 |
 | `pyyaml` | ✅ | frontmatter 读写。`pip install pyyaml` |
 | `python-docx` | 可选 | 仅 `export.py --format docx` 需要 |
-| Obsidian | 可选 | 只影响「概念卡可点」与阶段笔记双链，没有也能编译完整看板 |
+| Obsidian | 可选 | 只影响「概念卡可点」与阶段笔记双链；没装时讲义改为主页内弹层阅读，不影响看板主体 |
 | 联网搜索 | 可选 | Phase 3 检索资源用；没网就用本地已有资料，标注「待核实」 |
 
 **不需要**：Node、数据库、云服务、任何 API key、浏览器插件。
@@ -81,6 +81,7 @@ python scripts/grade.py --course /tmp/smoke-course --hw hw-a --result result.jso
 | 页面空白 / `NaN` | 节点缺 `weeks`（总周数为 0）；跑 `syllabus.py set-weeks` |
 | 深链不展开 | 锚点写错（必须是 `#<node-id>`，不是标题）；或节点 id 有改动未重跑 sync |
 | 概念卡点不动 | 课程不在 Obsidian vault 内，探测不到 `.obsidian`；属预期降级 |
+| 讲义点开是一堆 `#` 和 `**` | 用的是旧版 `sync.py` 编译的 HTML（没有预渲染）。重跑 `sync.py` 即可，讲义会在页内弹层里正常排版 |
 | Word 打不开 | 没装 `python-docx`，或用了 `--format docx` 但环境缺依赖 |
 
 ## 6. 打包给别人时

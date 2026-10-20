@@ -37,7 +37,7 @@ Use this guide when:
 |:--|:--|
 | everything | Python 3.8+ and `pyyaml` |
 | `export.py --format docx` | `python-docx` (optional) |
-| `obsidian://` links | Obsidian installed (optional; falls back to `file://`) |
+| `obsidian://` links | Obsidian installed (optional; without it lessons open in an in-page reader) |
 | the board | any modern browser; no server, no network |
 
 The single hard requirement is that **the interpreter can `import yaml`**. A machine may have
@@ -82,7 +82,7 @@ output to an agent with a scheduling primitive and it creates the tasks.
 |:--|:--|
 | no automation primitive | Nothing is created. `review.py list` still computes due dates; you check it when you enter the course. Say so explicitly rather than leaving a dead task behind |
 | no model access in the scheduler | Keep only the review reminder (pure script, no judgment). The frontier pass needs model judgment; run it manually |
-| no `.obsidian` vault | Lesson links compile to `file://` and open in a new tab |
+| no `.obsidian` vault | Lessons are pre-rendered into `课程主页.html` at compile time and open in an in-page reader panel. Only concept-card links disappear |
 | no `localStorage` | The action basket keeps selections in memory only; the flow still works within one session |
 | no `python-docx` | `export.py` still emits Markdown; skip `--format docx` |
 

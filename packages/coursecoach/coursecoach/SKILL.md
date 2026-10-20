@@ -210,7 +210,7 @@ agent_created: true
 | 脚本               | 用途                                       | 关键参数                                                                                                                |
 | ---------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `init_course.py` | 从阶段列表创建课程实例（syllabus + 目录 + 初始主页）        | `--dir --title [--slug] --stages <json文件或内联>`                                                                       |
-| `sync.py`        | frontmatter → 课程主页 HTML + Obsidian 可读进度页 | `--course`                                                                                                          |
+| `sync.py`        | frontmatter → 课程主页 HTML + Obsidian 可读进度页（讲义预渲染内联，无 Obsidian 也能读） | `--course`                                                                                                          |
 | `grade.py`       | 按 result JSON 写回批改，并排入复习队列               | `--course --hw --result`                                                                                            |
 | `syllabus.py`    | 查/改 Skill Graph；给下一步建议                   | `--course list\|next\|add-node\|set-mastery\|set-prereqs\|attach-hw\|set-points\|set-weeks\|set-summary\|set-track` |
 | `review.py`      | 遗忘曲线复习队列；推迟不推进计数                         | `--course list [--all] [--json]` · `--course mark <hw-id>` · `--course snooze <hw-id> [--days 3]`                   |
@@ -226,7 +226,7 @@ agent_created: true
 ## 交付面（详见 `references/delivery.md`）
 
 - **产物清单**：必需只有 `syllabus.md` 与 `homework/*.md`；主页、进度页、教材都是编译/导出产物。
-- **Obsidian 集成（可选）**：课程放 `<vault>/60-课程/<课程名>/` 即成笔记；`sync.py` 生成 `课程进度.md`（原生可读、带看板跳转与逐节点深链）；概念卡靠 `points` 的 `note` 字段或同名匹配。Obsidian 原生不渲染 `.html`，要库内直读需社区插件。
+- **Obsidian 集成（可选，不装也能用）**：课程放 `<vault>/60-课程/<课程名>/` 即成笔记；`sync.py` 生成 `课程进度.md`（原生可读、带看板跳转与逐节点深链）；概念卡靠 `points` 的 `note` 字段或同名匹配。**讲义两种环境都能读**——库内走 `obsidian://` 深链，库外则用编译时预渲染的 HTML 在主页内弹出阅读面板。Obsidian 原生不渲染 `.html`，要库内直读需社区插件。
 - **导出**：`export.py` → `教材.md` / `教材.docx`；在线文档推送需连接器已连接，未连接只交付本地文件。
 - **通用性边界**：任意主题都能跑，但验收标准必须可观察（画出来 / 做出来 / 讲回来 / 通过测试）。纯鉴赏类目标要先翻译成可观察行为；依赖实时外部系统的目标（如考证报名）资料库须标「待核实」。
 

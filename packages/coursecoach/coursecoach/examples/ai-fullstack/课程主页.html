@@ -201,6 +201,43 @@
   .dock .cmd.show{display:block}
   .dock .tip{flex:0 0 auto;font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}
 
+  /* 讲义阅读弹层：课程不在 Obsidian 库里时，讲义在这里以内联 HTML 呈现 */
+  .reader{position:fixed;inset:0;z-index:90;display:none;background:rgba(15,17,21,.55);
+          padding:clamp(12px,4vh,44px)}
+  .reader.show{display:flex;align-items:stretch;justify-content:center}
+  .rd-sheet{background:var(--card);border:1px solid var(--line);border-radius:14px;
+            width:min(820px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;
+            box-shadow:0 24px 70px -24px rgba(16,24,40,.55)}
+  .rd-head{flex:0 0 auto;display:flex;align-items:flex-start;gap:12px;padding:15px 18px;
+           border-bottom:1px solid var(--line)}
+  .rd-title{font-size:16px;font-weight:600;color:var(--ink);line-height:1.35}
+  .rd-sub{font-size:11.5px;color:var(--muted);margin-top:3px;letter-spacing:.03em}
+  .rd-close{margin-left:auto;flex:0 0 auto;border:1px solid var(--line);background:var(--card);
+            color:var(--ink2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px}
+  .rd-close:hover{background:var(--bg);color:var(--ink)}
+  .rd-body{flex:1 1 auto;overflow:auto;padding:6px 26px 40px;color:var(--ink2);
+           font-size:14px;line-height:1.8}
+  .rd-body h1{font-size:21px;color:var(--ink);margin:20px 0 10px;line-height:1.35}
+  .rd-body h2{font-size:17px;color:var(--ink);margin:24px 0 8px;line-height:1.4}
+  .rd-body h3{font-size:15px;color:var(--ink);margin:20px 0 6px}
+  .rd-body h4,.rd-body h5,.rd-body h6{font-size:13.5px;color:var(--ink2);margin:16px 0 6px}
+  .rd-body p{margin:11px 0}
+  .rd-body ul,.rd-body ol{margin:11px 0;padding-left:22px}
+  .rd-body li{margin:5px 0}
+  .rd-body pre{background:var(--bg);border:1px solid var(--line);border-radius:9px;
+               padding:12px 14px;overflow:auto;margin:14px 0}
+  .rd-body pre code{background:none;padding:0;font-size:12.5px;line-height:1.75;color:var(--ink2)}
+  .rd-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .rd-body blockquote{margin:14px 0;padding:2px 0 2px 14px;border-left:3px solid var(--accent);
+                      color:var(--muted)}
+  .rd-body hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+  .rd-body table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13px}
+  .rd-body th,.rd-body td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+  .rd-body th{background:var(--bg);color:var(--ink);font-weight:600}
+  .rd-body img{max-width:100%;border-radius:8px}
+  .rd-body a{color:var(--accent)}
+  .rd-body .wl{background:var(--accent-soft);color:var(--tag-ink);border-radius:4px;padding:0 4px}
+
   @media (max-width:900px){
     .layout{grid-template-columns:1fr}
     .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}
@@ -208,9 +245,12 @@
     main{padding:20px 16px 56px}
     .sbody{padding-left:16px}
     .mb{display:none}
+    .reader{padding:0}
+    .rd-sheet{border-radius:0;border:0}
+    .rd-body{padding:6px 16px 32px}
   }
   @media print{
-    .side,.chev,.search,.row.ctrl,.dock,.pop,.actrow{display:none!important}
+    .side,.chev,.search,.row.ctrl,.dock,.pop,.actrow,.reader{display:none!important}
     .layout{grid-template-columns:1fr}
     .sbody{display:block!important;padding-left:0}
     .stage{break-inside:avoid;box-shadow:none}
@@ -313,8 +353,22 @@
   </div>
 </div>
 
+<!-- 讲义阅读弹层：课程不在 Obsidian 库里时，讲义在这里读（已由 sync.py 预渲染成 HTML） -->
+<div class="reader" id="reader">
+  <div class="rd-sheet" role="dialog" aria-modal="true" aria-labelledby="rdTitle">
+    <div class="rd-head">
+      <div>
+        <div class="rd-title" id="rdTitle"></div>
+        <div class="rd-sub" id="rdSub"></div>
+      </div>
+      <button class="rd-close" id="rdClose" type="button" aria-label="关闭讲义">✕</button>
+    </div>
+    <div class="rd-body" id="rdBody"></div>
+  </div>
+</div>
+
 <script>
-const DATA = {"course": "AI 全栈学习路线", "track": "冲刺", "start": "2026-10-14", "dir": "你的课程目录", "vault": "AI-Vault", "nodes": [{"id": "stage0-math", "title": "数学重启（线代优先）", "prereqs": [], "homework": ["hw-stage0-vec"], "mastery": null, "summary": "不重刷教材，只补「看不见的地方」：向量是方向，矩阵是变换，导数就是斜率。", "points": [{"t": "向量与线性组合", "note": null, "lesson": null}, {"t": "矩阵乘法的几何意义", "note": null, "lesson": null}, {"t": "列空间与秩", "note": null, "lesson": null}, {"t": "特征值直觉", "note": null, "lesson": null}, {"t": "链式法则", "note": null, "lesson": null}, {"t": "矩阵求导", "note": null, "lesson": null}, {"t": "概率与期望", "note": null, "lesson": null}, {"t": "梯度下降直觉", "note": null, "lesson": null}, {"t": "形状心算", "note": null, "lesson": null}], "weeks": {"sprint": 3.0, "standard": 3.0, "long": 4.0}, "lesson": null, "unlocked": true, "mastered": false}, {"id": "stage1-ml", "title": "机器学习速通", "prereqs": ["stage0-math"], "homework": [], "mastery": null, "summary": "先建立「什么问题该用什么模型」的判断力，而不是刷算法。", "points": [{"t": "过拟合与泛化", "note": "20-概念/过拟合与泛化", "lesson": null}, {"t": "偏差-方差权衡", "note": null, "lesson": null}, {"t": "正则化", "note": null, "lesson": null}, {"t": "数据泄漏", "note": null, "lesson": null}, {"t": "交叉验证", "note": null, "lesson": null}, {"t": "树模型 vs 线性模型", "note": null, "lesson": null}, {"t": "评估指标", "note": null, "lesson": null}, {"t": "基线优先", "note": null, "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage2-dl", "title": "深度学习速通", "prereqs": ["stage1-ml"], "homework": [], "mastery": null, "summary": "手写一遍反向传播，你就再也不会把框架当黑箱。", "points": [{"t": "反向传播", "note": null, "lesson": null}, {"t": "计算图", "note": null, "lesson": null}, {"t": "SGD 与 AdamW", "note": null, "lesson": null}, {"t": "参数初始化", "note": null, "lesson": null}, {"t": "BatchNorm 与 LayerNorm", "note": null, "lesson": null}, {"t": "Dropout", "note": null, "lesson": null}, {"t": "学习率调度", "note": null, "lesson": null}, {"t": "训练调试（loss 不降）", "note": null, "lesson": null}, {"t": "过拟合与欠拟合", "note": null, "lesson": null}], "weeks": {"sprint": 2.0, "standard": 2.5, "long": 4.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage3-transformer", "title": "Transformer 精读", "prereqs": ["stage2-dl"], "homework": [], "mastery": null, "summary": "精学起点。每个部件都要能回答「为什么这样设计」。", "points": [{"t": "自注意力", "note": "20-概念/自注意力", "lesson": null}, {"t": "QKV", "note": null, "lesson": null}, {"t": "多头注意力", "note": null, "lesson": null}, {"t": "缩放点积", "note": null, "lesson": null}, {"t": "位置编码", "note": "20-概念/位置编码", "lesson": null}, {"t": "RoPE", "note": null, "lesson": null}, {"t": "残差与 Pre-LN", "note": null, "lesson": null}, {"t": "因果掩码", "note": null, "lesson": null}, {"t": "从零实现小 GPT", "note": null, "lesson": null}], "weeks": {"sprint": 2.0, "standard": 2.5, "long": 4.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage4-pretrain", "title": "预训练与 Scaling", "prereqs": ["stage3-transformer"], "homework": [], "mastery": null, "summary": "从 tokenizer 到训练成本，理解大模型是怎么被造出来的。", "points": [{"t": "Scaling Laws", "note": "20-概念/Scaling Law", "lesson": null}, {"t": "Chinchilla 配比", "note": null, "lesson": null}, {"t": "Tokenizer", "note": "20-概念/Tokenizer", "lesson": null}, {"t": "BPE", "note": null, "lesson": null}, {"t": "数据清洗与去重", "note": null, "lesson": null}, {"t": "数据墙与合成数据", "note": null, "lesson": null}, {"t": "nanochat 全链路", "note": null, "lesson": null}, {"t": "训练成本量级", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage5-post-transformer", "title": "后 Transformer 架构", "prereqs": ["stage4-pretrain"], "homework": [], "mastery": null, "summary": "2026 必补：注意力之后的架构，真正的敌人是 KV Cache。", "points": [{"t": "KV Cache", "note": "20-概念/KV Cache", "lesson": null}, {"t": "SSM 与 Mamba", "note": "20-概念/SSM 与 Mamba", "lesson": null}, {"t": "线性注意力", "note": "20-概念/线性注意力", "lesson": null}, {"t": "MLA", "note": "20-概念/MLA 多头潜在注意力", "lesson": null}, {"t": "稀疏注意力", "note": null, "lesson": null}, {"t": "混合架构", "note": null, "lesson": null}, {"t": "硬件感知实现", "note": null, "lesson": null}, {"t": "注意力失忆", "note": "20-概念/注意力失忆", "lesson": null}, {"t": "有效上下文长度", "note": "20-概念/有效上下文长度", "lesson": null}, {"t": "MoE", "note": "20-概念/MoE 混合专家", "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.5, "long": 4.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage6-rl", "title": "强化学习基础", "prereqs": ["stage5-post-transformer"], "homework": [], "mastery": null, "summary": "策略梯度到 PPO，为后训练打地基。", "points": [{"t": "MDP 与回报", "note": null, "lesson": null}, {"t": "策略梯度", "note": null, "lesson": null}, {"t": "优势函数", "note": null, "lesson": null}, {"t": "PPO", "note": "20-概念/PPO", "lesson": null}, {"t": "值函数（critic）", "note": null, "lesson": null}, {"t": "探索与稳定性", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage7-posttrain", "title": "后训练与对齐", "prereqs": ["stage6-rl"], "homework": [], "mastery": null, "summary": "现代大模型的核心：SFT → 偏好优化 → 可验证奖励。", "points": [{"t": "SFT", "note": null, "lesson": null}, {"t": "RLHF", "note": "20-概念/RLHF", "lesson": null}, {"t": "DPO", "note": "20-概念/DPO", "lesson": null}, {"t": "GRPO", "note": "20-概念/GRPO", "lesson": null}, {"t": "RLVR", "note": "20-概念/RLVR", "lesson": null}, {"t": "奖励模型", "note": null, "lesson": null}, {"t": "推理模型与测试时计算", "note": "20-概念/推理模型与测试时计算", "lesson": null}, {"t": "RLCD", "note": null, "lesson": null}, {"t": "置信度校准", "note": null, "lesson": null}, {"t": "后训练的隐藏代价", "note": null, "lesson": null}], "weeks": {"sprint": 2.0, "standard": 3.0, "long": 5.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage8-inference", "title": "推理 / 测试时计算 / 效率", "prereqs": ["stage7-posttrain"], "homework": [], "mastery": null, "summary": "推理为什么贵、怎么便宜，全在 KV Cache 与内存带宽里。", "points": [{"t": "KV Cache", "note": "20-概念/KV Cache", "lesson": null}, {"t": "PagedAttention", "note": null, "lesson": null}, {"t": "投机解码", "note": null, "lesson": null}, {"t": "量化（INT8/FP8）", "note": "20-概念/LoRA 与量化", "lesson": null}, {"t": "批处理与吞吐", "note": null, "lesson": null}, {"t": "显存-带宽-算力", "note": null, "lesson": null}, {"t": "测试时计算", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 3.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage9-rag", "title": "RAG 与检索", "prereqs": ["stage8-inference"], "homework": [], "mastery": null, "summary": "检索不是外挂，是把「不知道」变成「查得到」。", "points": [{"t": "切分与嵌入", "note": null, "lesson": null}, {"t": "向量检索", "note": null, "lesson": null}, {"t": "混合检索与重排", "note": null, "lesson": null}, {"t": "查询改写", "note": null, "lesson": null}, {"t": "忠实度与召回评估", "note": null, "lesson": null}, {"t": "长上下文 vs RAG", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage10-agent", "title": "Agent 开发", "prereqs": ["stage9-rag"], "homework": [], "mastery": null, "summary": "Agent = Model + Harness。循环、工具、记忆、评估。", "points": [{"t": "Agent 循环", "note": "20-概念/Agent 循环", "lesson": null}, {"t": "ReAct", "note": null, "lesson": null}, {"t": "上下文工程", "note": "20-概念/上下文工程", "lesson": null}, {"t": "工具设计", "note": null, "lesson": null}, {"t": "MCP", "note": "20-概念/MCP 协议", "lesson": null}, {"t": "A2A", "note": "20-概念/A2A 协议", "lesson": null}, {"t": "多智能体", "note": null, "lesson": null}, {"t": "记忆与状态", "note": null, "lesson": null}, {"t": "τ-bench", "note": "20-概念/τ-bench 与 agent 评估", "lesson": null}, {"t": "轨迹准确率", "note": null, "lesson": null}, {"t": "可观测性", "note": null, "lesson": null}], "weeks": {"sprint": 2.5, "standard": 3.5, "long": 6.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage11-harness", "title": "Harness 工程", "prereqs": ["stage10-agent"], "homework": [], "mastery": null, "summary": "harness 决定行为，而不是单个 prompt。", "points": [{"t": "Agent = Model + Harness", "note": null, "lesson": null}, {"t": "五功能闭环", "note": null, "lesson": null}, {"t": "工具工效学", "note": null, "lesson": null}, {"t": "沙箱与权限", "note": null, "lesson": null}, {"t": "错误恢复", "note": null, "lesson": null}, {"t": "压缩（compaction）", "note": null, "lesson": null}, {"t": "子 agent 调度", "note": null, "lesson": null}, {"t": "内层与外层 harness", "note": null, "lesson": null}, {"t": "决策层分离", "note": "20-概念/决策层分离", "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage12-loopgraph", "title": "Loop 与 Graph 工程", "prereqs": ["stage11-harness"], "homework": [], "mastery": null, "summary": "从「跑一次」到「跑得住」：循环与图的手艺。", "points": [{"t": "Self-Improvement Loop", "note": null, "lesson": null}, {"t": "Self-Correction Loop", "note": null, "lesson": null}, {"t": "验证器与外部检查", "note": null, "lesson": null}, {"t": "停止条件", "note": null, "lesson": null}, {"t": "反馈设计", "note": null, "lesson": null}, {"t": "Loop 工程", "note": "20-概念/Loop 工程", "lesson": null}, {"t": "Graph 工程", "note": "20-概念/Graph 工程", "lesson": null}, {"t": "共享状态与冲突", "note": null, "lesson": null}, {"t": "确定性 vs 概率性控制", "note": null, "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage13-frontier", "title": "前沿追踪 + Capstone", "prereqs": ["stage12-loopgraph"], "homework": [], "mastery": null, "summary": "每周 1–2 小时：读论文 + 写三句话 + 做一个 Capstone。", "points": [{"t": "论文三句话摘要", "note": null, "lesson": null}, {"t": "多模态与空间感知", "note": null, "lesson": null}, {"t": "具身智能四条路线", "note": null, "lesson": null}, {"t": "世界模型", "note": null, "lesson": null}, {"t": "Agentic RL", "note": null, "lesson": null}, {"t": "可解释性", "note": null, "lesson": null}, {"t": "Capstone 项目", "note": null, "lesson": null}], "weeks": {"sprint": 0.0, "standard": 0.0, "long": 0.0}, "lesson": null, "unlocked": false, "mastered": false}], "homeworks": [{"id": "hw-stage0-vec", "title": "向量与线性组合小测", "topic": "线性代数·向量与线性组合", "stage": "stage0-math", "status": "pending", "score": null, "grade": null, "rubric": 5, "attempts": 0, "graded_at": null, "review_due": null, "review_count": 0, "fileurl": "file:///你的 Obsidian 库/60-%E8%AF%BE%E7%A8%8B/AI%E5%85%A8%E6%A0%88/homework/hw-stage0-vec.md", "filepath": "你的课程目录\\homework\\hw-stage0-vec.md", "notename": "hw-stage0-vec"}], "stats": {"hw_total": 1, "hw_graded": 0, "avg_mastery": 0.0, "nodes_total": 14, "nodes_done": 0, "nodes_open": 1, "due": 0}};
+const DATA = {"course": "AI 全栈学习路线", "track": "冲刺", "start": "2026-10-14", "dir": "C:/Users/<你>/.workbuddy/skills/coursecoach/examples/ai-fullstack", "vault": null, "nodes": [{"id": "stage0-math", "title": "数学重启（线代优先）", "prereqs": [], "homework": ["hw-stage0-vec"], "mastery": null, "summary": "不重刷教材，只补「看不见的地方」：向量是方向，矩阵是变换，导数就是斜率。", "points": [{"t": "向量与线性组合", "note": null, "lesson": null, "lessonKey": null}, {"t": "矩阵乘法的几何意义", "note": null, "lesson": null, "lessonKey": null}, {"t": "列空间与秩", "note": null, "lesson": null, "lessonKey": null}, {"t": "特征值直觉", "note": null, "lesson": null, "lessonKey": null}, {"t": "链式法则", "note": null, "lesson": null, "lessonKey": null}, {"t": "矩阵求导", "note": null, "lesson": null, "lessonKey": null}, {"t": "概率与期望", "note": null, "lesson": null, "lessonKey": null}, {"t": "梯度下降直觉", "note": null, "lesson": null, "lessonKey": null}, {"t": "形状心算", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 3.0, "standard": 3.0, "long": 4.0}, "lesson": null, "lessonKey": null, "unlocked": true, "mastered": false}, {"id": "stage1-ml", "title": "机器学习速通", "prereqs": ["stage0-math"], "homework": [], "mastery": null, "summary": "先建立「什么问题该用什么模型」的判断力，而不是刷算法。", "points": [{"t": "过拟合与泛化", "note": null, "lesson": null, "lessonKey": null}, {"t": "偏差-方差权衡", "note": null, "lesson": null, "lessonKey": null}, {"t": "正则化", "note": null, "lesson": null, "lessonKey": null}, {"t": "数据泄漏", "note": null, "lesson": null, "lessonKey": null}, {"t": "交叉验证", "note": null, "lesson": null, "lessonKey": null}, {"t": "树模型 vs 线性模型", "note": null, "lesson": null, "lessonKey": null}, {"t": "评估指标", "note": null, "lesson": null, "lessonKey": null}, {"t": "基线优先", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage2-dl", "title": "深度学习速通", "prereqs": ["stage1-ml"], "homework": [], "mastery": null, "summary": "手写一遍反向传播，你就再也不会把框架当黑箱。", "points": [{"t": "反向传播", "note": null, "lesson": null, "lessonKey": null}, {"t": "计算图", "note": null, "lesson": null, "lessonKey": null}, {"t": "SGD 与 AdamW", "note": null, "lesson": null, "lessonKey": null}, {"t": "参数初始化", "note": null, "lesson": null, "lessonKey": null}, {"t": "BatchNorm 与 LayerNorm", "note": null, "lesson": null, "lessonKey": null}, {"t": "Dropout", "note": null, "lesson": null, "lessonKey": null}, {"t": "学习率调度", "note": null, "lesson": null, "lessonKey": null}, {"t": "训练调试（loss 不降）", "note": null, "lesson": null, "lessonKey": null}, {"t": "过拟合与欠拟合", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 2.0, "standard": 2.5, "long": 4.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage3-transformer", "title": "Transformer 精读", "prereqs": ["stage2-dl"], "homework": [], "mastery": null, "summary": "精学起点。每个部件都要能回答「为什么这样设计」。", "points": [{"t": "自注意力", "note": null, "lesson": null, "lessonKey": null}, {"t": "QKV", "note": null, "lesson": null, "lessonKey": null}, {"t": "多头注意力", "note": null, "lesson": null, "lessonKey": null}, {"t": "缩放点积", "note": null, "lesson": null, "lessonKey": null}, {"t": "位置编码", "note": null, "lesson": null, "lessonKey": null}, {"t": "RoPE", "note": null, "lesson": null, "lessonKey": null}, {"t": "残差与 Pre-LN", "note": null, "lesson": null, "lessonKey": null}, {"t": "因果掩码", "note": null, "lesson": null, "lessonKey": null}, {"t": "从零实现小 GPT", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 2.0, "standard": 2.5, "long": 4.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage4-pretrain", "title": "预训练与 Scaling", "prereqs": ["stage3-transformer"], "homework": [], "mastery": null, "summary": "从 tokenizer 到训练成本，理解大模型是怎么被造出来的。", "points": [{"t": "Scaling Laws", "note": null, "lesson": null, "lessonKey": null}, {"t": "Chinchilla 配比", "note": null, "lesson": null, "lessonKey": null}, {"t": "Tokenizer", "note": null, "lesson": null, "lessonKey": null}, {"t": "BPE", "note": null, "lesson": null, "lessonKey": null}, {"t": "数据清洗与去重", "note": null, "lesson": null, "lessonKey": null}, {"t": "数据墙与合成数据", "note": null, "lesson": null, "lessonKey": null}, {"t": "nanochat 全链路", "note": null, "lesson": null, "lessonKey": null}, {"t": "训练成本量级", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage5-post-transformer", "title": "后 Transformer 架构", "prereqs": ["stage4-pretrain"], "homework": [], "mastery": null, "summary": "2026 必补：注意力之后的架构，真正的敌人是 KV Cache。", "points": [{"t": "KV Cache", "note": null, "lesson": null, "lessonKey": null}, {"t": "SSM 与 Mamba", "note": null, "lesson": null, "lessonKey": null}, {"t": "线性注意力", "note": null, "lesson": null, "lessonKey": null}, {"t": "MLA", "note": null, "lesson": null, "lessonKey": null}, {"t": "稀疏注意力", "note": null, "lesson": null, "lessonKey": null}, {"t": "混合架构", "note": null, "lesson": null, "lessonKey": null}, {"t": "硬件感知实现", "note": null, "lesson": null, "lessonKey": null}, {"t": "注意力失忆", "note": null, "lesson": null, "lessonKey": null}, {"t": "有效上下文长度", "note": null, "lesson": null, "lessonKey": null}, {"t": "MoE", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.5, "standard": 2.5, "long": 4.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage6-rl", "title": "强化学习基础", "prereqs": ["stage5-post-transformer"], "homework": [], "mastery": null, "summary": "策略梯度到 PPO，为后训练打地基。", "points": [{"t": "MDP 与回报", "note": null, "lesson": null, "lessonKey": null}, {"t": "策略梯度", "note": null, "lesson": null, "lessonKey": null}, {"t": "优势函数", "note": null, "lesson": null, "lessonKey": null}, {"t": "PPO", "note": null, "lesson": null, "lessonKey": null}, {"t": "值函数（critic）", "note": null, "lesson": null, "lessonKey": null}, {"t": "探索与稳定性", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage7-posttrain", "title": "后训练与对齐", "prereqs": ["stage6-rl"], "homework": [], "mastery": null, "summary": "现代大模型的核心：SFT → 偏好优化 → 可验证奖励。", "points": [{"t": "SFT", "note": null, "lesson": null, "lessonKey": null}, {"t": "RLHF", "note": null, "lesson": null, "lessonKey": null}, {"t": "DPO", "note": null, "lesson": null, "lessonKey": null}, {"t": "GRPO", "note": null, "lesson": null, "lessonKey": null}, {"t": "RLVR", "note": null, "lesson": null, "lessonKey": null}, {"t": "奖励模型", "note": null, "lesson": null, "lessonKey": null}, {"t": "推理模型与测试时计算", "note": null, "lesson": null, "lessonKey": null}, {"t": "RLCD", "note": null, "lesson": null, "lessonKey": null}, {"t": "置信度校准", "note": null, "lesson": null, "lessonKey": null}, {"t": "后训练的隐藏代价", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 2.0, "standard": 3.0, "long": 5.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage8-inference", "title": "推理 / 测试时计算 / 效率", "prereqs": ["stage7-posttrain"], "homework": [], "mastery": null, "summary": "推理为什么贵、怎么便宜，全在 KV Cache 与内存带宽里。", "points": [{"t": "KV Cache", "note": null, "lesson": null, "lessonKey": null}, {"t": "PagedAttention", "note": null, "lesson": null, "lessonKey": null}, {"t": "投机解码", "note": null, "lesson": null, "lessonKey": null}, {"t": "量化（INT8/FP8）", "note": null, "lesson": null, "lessonKey": null}, {"t": "批处理与吞吐", "note": null, "lesson": null, "lessonKey": null}, {"t": "显存-带宽-算力", "note": null, "lesson": null, "lessonKey": null}, {"t": "测试时计算", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 3.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage9-rag", "title": "RAG 与检索", "prereqs": ["stage8-inference"], "homework": [], "mastery": null, "summary": "检索不是外挂，是把「不知道」变成「查得到」。", "points": [{"t": "切分与嵌入", "note": null, "lesson": null, "lessonKey": null}, {"t": "向量检索", "note": null, "lesson": null, "lessonKey": null}, {"t": "混合检索与重排", "note": null, "lesson": null, "lessonKey": null}, {"t": "查询改写", "note": null, "lesson": null, "lessonKey": null}, {"t": "忠实度与召回评估", "note": null, "lesson": null, "lessonKey": null}, {"t": "长上下文 vs RAG", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage10-agent", "title": "Agent 开发", "prereqs": ["stage9-rag"], "homework": [], "mastery": null, "summary": "Agent = Model + Harness。循环、工具、记忆、评估。", "points": [{"t": "Agent 循环", "note": null, "lesson": null, "lessonKey": null}, {"t": "ReAct", "note": null, "lesson": null, "lessonKey": null}, {"t": "上下文工程", "note": null, "lesson": null, "lessonKey": null}, {"t": "工具设计", "note": null, "lesson": null, "lessonKey": null}, {"t": "MCP", "note": null, "lesson": null, "lessonKey": null}, {"t": "A2A", "note": null, "lesson": null, "lessonKey": null}, {"t": "多智能体", "note": null, "lesson": null, "lessonKey": null}, {"t": "记忆与状态", "note": null, "lesson": null, "lessonKey": null}, {"t": "τ-bench", "note": null, "lesson": null, "lessonKey": null}, {"t": "轨迹准确率", "note": null, "lesson": null, "lessonKey": null}, {"t": "可观测性", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 2.5, "standard": 3.5, "long": 6.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage11-harness", "title": "Harness 工程", "prereqs": ["stage10-agent"], "homework": [], "mastery": null, "summary": "harness 决定行为，而不是单个 prompt。", "points": [{"t": "Agent = Model + Harness", "note": null, "lesson": null, "lessonKey": null}, {"t": "五功能闭环", "note": null, "lesson": null, "lessonKey": null}, {"t": "工具工效学", "note": null, "lesson": null, "lessonKey": null}, {"t": "沙箱与权限", "note": null, "lesson": null, "lessonKey": null}, {"t": "错误恢复", "note": null, "lesson": null, "lessonKey": null}, {"t": "压缩（compaction）", "note": null, "lesson": null, "lessonKey": null}, {"t": "子 agent 调度", "note": null, "lesson": null, "lessonKey": null}, {"t": "内层与外层 harness", "note": null, "lesson": null, "lessonKey": null}, {"t": "决策层分离", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.5}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage12-loopgraph", "title": "Loop 与 Graph 工程", "prereqs": ["stage11-harness"], "homework": [], "mastery": null, "summary": "从「跑一次」到「跑得住」：循环与图的手艺。", "points": [{"t": "Self-Improvement Loop", "note": null, "lesson": null, "lessonKey": null}, {"t": "Self-Correction Loop", "note": null, "lesson": null, "lessonKey": null}, {"t": "验证器与外部检查", "note": null, "lesson": null, "lessonKey": null}, {"t": "停止条件", "note": null, "lesson": null, "lessonKey": null}, {"t": "反馈设计", "note": null, "lesson": null, "lessonKey": null}, {"t": "Loop 工程", "note": null, "lesson": null, "lessonKey": null}, {"t": "Graph 工程", "note": null, "lesson": null, "lessonKey": null}, {"t": "共享状态与冲突", "note": null, "lesson": null, "lessonKey": null}, {"t": "确定性 vs 概率性控制", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}, {"id": "stage13-frontier", "title": "前沿追踪 + Capstone", "prereqs": ["stage12-loopgraph"], "homework": [], "mastery": null, "summary": "每周 1–2 小时：读论文 + 写三句话 + 做一个 Capstone。", "points": [{"t": "论文三句话摘要", "note": null, "lesson": null, "lessonKey": null}, {"t": "多模态与空间感知", "note": null, "lesson": null, "lessonKey": null}, {"t": "具身智能四条路线", "note": null, "lesson": null, "lessonKey": null}, {"t": "世界模型", "note": null, "lesson": null, "lessonKey": null}, {"t": "Agentic RL", "note": null, "lesson": null, "lessonKey": null}, {"t": "可解释性", "note": null, "lesson": null, "lessonKey": null}, {"t": "Capstone 项目", "note": null, "lesson": null, "lessonKey": null}], "weeks": {"sprint": 0.0, "standard": 0.0, "long": 0.0}, "lesson": null, "lessonKey": null, "unlocked": false, "mastered": false}], "homeworks": [{"id": "hw-stage0-vec", "title": "向量与线性组合小测", "topic": "线性代数·向量与线性组合", "stage": "stage0-math", "status": "pending", "score": null, "grade": null, "rubric": 5, "attempts": 0, "graded_at": null, "review_due": null, "review_count": 0, "fileurl": "file:///C:/Users/<你>/.workbuddy/skills/coursecoach/examples/ai-fullstack/homework/hw-stage0-vec.md", "filepath": "C:\\Users\\<你>\\.workbuddy\\skills\\coursecoach\\examples\\ai-fullstack\\homework\\hw-stage0-vec.md", "notename": "hw-stage0-vec"}], "lessonHtml": {}, "stats": {"hw_total": 1, "hw_graded": 0, "avg_mastery": 0.0, "nodes_total": 14, "nodes_done": 0, "nodes_open": 1, "due": 0}};
 const LS = "coursecoach:" + DATA.course;
 /* 隐私模式 / 禁存储环境下 localStorage 会抛异常，这里降级为「不记忆 UI 状态」，绝不白屏 */
 const saved = (function(){ try { return JSON.parse(localStorage.getItem(LS) || "{}") || {}; } catch(e){ return {}; } })();
@@ -334,6 +388,45 @@ const wk = n => (n.weeks && n.weeks[store.pace]) || 0;
 const totalWeeks = p => DATA.nodes.reduce((a, n) => a + ((n.weeks && n.weeks[p]) || 0), 0);
 const fmtW = w => (Math.round(w * 10) / 10).toString().replace(/\.0$/, "");
 const obs = (rel) => DATA.vault ? "obsidian://open?vault=" + encodeURIComponent(DATA.vault) + "&file=" + encodeURIComponent(rel) : null;
+/* 讲义按协议分流：
+   - 有 vault：交给 Obsidian 协议处理器，当前页不跳走（Obsidian 里能双链、进图谱，最好用）
+   - 没 vault：若已内联预渲染 HTML，就在本页弹层里读（排版好的文章 vs 浏览器里的裸源码）
+   - 兜底：新标签页打开原文件，别把看板顶掉 */
+function openLesson(u, key){
+  if (DATA.vault && u) { window.location.href = u; return; }
+  var html = key && DATA.lessonHtml ? DATA.lessonHtml[key] : null;
+  if (html) { showReader(key, html); return; }
+  if (u) window.open(u, "_blank", "noopener");
+}
+/* ---------- 讲义阅读弹层 ---------- */
+var reader = document.getElementById("reader");
+function showReader(key, html){
+  var node = (DATA.nodes || []).filter(function(n){ return n.id === key; })[0];
+  var title = node ? node.title : key.split("--").pop();
+  var sub = node ? "本章讲义" : "知识点讲解";
+  document.getElementById("rdTitle").textContent = title || "讲义";
+  document.getElementById("rdSub").textContent = sub;
+  document.getElementById("rdBody").innerHTML = html;
+  /* 讲义自带的 H1 与弹层标题重复，读起来像说两遍，藏掉；语义仍由 aria-labelledby 给出 */
+  var h1 = document.getElementById("rdBody").querySelector("h1");
+  if (h1) h1.style.display = "none";
+  document.getElementById("rdBody").scrollTop = 0;
+  reader.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function hideReader(){
+  reader.classList.remove("show");
+  document.body.style.overflow = "";
+}
+document.getElementById("rdClose").addEventListener("click", hideReader);
+reader.addEventListener("click", function(e){ if (e.target === reader) hideReader(); });
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && reader.classList.contains("show")) hideReader();
+});
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-lessonfile]");
+  if (b) { e.preventDefault(); openLesson(b.dataset.lessonfile, b.dataset.lessonkey); }
+});
 
 /* ---------- 头部 ---------- */
 document.getElementById("h1").textContent = DATA.course;
@@ -417,13 +510,14 @@ function tagsHtml(n){
     const cls = "tag" + (p.note ? " link" : "") + (p.lesson ? " haslesson" : "") + (hit ? " hit" : "");
     const attrs = (p.note ? ' data-note="' + esc(p.note) + '"' : "") +
                   (p.lesson ? ' data-lesson="' + esc(p.lesson) + '"' : "") +
+                  (p.lessonKey ? ' data-lessonkey="' + esc(p.lessonKey) + '"' : "") +
                   ' data-term="' + esc(p.t) + '" data-nid="' + esc(n.id) + '" data-pt="' + pi + '"';
     return '<span class="' + cls + '"' + attrs + ' title="点击：生成讲解 / 出题 / 筛选相关章节">' + esc(p.t) + "</span>";
   }).join("") + "</div>";
 }
 function actRow(n){
   return '<div class="actrow">' +
-    (n.lesson ? '<a class="act on" href="' + n.lesson + '" target="_blank" rel="noopener">📄 打开本章讲义</a>' : "") +
+    (n.lesson ? '<button class="act on" type="button" data-lessonfile="' + esc(n.lesson) + '" data-lessonkey="' + esc(n.lessonKey || "") + '">📄 ' + (DATA.vault ? "打开本章讲义" : "阅读本章讲义") + '</button>' : "") +
     '<button class="act" type="button" data-act="lesson" data-nid="' + esc(n.id) + '">' +
       (n.lesson ? "📖 重写这一章讲解" : "📖 补这一章讲解") + '</button>' +
     '<button class="act" type="button" data-act="hw" data-nid="' + esc(n.id) + '">📝 给这一章出作业</button>' +
@@ -613,7 +707,7 @@ function openPop(t){
   const note = t.dataset.note, term = t.dataset.term;
   pop.innerHTML =
     '<div class="ttl">' + esc(term) + "</div>" +
-    (t.dataset.lesson ? '<button type="button" data-p="lessonfile">📄 打开已生成的讲义</button>' : "") +
+    (t.dataset.lesson ? '<button type="button" data-p="lessonfile">📄 ' + (DATA.vault ? "打开" : "阅读") + '已生成的讲义</button>' : "") +
     '<button type="button" data-p="lesson">📖 生成讲解</button>' +
     '<button type="button" data-p="hw">📝 出题</button>' +
     '<button type="button" data-p="research">🔗 补资料</button>' +
@@ -638,7 +732,7 @@ pop.addEventListener("click", e => {
     const u = obs(popTag.dataset.note);
     if (u) window.location.href = u;
   } else if (p === "lessonfile") {
-    window.location.href = popTag.dataset.lesson;
+    openLesson(popTag.dataset.lesson, popTag.dataset.lessonkey);
   } else if (p === "filter") {
     store.q = term; document.getElementById("q").value = term; applyFilters();
   } else {
@@ -832,7 +926,7 @@ if (!store.open.size && !hasHash) {
   const art = cur && document.getElementById(cur.id);
   if (art) art.classList.add("open");
 }
-document.getElementById("stamp").innerHTML = "<br>最后同步：2026-10-18 19:02";
+document.getElementById("stamp").innerHTML = "<br>最后同步：2026-10-20 11:49";
 // 深链：课程主页.html#stage3-transformer
 if (location.hash.length > 1) setTimeout(() => jump(decodeURIComponent(location.hash.slice(1))), 60);
 setActive();

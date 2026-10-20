@@ -108,6 +108,21 @@ python <skill>/scripts/schedule.py --course <课程目录> --json     # 完整�
 | `coursecoach/assets/` | 大纲与作业的空白模板 |
 | `coursecoach/examples/ai-fullstack/` | 一份真实课程快照（作答已清空），可直接双击看效果 |
 
+## 五点五、讲义怎么读（不装 Obsidian 也行）
+
+`lessons/*.md` 是纯 Markdown，四种读法随便挑：
+
+1. **在课程主页里点** —— 章节底部的「📄 打开 / 阅读本章讲义」。装了 Obsidian 就在库里打开；
+   没装就在网页里弹出阅读面板，标题、表格、代码块都是排好版的。
+2. **用 Markdown 编辑器** —— VS Code / Typora / Obsidian 打开 `lessons/xxx.md`，适合批注做笔记。
+3. **导出成教材** —— `python scripts/export.py --course <课程目录> [--format docx]`，
+   一次读完整门课，或打印、发给别人。
+4. **任何文本编辑器** —— 记事本也能打开，只想搜个词、抄段代码时最省事。
+
+阅读面板是编译时预渲染进 HTML 的：**不联网、不装任何软件**。把课程文件夹发给别人，
+对方双击 `课程主页.html` 就能读到排版好的讲义。Obsidian 额外给的是双链、图谱、概念卡跳转，
+不是"能不能读讲义"。
+
 ## 六、边界（先说清楚，免得期待过高）
 
 - **不替你判断**。知识点怎么拆、题目出得好不好、批改给几分，都是 AI 的判断，
@@ -127,7 +142,8 @@ python <skill>/scripts/schedule.py --course <课程目录> --json     # 完整�
 | 主页打不开 / 白屏 | 直接双击 html 文件；`file://` 被浏览器拦时换 Chrome |
 | 页面数字是 `NaN` | 某节点缺 `weeks`，用 `syllabus.py set-weeks` 补 |
 | 复制的指令里目录不对 | 课程被移动过，重跑 `sync.py --course <新位置>` |
-| 点讲义没反应 | 在 vault 内走 `obsidian://`（需装 Obsidian），在外走 `file://` |
+| 点讲义没反应 | 旧版 `sync.py` 编译的页面；重跑 `sync.py`，讲义会预渲染进主页 |
+| 讲义点开是一堆 `#` 和 `**` | 同上，重跑 `sync.py`。或直接用 Markdown 编辑器打开 `lessons/*.md` |
 | 改了 `课程主页.html` 又变回去了 | 它是编译产物，下次 `sync.py` 会全量覆盖；改 `syllabus.md` |
 
 ---

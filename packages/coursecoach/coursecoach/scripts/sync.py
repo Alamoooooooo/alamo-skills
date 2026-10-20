@@ -167,11 +167,21 @@ def collect(course):
         n["points"] = pts
 
     lessons = scan_lessons(course)
+    # 讲义预渲染成 HTML 一起内联：课程不在 Obsidian 库里时，点讲义看的是排版好的文章，
+    # 而不是浏览器里赤裸的 Markdown 源码。转不了的直接跳过，退回原文件链接。
+    lesson_html = {}
+    for key, path in lessons.items():
+        try:
+            lesson_html[key] = md_to_html(open(path, encoding="utf-8").read())
+        except Exception as e:
+            print(f"[warn] 讲义转 HTML 失败，将退回原文件链接: {key} ({e})")
     for n in nodes:
         n["lesson"] = note_url(lessons[n["id"]], vault) if n["id"] in lessons else None
+        n["lessonKey"] = n["id"] if n["id"] in lesson_html else None
         for p in n["points"]:
             key = n["id"] + "--" + (p.get("t") or "")
             p["lesson"] = note_url(lessons[key], vault) if key in lessons else None
+            p["lessonKey"] = key if key in lesson_html else None
 
     homeworks = []
     if os.path.isdir(hw_dir):
@@ -232,6 +242,7 @@ def collect(course):
         "vault": os.path.basename(vault) if vault else None,
         "nodes": nodes,
         "homeworks": homeworks,
+        "lessonHtml": lesson_html,
         "stats": stats,
     }
 
@@ -270,6 +281,118 @@ def md_file_url(path):
     """给 Markdown 用：不做百分号编码（中文与空格交给 <> 包住），Obsidian/系统更好识别。"""
     p = _posix_abs(path)
     return ("file:///" + p) if os.name == "nt" else ("file://" + p)
+
+
+def _md_inline(s):
+    """行内标记：先转义，再把记号变成标签。顺序敏感——行内代码必须在粗体之前收走。"""
+    s = esc(s)
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    s = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"(?<!\*)\*([^*\n]+)\*(?!\*)", r"<em>\1</em>", s)
+    s = re.sub(r"!\[([^\]]*)\]\(([^)\s]+)\)", r'<img alt="\1" src="\2">', s)
+    s = re.sub(r"\[([^\]]+)\]\(([^)\s]+)\)",
+               r'<a href="\2" target="_blank" rel="noopener">\1</a>', s)
+    # [[双链]] 在无 Obsidian 环境里没有可跳目标，降级成带底色的词，别让它裸奔。
+    # 刻意排除含逗号/方括号的内容：讲义里 `[[1, 2]]` 这种是矩阵字面量，不是笔记链接。
+    s = re.sub(r"\[\[([^\[\],|\n]+?)(?:\|([^\[\]\n]+))?\]\]",
+               lambda m: '<span class="wl">%s</span>' % (m.group(2) or m.group(1)), s)
+    return s
+
+
+def _md_table(rows):
+    def cells(r):
+        return [c.strip() for c in r.strip().strip("|").split("|")]
+
+    if len(rows) >= 2 and re.match(r"^[\s|:\-]+$", rows[1]) and "-" in rows[1]:
+        head, body = cells(rows[0]), rows[2:]
+    else:
+        head, body = None, rows
+    h = ""
+    if head:
+        h = "<thead><tr>" + "".join("<th>%s</th>" % _md_inline(c) for c in head) + "</tr></thead>"
+    b = "".join(
+        "<tr>" + "".join("<td>%s</td>" % _md_inline(c) for c in cells(r)) + "</tr>" for r in body
+    )
+    return "<table>%s<tbody>%s</tbody></table>" % (h, b)
+
+
+_BLOCK_START = re.compile(r"^(?:```|>|\||#{1,6}\s|[-*+]\s|\d+[.)]\s|(?:\*{3,}|-{3,}|_{3,})$)")
+
+
+def md_to_html(text):
+    """极简 Markdown → HTML，只覆盖讲义实际用到的语法。
+
+    目标不是规范完整，而是「没有 Obsidian 的人点开讲义时，看到的是一篇文章，
+    而不是一堆 # 和 **」。任何解析失败都退回 <pre>，绝不吞内容。
+    """
+    txt = (text or "").replace("\r\n", "\n").replace("\r", "\n")
+    if txt.startswith("---"):
+        end = txt.find("\n---", 3)
+        if end != -1:
+            txt = txt[end + 4:]
+    lines = txt.split("\n")
+    out, i, n = [], 0, len(lines)
+
+    while i < n:
+        s = lines[i].strip()
+        if not s:
+            i += 1
+            continue
+        if s.startswith("```"):
+            lang = s[3:].strip()
+            i += 1
+            buf = []
+            while i < n and not lines[i].strip().startswith("```"):
+                buf.append(lines[i])
+                i += 1
+            i += 1
+            cls = ' class="lang-%s"' % esc(lang) if lang else ""
+            out.append("<pre><code%s>%s</code></pre>" % (cls, esc("\n".join(buf))))
+            continue
+        if re.match(r"^(?:\*{3,}|-{3,}|_{3,})$", s):
+            out.append("<hr>")
+            i += 1
+            continue
+        m = re.match(r"^(#{1,6})\s+(.*)$", s)
+        if m:
+            lv = len(m.group(1))
+            out.append("<h%d>%s</h%d>" % (lv, _md_inline(m.group(2)), lv))
+            i += 1
+            continue
+        if s.startswith(">"):
+            buf = []
+            while i < n and lines[i].strip().startswith(">"):
+                buf.append(re.sub(r"^>\s?", "", lines[i].strip()))
+                i += 1
+            out.append("<blockquote>%s</blockquote>" % _md_inline(" ".join(buf)))
+            continue
+        if s.startswith("|") and s.count("|") >= 2:
+            rows = []
+            while i < n and lines[i].strip().startswith("|"):
+                rows.append(lines[i].strip())
+                i += 1
+            out.append(_md_table(rows))
+            continue
+        if re.match(r"^([-*+]|\d+[.)])\s+", s):
+            tag = "ol" if re.match(r"^\d+[.)]\s+", s) else "ul"
+            items = []
+            while i < n and re.match(r"^([-*+]|\d+[.)])\s+", lines[i].strip()):
+                items.append(re.sub(r"^([-*+]|\d+[.)])\s+", "", lines[i].strip()))
+                i += 1
+            out.append("<%s>%s</%s>" % (tag, "".join("<li>%s</li>" % _md_inline(x) for x in items), tag))
+            continue
+        buf = []
+        while i < n:
+            t = lines[i].strip()
+            if not t or _BLOCK_START.match(t):
+                break
+            buf.append(t)
+            i += 1
+        if buf:
+            out.append("<p>%s</p>" % _md_inline(" ".join(buf)))
+        else:
+            i += 1
+    return "\n".join(out)
 
 
 def render_md(data, course):
@@ -607,6 +730,43 @@ TEMPLATE = r"""<!DOCTYPE html>
   .dock .cmd.show{display:block}
   .dock .tip{flex:0 0 auto;font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}
 
+  /* 讲义阅读弹层：课程不在 Obsidian 库里时，讲义在这里以内联 HTML 呈现 */
+  .reader{position:fixed;inset:0;z-index:90;display:none;background:rgba(15,17,21,.55);
+          padding:clamp(12px,4vh,44px)}
+  .reader.show{display:flex;align-items:stretch;justify-content:center}
+  .rd-sheet{background:var(--card);border:1px solid var(--line);border-radius:14px;
+            width:min(820px,100%);max-height:100%;display:flex;flex-direction:column;overflow:hidden;
+            box-shadow:0 24px 70px -24px rgba(16,24,40,.55)}
+  .rd-head{flex:0 0 auto;display:flex;align-items:flex-start;gap:12px;padding:15px 18px;
+           border-bottom:1px solid var(--line)}
+  .rd-title{font-size:16px;font-weight:600;color:var(--ink);line-height:1.35}
+  .rd-sub{font-size:11.5px;color:var(--muted);margin-top:3px;letter-spacing:.03em}
+  .rd-close{margin-left:auto;flex:0 0 auto;border:1px solid var(--line);background:var(--card);
+            color:var(--ink2);width:30px;height:30px;border-radius:8px;cursor:pointer;font-size:13px}
+  .rd-close:hover{background:var(--bg);color:var(--ink)}
+  .rd-body{flex:1 1 auto;overflow:auto;padding:6px 26px 40px;color:var(--ink2);
+           font-size:14px;line-height:1.8}
+  .rd-body h1{font-size:21px;color:var(--ink);margin:20px 0 10px;line-height:1.35}
+  .rd-body h2{font-size:17px;color:var(--ink);margin:24px 0 8px;line-height:1.4}
+  .rd-body h3{font-size:15px;color:var(--ink);margin:20px 0 6px}
+  .rd-body h4,.rd-body h5,.rd-body h6{font-size:13.5px;color:var(--ink2);margin:16px 0 6px}
+  .rd-body p{margin:11px 0}
+  .rd-body ul,.rd-body ol{margin:11px 0;padding-left:22px}
+  .rd-body li{margin:5px 0}
+  .rd-body pre{background:var(--bg);border:1px solid var(--line);border-radius:9px;
+               padding:12px 14px;overflow:auto;margin:14px 0}
+  .rd-body pre code{background:none;padding:0;font-size:12.5px;line-height:1.75;color:var(--ink2)}
+  .rd-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .rd-body blockquote{margin:14px 0;padding:2px 0 2px 14px;border-left:3px solid var(--accent);
+                      color:var(--muted)}
+  .rd-body hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+  .rd-body table{border-collapse:collapse;width:100%;margin:14px 0;font-size:13px}
+  .rd-body th,.rd-body td{border:1px solid var(--line);padding:7px 10px;text-align:left}
+  .rd-body th{background:var(--bg);color:var(--ink);font-weight:600}
+  .rd-body img{max-width:100%;border-radius:8px}
+  .rd-body a{color:var(--accent)}
+  .rd-body .wl{background:var(--accent-soft);color:var(--tag-ink);border-radius:4px;padding:0 4px}
+
   @media (max-width:900px){
     .layout{grid-template-columns:1fr}
     .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}
@@ -614,9 +774,12 @@ TEMPLATE = r"""<!DOCTYPE html>
     main{padding:20px 16px 56px}
     .sbody{padding-left:16px}
     .mb{display:none}
+    .reader{padding:0}
+    .rd-sheet{border-radius:0;border:0}
+    .rd-body{padding:6px 16px 32px}
   }
   @media print{
-    .side,.chev,.search,.row.ctrl,.dock,.pop,.actrow{display:none!important}
+    .side,.chev,.search,.row.ctrl,.dock,.pop,.actrow,.reader{display:none!important}
     .layout{grid-template-columns:1fr}
     .sbody{display:block!important;padding-left:0}
     .stage{break-inside:avoid;box-shadow:none}
@@ -719,6 +882,20 @@ TEMPLATE = r"""<!DOCTYPE html>
   </div>
 </div>
 
+<!-- 讲义阅读弹层：课程不在 Obsidian 库里时，讲义在这里读（已由 sync.py 预渲染成 HTML） -->
+<div class="reader" id="reader">
+  <div class="rd-sheet" role="dialog" aria-modal="true" aria-labelledby="rdTitle">
+    <div class="rd-head">
+      <div>
+        <div class="rd-title" id="rdTitle"></div>
+        <div class="rd-sub" id="rdSub"></div>
+      </div>
+      <button class="rd-close" id="rdClose" type="button" aria-label="关闭讲义">✕</button>
+    </div>
+    <div class="rd-body" id="rdBody"></div>
+  </div>
+</div>
+
 <script>
 const DATA = __DATA__;
 const LS = "coursecoach:" + DATA.course;
@@ -740,15 +917,44 @@ const wk = n => (n.weeks && n.weeks[store.pace]) || 0;
 const totalWeeks = p => DATA.nodes.reduce((a, n) => a + ((n.weeks && n.weeks[p]) || 0), 0);
 const fmtW = w => (Math.round(w * 10) / 10).toString().replace(/\.0$/, "");
 const obs = (rel) => DATA.vault ? "obsidian://open?vault=" + encodeURIComponent(DATA.vault) + "&file=" + encodeURIComponent(rel) : null;
-/* 讲义按协议分流：obsidian:// 交给协议处理器（当前页不跳走）；file:// 开新标签，别把看板顶掉 */
-function openLesson(u){
-  if (!u) return;
-  if (u.startsWith("obsidian://")) window.location.href = u;
-  else window.open(u, "_blank", "noopener");
+/* 讲义按协议分流：
+   - 有 vault：交给 Obsidian 协议处理器，当前页不跳走（Obsidian 里能双链、进图谱，最好用）
+   - 没 vault：若已内联预渲染 HTML，就在本页弹层里读（排版好的文章 vs 浏览器里的裸源码）
+   - 兜底：新标签页打开原文件，别把看板顶掉 */
+function openLesson(u, key){
+  if (DATA.vault && u) { window.location.href = u; return; }
+  var html = key && DATA.lessonHtml ? DATA.lessonHtml[key] : null;
+  if (html) { showReader(key, html); return; }
+  if (u) window.open(u, "_blank", "noopener");
 }
+/* ---------- 讲义阅读弹层 ---------- */
+var reader = document.getElementById("reader");
+function showReader(key, html){
+  var node = (DATA.nodes || []).filter(function(n){ return n.id === key; })[0];
+  var title = node ? node.title : key.split("--").pop();
+  var sub = node ? "本章讲义" : "知识点讲解";
+  document.getElementById("rdTitle").textContent = title || "讲义";
+  document.getElementById("rdSub").textContent = sub;
+  document.getElementById("rdBody").innerHTML = html;
+  /* 讲义自带的 H1 与弹层标题重复，读起来像说两遍，藏掉；语义仍由 aria-labelledby 给出 */
+  var h1 = document.getElementById("rdBody").querySelector("h1");
+  if (h1) h1.style.display = "none";
+  document.getElementById("rdBody").scrollTop = 0;
+  reader.classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+function hideReader(){
+  reader.classList.remove("show");
+  document.body.style.overflow = "";
+}
+document.getElementById("rdClose").addEventListener("click", hideReader);
+reader.addEventListener("click", function(e){ if (e.target === reader) hideReader(); });
+document.addEventListener("keydown", function(e){
+  if (e.key === "Escape" && reader.classList.contains("show")) hideReader();
+});
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-lessonfile]");
-  if (b) { e.preventDefault(); openLesson(b.dataset.lessonfile); }
+  if (b) { e.preventDefault(); openLesson(b.dataset.lessonfile, b.dataset.lessonkey); }
 });
 
 /* ---------- 头部 ---------- */
@@ -833,13 +1039,14 @@ function tagsHtml(n){
     const cls = "tag" + (p.note ? " link" : "") + (p.lesson ? " haslesson" : "") + (hit ? " hit" : "");
     const attrs = (p.note ? ' data-note="' + esc(p.note) + '"' : "") +
                   (p.lesson ? ' data-lesson="' + esc(p.lesson) + '"' : "") +
+                  (p.lessonKey ? ' data-lessonkey="' + esc(p.lessonKey) + '"' : "") +
                   ' data-term="' + esc(p.t) + '" data-nid="' + esc(n.id) + '" data-pt="' + pi + '"';
     return '<span class="' + cls + '"' + attrs + ' title="点击：生成讲解 / 出题 / 筛选相关章节">' + esc(p.t) + "</span>";
   }).join("") + "</div>";
 }
 function actRow(n){
   return '<div class="actrow">' +
-    (n.lesson ? '<button class="act on" type="button" data-lessonfile="' + esc(n.lesson) + '">📄 打开本章讲义</button>' : "") +
+    (n.lesson ? '<button class="act on" type="button" data-lessonfile="' + esc(n.lesson) + '" data-lessonkey="' + esc(n.lessonKey || "") + '">📄 ' + (DATA.vault ? "打开本章讲义" : "阅读本章讲义") + '</button>' : "") +
     '<button class="act" type="button" data-act="lesson" data-nid="' + esc(n.id) + '">' +
       (n.lesson ? "📖 重写这一章讲解" : "📖 补这一章讲解") + '</button>' +
     '<button class="act" type="button" data-act="hw" data-nid="' + esc(n.id) + '">📝 给这一章出作业</button>' +
@@ -1029,7 +1236,7 @@ function openPop(t){
   const note = t.dataset.note, term = t.dataset.term;
   pop.innerHTML =
     '<div class="ttl">' + esc(term) + "</div>" +
-    (t.dataset.lesson ? '<button type="button" data-p="lessonfile">📄 打开已生成的讲义</button>' : "") +
+    (t.dataset.lesson ? '<button type="button" data-p="lessonfile">📄 ' + (DATA.vault ? "打开" : "阅读") + '已生成的讲义</button>' : "") +
     '<button type="button" data-p="lesson">📖 生成讲解</button>' +
     '<button type="button" data-p="hw">📝 出题</button>' +
     '<button type="button" data-p="research">🔗 补资料</button>' +
@@ -1054,7 +1261,7 @@ pop.addEventListener("click", e => {
     const u = obs(popTag.dataset.note);
     if (u) window.location.href = u;
   } else if (p === "lessonfile") {
-    openLesson(popTag.dataset.lesson);
+    openLesson(popTag.dataset.lesson, popTag.dataset.lessonkey);
   } else if (p === "filter") {
     store.q = term; document.getElementById("q").value = term; applyFilters();
   } else {
