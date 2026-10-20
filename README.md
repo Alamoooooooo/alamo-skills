@@ -10,7 +10,7 @@ The `engineering_subagent_workflow_kernel` package provides self-contained
 development Skills for code exploration, architecture, review, simplification,
 and test-gap analysis through a host-native subagent interface.
 
-The `coursekit` package goes beyond coding work: it turns a learning goal into a course that
+The `coursecoach` package goes beyond coding work: it turns a learning goal into a course that
 actually runs. A dependency-ordered syllabus, a compiled interactive board, lessons, gradable
 homework, mastery-gated progression, spaced review, and a periodic frontier pass. The syllabus is
 the only source of truth, the board is a build artifact that is never hand-edited, and scores have
@@ -28,7 +28,7 @@ Current published packages:
 - [`packages/github_sync_workflow_kernel/`](packages/github_sync_workflow_kernel/)
 - [GitHub Sync Workflow Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md)
 - [`packages/engineering_subagent_workflow_kernel/`](packages/engineering_subagent_workflow_kernel/)
-- [`packages/coursekit/`](packages/coursekit/) — installable skill name: `study-coach`
+- [`packages/coursecoach/`](packages/coursecoach/) — installable skill name: `study-coach` · [中文说明](packages/coursecoach/README.zh-CN.md)
 
 ## Discovery Positioning
 
@@ -100,15 +100,17 @@ alamo_skillhub/
 │   │   ├── metadata.json
 │   │   ├── README.md
 │   │   └── PORTABLE_USAGE.md
-│   └── coursekit/
+│   └── coursecoach/
 │       ├── study-coach/
 │       │   ├── SKILL.md
 │       │   ├── references/
 │       │   ├── scripts/
 │       │   ├── assets/
 │       │   └── examples/ai-fullstack/
+│       ├── docs/board.png
 │       ├── metadata.json
 │       ├── README.md
+│       ├── README.zh-CN.md
 │       ├── PORTABLE_USAGE.md
 │       └── INSTALL.zh-CN.md
 └── examples/

@@ -1,6 +1,6 @@
 # Portable Usage
 
-This document explains how to use `coursekit` outside a host that natively installs `SKILL.md`
+This document explains how to use `coursecoach` outside a host that natively installs `SKILL.md`
 skills.
 
 ## Scope

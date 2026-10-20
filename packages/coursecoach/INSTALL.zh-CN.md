@@ -1,4 +1,4 @@
-# Coursekit · 安装与试玩
+# CourseCoach · 安装与试玩
 
 把 AI 从"讲一遍就完事"变成**会出题、会批改、会排复习**的助教：给一个主题，它先跟你确认目标与
 节奏，然后生成带先修链的大纲、可双击打开的课程看板、讲义、作业与评分标准；批改后写回掌握度，
@@ -6,7 +6,7 @@
 
 全部是本地文件。**不需要联网、不需要数据库、不需要注册。**
 
-> **名字说明**：包名是 `coursekit`，装进去的 skill 叫 `study-coach`。两个名字是刻意的——
+> **名字说明**：包名是 `coursecoach`，装进去的 skill 叫 `study-coach`。两个名字是刻意的——
 > 包名负责被搜到，skill 名负责好敲。目录 `study-coach/` 就是 skill 本体，整包没有第二份拷贝。
 
 ---
@@ -17,7 +17,7 @@
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursekit/study-coach ~/.workbuddy/skills/study-coach
+cp -r alamo_hub/packages/coursecoach/study-coach ~/.workbuddy/skills/study-coach
 pip install pyyaml
 ```
 

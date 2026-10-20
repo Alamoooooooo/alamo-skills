@@ -1,8 +1,15 @@
-# Coursekit
+# CourseCoach
+
+[![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](../../LICENSE)
+[![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white)](PORTABLE_USAGE.md#dependencies)
+[![Backend: none](https://img.shields.io/badge/backend-none-2ea44f)](#why-it-is-not-another-study-coach-prompt)
+[![Portable agent skill](https://img.shields.io/badge/agent%20skill-portable-6f42c1)](PORTABLE_USAGE.md)
+
+**English** | [简体中文](README.zh-CN.md)
 
 ![A generated course board: fourteen stages in the sidebar, a 0% mastery ring, one expanded stage showing nine knowledge-point tags, a homework row with a grading button, and four action buttons; later stages remain locked](docs/board.png)
 
-`coursekit` is an installable, portable agent skill package that turns a learning goal into a
+`coursecoach` is an installable, portable agent skill package that turns a learning goal into a
 course that actually runs: a dependency-ordered syllabus, a self-contained interactive board,
 written lessons, gradable homework, mastery-gated progression, spaced review, and a periodic
 frontier pass that keeps the syllabus from going stale.
@@ -11,7 +18,7 @@ Give it a topic and a daily time budget. It clarifies the goal with you, drafts 
 compiles a board you can double-click, writes the lesson, sets the homework, grades it against
 a written rubric, writes the score back, unlocks the next node, and schedules the review.
 
-**The installed skill is named `study-coach`.** `coursekit` is the package name; the skill inside
+**The installed skill is named `study-coach`.** `coursecoach` is the package name; the skill inside
 it keeps its short call name so invoking it stays cheap. There is no second copy — the package
 directory *is* the skill directory plus package metadata.
 
@@ -105,7 +112,7 @@ Skill directory (WorkBuddy / CodeBuddy / any host that reads `SKILL.md`):
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursekit/study-coach ~/.workbuddy/skills/study-coach
+cp -r alamo_hub/packages/coursecoach/study-coach ~/.workbuddy/skills/study-coach
 pip install pyyaml
 ```
 
@@ -117,7 +124,7 @@ For non-Codex hosts, see [`PORTABLE_USAGE.md`](PORTABLE_USAGE.md).
 ## Package Layout
 
 ```
-packages/coursekit/
+packages/coursecoach/
 ├── README.md               this file
 ├── PORTABLE_USAGE.md       host-agnostic usage and degradation notes
 ├── INSTALL.zh-CN.md        install + 15-minute trial run (Chinese)
