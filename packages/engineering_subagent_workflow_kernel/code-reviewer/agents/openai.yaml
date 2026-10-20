@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Reviewer"
+  short_description: "Review changes for defects and regression risk"
+  default_prompt: "Use -reviewer to review the current changes and report evidence-backed findings ordered by severity."

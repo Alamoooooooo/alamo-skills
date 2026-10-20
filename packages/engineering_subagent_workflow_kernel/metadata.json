@@ -1,0 +1,76 @@
+{
+  "name": "engineering_subagent_workflow_kernel",
+  "display_name": "Engineering Subagent Workflow Kernel",
+  "summary": "Five self-contained development Skills that delegate through a governed host-native subagent interface with an explicit in-session fallback.",
+  "primary_entry_point": null,
+  "repository_role": "skill-package",
+  "problem_domains": [
+    "code exploration",
+    "software architecture",
+    "code review",
+    "behavior-preserving simplification",
+    "test coverage analysis"
+  ],
+  "keywords": [
+    "codex skill",
+    "native subagent",
+    "code architect",
+    "code explorer",
+    "code reviewer",
+    "code simplifier",
+    "test analyzer",
+    "portable skill"
+  ],
+  "hosts": {
+    "native": [
+      "OpenAI Codex with native subagents"
+    ],
+    "portable": [
+      "agent host with native child-task API",
+      "single-agent fallback host"
+    ]
+  },
+  "runtime": {
+    "preferred_adapter": "native_subagent",
+    "fallback_adapter": "in_session",
+    "forbidden_implicit_adapter": "external_runner",
+    "inherits_parent_model": true,
+    "inherits_parent_policy": true
+  },
+  "skills": [
+    {
+      "name": "code-explorer",
+      "role": "read-only source tracing",
+      "path": "code-explorer/SKILL.md"
+    },
+    {
+      "name": "code-architect",
+      "role": "read-only architecture design",
+      "path": "code-architect/SKILL.md"
+    },
+    {
+      "name": "code-reviewer",
+      "role": "read-only independent review",
+      "path": "code-reviewer/SKILL.md"
+    },
+    {
+      "name": "code-simplifier",
+      "role": "bounded behavior-preserving edit",
+      "path": "code-simplifier/SKILL.md"
+    },
+    {
+      "name": "pr-test-analyzer",
+      "role": "read-only test-gap analysis",
+      "path": "pr-test-analyzer/SKILL.md"
+    }
+  ],
+  "start_here": [
+    "README.md",
+    "PORTABLE_USAGE.md",
+    "code-architect/SKILL.md"
+  ],
+  "installation": {
+    "codex": "python3 scripts/sync_to_codex_home.py",
+    "portable": "Use PORTABLE_USAGE.md and the selected Skill role reference"
+  }
+}

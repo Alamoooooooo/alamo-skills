@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Architect"
+  short_description: "Design evidence-grounded implementation architecture"
+  default_prompt: "Use -architect to inspect this repository and produce a concrete implementation blueprint without changing files."

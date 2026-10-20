@@ -1,0 +1,4 @@
+interface:
+  display_name: "PR Test Analyzer"
+  short_description: "Analyze change coverage and missing test cases"
+  default_prompt: "Use -test-analyzer to map the current changes to tests and identify concrete coverage gaps."

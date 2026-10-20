@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Explorer"
+  short_description: "Trace code paths with precise source evidence"
+  default_prompt: "Use -explorer to trace the requested code path and report the relevant files, symbols, and control flow."

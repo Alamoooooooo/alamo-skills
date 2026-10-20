@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <rect width="1200" height="760" fill="#f7f9fc"/>
+  <text x="600" y="42" text-anchor="middle" font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="26" font-weight="700" fill="#14213d">Skill + Agent 智能资源优化总体架构</text>
+  <g font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="18">
+    <rect x="90" y="75" width="1020" height="92" rx="12" fill="#173f5f"/>
+    <text x="600" y="112" text-anchor="middle" fill="white" font-size="22" font-weight="700">国产化改造应用场景</text>
+    <text x="600" y="143" text-anchor="middle" fill="#d9edf7">资源上限 · 平台迁移 · 大规模批处理任务</text>
+    <path d="M600 167 L600 198" stroke="#65748b" stroke-width="4" marker-end="url(#arrow)"/>
+    <rect x="90" y="198" width="1020" height="104" rx="12" fill="#20639b"/>
+    <text x="600" y="238" text-anchor="middle" fill="white" font-size="22" font-weight="700">业务处理链路</text>
+    <text x="600" y="274" text-anchor="middle" fill="#e6f3ff">数据读取 → 特征构建 → 候选生成 → 模型评分 → 效果评估</text>
+    <path d="M600 302 L600 333" stroke="#65748b" stroke-width="4" marker-end="url(#arrow)"/>
+    <rect x="90" y="333" width="492" height="144" rx="12" fill="#f2c14e"/>
+    <text x="336" y="372" text-anchor="middle" fill="#14213d" font-size="22" font-weight="700">Memory Skill 知识层</text>
+    <text x="336" y="409" text-anchor="middle" fill="#14213d">检查 · 修复 · 验证 · 复核</text>
+    <text x="336" y="442" text-anchor="middle" fill="#14213d">热点模式 · 规则包 · 修复配方 · 项目适配</text>
+    <rect x="618" y="333" width="492" height="144" rx="12" fill="#f28f3b"/>
+    <text x="864" y="372" text-anchor="middle" fill="#391b05" font-size="22" font-weight="700">Engineering Agent 执行治理层</text>
+    <text x="864" y="409" text-anchor="middle" fill="#391b05">运行计划 · 范围 · 权限 · 资源预算</text>
+    <text x="864" y="442" text-anchor="middle" fill="#391b05">审批 · 证据 · 停止 / 继续</text>
+    <path d="M336 477 L336 520" stroke="#65748b" stroke-width="4" marker-end="url(#arrow)"/>
+    <path d="M864 477 L864 520" stroke="#65748b" stroke-width="4" marker-end="url(#arrow)"/>
+    <rect x="90" y="520" width="1020" height="154" rx="12" fill="#3caea3"/>
+    <text x="600" y="560" text-anchor="middle" fill="white" font-size="22" font-weight="700">证据与应用成效层</text>
+    <text x="600" y="598" text-anchor="middle" fill="#e8fffb">输出契约 · 资源测量 · 独立复核 · 审计记录</text>
+    <text x="600" y="634" text-anchor="middle" fill="#e8fffb">峰值下降 · 余量恢复 · 稳定完成 · 跨项目复用</text>
+  </g>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L6,3 z" fill="#65748b"/></marker></defs>
+</svg>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Code Simplifier"
+  short_description: "Simplify scoped code without changing behavior"
+  default_prompt: "Use -simplifier to simplify the authorized changed code while preserving behavior and validating the result."

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="470" viewBox="0 0 1260 470">
+  <rect width="1260" height="470" fill="#ffffff"/>
+  <text x="630" y="42" text-anchor="middle" font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="26" font-weight="700" fill="#14213d">图 6 峰值内存模型与资源预算的变量定义</text>
+  <g font-family="Microsoft YaHei,Noto Sans CJK SC,sans-serif" font-size="17" fill="#26384d">
+    <rect x="55" y="75" width="550" height="330" rx="9" fill="#eef4fb" stroke="#b7c8dc"/><rect x="655" y="75" width="550" height="330" rx="9" fill="#fff8e8" stroke="#e5cf83"/>
+    <text x="85" y="115" font-size="20" font-weight="700" fill="#214b73">A  峰值内存分解变量</text><line x1="90" y1="135" x2="570" y2="135" stroke="#b7c8dc"/>
+    <g font-family="Georgia,serif" font-size="22" font-style="italic"><text x="105" y="180">M<tspan baseline-shift="sub" font-size="15">base</tspan></text><text x="105" y="225">M<tspan baseline-shift="sub" font-size="15">input</tspan></text><text x="105" y="270">M<tspan baseline-shift="sub" font-size="15">intermediate</tspan></text><text x="105" y="315">M<tspan baseline-shift="sub" font-size="15">model</tspan></text><text x="105" y="360">M<tspan baseline-shift="sub" font-size="15">concurrency</tspan></text></g>
+    <g font-size="17"><text x="315" y="180">运行时与基础库驻留</text><text x="315" y="225">输入批次与加载缓冲</text><text x="315" y="270">宽表、候选矩阵、临时副本与评估结果</text><text x="315" y="315">模型、特征转换与推理缓存</text><text x="315" y="360">工作进程或并发任务的重复占用</text></g>
+    <text x="685" y="115" font-size="20" font-weight="700" fill="#765c14">B  资源预算约束变量</text><line x1="690" y1="135" x2="1170" y2="135" stroke="#e5cf83"/>
+    <g font-family="Georgia,serif" font-size="22" font-style="italic"><text x="705" y="190">M<tspan baseline-shift="sub" font-size="15">batch</tspan></text><text x="705" y="245">N<tspan baseline-shift="sub" font-size="15">candidate</tspan></text><text x="705" y="300">m̄<tspan baseline-shift="sub" font-size="15">row</tspan></text><text x="705" y="355">M<tspan baseline-shift="sub" font-size="15">budget</tspan> / M<tspan baseline-shift="sub" font-size="15">reserve</tspan></text></g>
+    <g font-size="17"><text x="930" y="190">单批数据及其派生对象占用</text><text x="930" y="245">候选关系或待评分记录数量</text><text x="930" y="300">单条候选记录的平均内存成本</text><text x="930" y="355">机器预算与系统安全预留空间</text></g>
+  </g>
+</svg>
