@@ -21,20 +21,40 @@ All four are Apache-2.0, pure Python 3.8+ standard library plus `pyyaml`, and ca
 
 ### coursecoach
 
-The odd one out — it is not about code. Give it a topic and a daily time budget and it produces a course that runs: a dependency-ordered syllabus, a compiled interactive board you double-click, written lessons, gradable homework, mastery-gated unlocking, spaced review, and a periodic frontier pass that keeps the syllabus from going stale.
+The odd one out — it is not about code, it is a learning coach. Give it a topic and a daily time budget and it produces a course that runs: a dependency-ordered syllabus, a compiled interactive board you double-click, written lessons, gradable homework, mastery-gated unlocking, and spaced review.
 
-The syllabus is the only source of truth. The board is a build artifact and is never hand-edited. Only `grade.py` may write a score, so every grade stays traceable to a rubric line and a physical location in the file. A course is a folder: copy it to duplicate, zip it to share.
+It is subject-agnostic — programming, a foreign language, an instrument, accounting, an exam all work. What separates it from "ask a model for a study plan" is what happens after the plan: scores, unlocks and review dates live in the files, so a course survives across sessions, can be picked up by a different model, and can be zipped and handed to someone who just double-clicks the board.
+
+**Six things it does.** All triggered in plain language, and every one has a matching button on the board that assembles the sentence for you:
+
+- **Start a course** — say "I want to learn X, one hour a day." It asks about your goal, your current level and your real weekly capacity, offers three pace options (sprint / standard / long), then researches the field, builds the prerequisite graph over a dozen or so nodes, and compiles the board. Produces `syllabus.md` (the only source of truth), `课程主页.html`, and `resources/资料库.md`.
+- **Write lessons** — click `📖 补这一章讲解` (fill in this chapter) under any stage, or open a knowledge-point tag and pick `生成讲解`. Works per chapter or per single point. Produces `lessons/stage3.md` or `lessons/stage3--梯度下降.md`; after a recompile the board grows a 📄 button that opens it typeset, with no Obsidian required.
+- **Set homework** — say "give me homework on stage 3", or click `📝 给这一章出作业`. Writes the questions plus 3–6 rubric lines and leaves the answer section empty. Produces `homework/hw-*.md`, always in three parts: prompt / answer / feedback.
+- **Grade it** — answer the questions, then say "grade hw-stage3-xxx." It judges each rubric line present / partial / absent with a reason (fixed rubric, and length earns nothing extra), converts that to mastery, writes it back, unlocks dependent nodes, and queues the work for review.
+- **Fix weak spots** — say "I keep failing at X in stage 3." It reads which knowledge points repeatedly came back partial or absent, decides whether to add resources, split a node or introduce a new one, and writes targeted homework if that is what the gap needs. Changes go through `syllabus.py`, never by hand-editing.
+- **Review and export** — "what's due today" returns items on the 1 / 3 / 7 / 16 / 35 / 75-day curve (postpone without corrupting the count); "export to Word" gives you the whole course as one document.
 
 ![A generated course board: fourteen stages in the sidebar, a 0% mastery ring, one expanded stage showing nine knowledge-point tags, a homework row with a grading button, and four action buttons; later stages remain locked](packages/coursecoach/docs/board.png)
 
 ![A lesson opened in the in-page reader: the board dimmed behind a centred panel showing a typeset heading, a numbered list, a key-idea box and a worked example — with no Obsidian installed](packages/coursecoach/docs/lesson-reader.png)
 
-Read: [package README](packages/coursecoach/README.md) · [中文说明](packages/coursecoach/README.zh-CN.md) · [install and 15-minute trial](packages/coursecoach/INSTALL.zh-CN.md) · [portable usage](packages/coursecoach/PORTABLE_USAGE.md)
+**Install it** (three steps, about a minute):
 
 ```bash
-cp -r packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo_hub.git
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
+
+- The installable unit is the directory holding `SKILL.md`, i.e. `coursecoach/coursecoach/`. Once copied, **the folder name must be `coursecoach`** — matching the skill's own name — or the slash command will not resolve.
+- On Windows the destination is `C:\Users\<you>\.workbuddy\skills\coursecoach\`. Dropping it in a project's `.workbuddy/skills/` scopes it to that project instead.
+- Codex reads `$CODEX_HOME/skills`; hosts without skill support can take `SKILL.md` plus `references/` straight into context and run the scripts by hand.
+- Requires Python 3.8+, and **that interpreter must be able to `import yaml`**. Word export additionally needs `pip install python-docx`.
+- Reopen the session before it is recognized. Then say "I want to learn X" or `/coursecoach` directly.
+
+Do not start with a real subject — [the install guide](packages/coursecoach/INSTALL.zh-CN.md) includes a 15-minute trial course that shows the whole loop before you commit to anything.
+
+Read: [package README](packages/coursecoach/README.md) · [中文说明](packages/coursecoach/README.zh-CN.md) · [install and 15-minute trial](packages/coursecoach/INSTALL.zh-CN.md) · [portable usage](packages/coursecoach/PORTABLE_USAGE.md)
 
 ### engineering_subagent_workflow_kernel
 
@@ -90,8 +110,8 @@ python3 scripts/sync_to_codex_home.py
 ### Codex
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_skillhub.git
-cd alamo_skillhub/packages/memory_hotspot_repair_kernel
+git clone https://github.com/Alamoooooooo/alamo_hub.git
+cd alamo_hub/packages/memory_hotspot_repair_kernel
 python3 scripts/sync_to_codex_home.py
 ```
 
@@ -100,8 +120,8 @@ python3 scripts/sync_to_codex_home.py
 ### WorkBuddy, CodeBuddy, Claude Code, or any host that reads `SKILL.md`
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_skillhub.git
-cp -r alamo_skillhub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo_hub.git
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
 The installable unit is always the directory that contains `SKILL.md` — `coursecoach/coursecoach/`, `memory-optimizer-agent/`, `github-sync-agent/`, and so on. `pip install pyyaml` is required by `coursecoach`; `export.py --format docx` additionally needs `python-docx`.
@@ -111,7 +131,7 @@ For hosts that understand neither skill installation nor `$name` tokens, read th
 ## Repository Layout
 
 ```text
-alamo_skillhub/
+alamo_hub/
 ├── README.md                          English (this file)
 ├── README.zh-CN.md                    简体中文
 ├── AGENTS.md                          conventions for agents working on this repo itself

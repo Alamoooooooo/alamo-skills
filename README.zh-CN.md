@@ -21,20 +21,40 @@
 
 ### coursecoach
 
-四个里最不一样的一个——它跟代码无关。给一个主题和每天可投入的时间，它产出一门**跑得起来**的课：按先修关系排出的大纲、双击就能打开的可交互看板、讲义、能批改的作业、以掌握度为门槛的解锁链、间隔复习，以及定期扫一遍前沿进展、避免大纲过期。
+四个里最不一样的一个——它跟代码无关，是个学习助教。给一个主题和每天能投入多久，它产出一门**跑得起来**的课：按先修关系排出的大纲、双击就能打开的可交互看板、讲义、能批改的作业、以掌握度为门槛的解锁链、间隔复习。
 
-大纲是唯一的真相来源。看板是编译产物，禁止手改。只有 `grade.py` 能写分数，所以每个分数都能追到一条评分标准和一个文件里的具体位置。一门课就是一个文件夹：复制即复制课程，压缩即分享。
+它不限学科——编程、外语、乐器、会计、考证都能用。它跟「让 AI 写一份学习计划」的差别在于计划之后的事：分数、解锁状态、复习日期都写在文件里，所以课程跨会话还在，换个模型接手也能继续，打包发给别人对方双击就能用。
+
+**六个动作**，全部说人话触发；主页上也有一一对应的按钮，点一下就把这句话拼好放进动作篮：
+
+- **生成一门课** —— 说「我想学 XX，每天 1 小时」。它先问清目标、现有基础和每周能投入多少，给三档进度方案（冲刺 / 标准 / 长线）让你选，再联网调研、按先修关系排出十来个节点、编译出看板。产物：`syllabus.md`（唯一数据源）、`课程主页.html`、`resources/资料库.md`。
+- **生成讲义** —— 主页每章底部点「📖 补这一章讲解」，或点某个知识点标签选「生成讲解」。可以整章写，也可以只写一个知识点。产物：`lessons/stage3.md` 或 `lessons/stage3--梯度下降.md`，重编译后主页上出现 📄，点开就能读（没装 Obsidian 也是排版好的）。
+- **出作业** —— 说「给 stage3 出一道作业」，或点「📝 给这一章出作业」。写题目 + 3–6 条评分标准，作答区留空。产物：`homework/hw-*.md`，固定三段结构「题目要求 / 我的作答 / 批改反馈」。
+- **批改作业** —— 你写完答案后说「批改 hw-stage3-xxx」。它逐条判定 present / partial / absent 并给理由（判分标准固定，不因你写得多就给高分），折算成掌握度写回文件，达标就解锁后继节点，同时把这份作业排进复习队列。
+- **更新薄弱知识点** —— 说「stage3 老是在 XXX 上错」。它去看这个节点上反复 partial / absent 的是哪些知识点，判断该补资料、拆节点还是加节点，必要时再出一份只针对这个点的作业。改动只走 `syllabus.py`，不手改文件。
+- **复习与导出** —— 说「今天该复习什么」，按 1 / 3 / 7 / 16 / 35 / 75 天报到期项（可以推迟，推迟不推进计数）；说「导成 Word」就得到一份完整教材。
 
 ![课程看板截图：侧栏十四阶段、0% 掌握度环、一个展开的阶段显示九个知识点标签、一行作业与批改按钮、四个动作按钮，后续阶段处于锁定状态](packages/coursecoach/docs/board.png)
 
 ![讲义在网页内弹出阅读面板：背景是暗下去的课程主页，中间浮层里是排好版的标题、有序列表、要点框和一段算例——机器上没有装 Obsidian](packages/coursecoach/docs/lesson-reader.png)
 
-深入读：[包 README（英文）](packages/coursecoach/README.md) · [包 README（中文）](packages/coursecoach/README.zh-CN.md) · [安装与 15 分钟试玩](packages/coursecoach/INSTALL.zh-CN.md) · [跨宿主用法](packages/coursecoach/PORTABLE_USAGE.md)
+**装它**（三步，约 1 分钟）：
 
 ```bash
-cp -r packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo_hub.git
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
+
+- 可安装单元是装着 `SKILL.md` 的那一层，也就是 `coursecoach/coursecoach/`；拷过去之后**目录名必须叫 `coursecoach`**（与 skill 同名），否则斜杠命令对不上。
+- Windows 上目标是 `C:\Users\<你的用户名>\.workbuddy\skills\coursecoach\`；也可以放在项目里的 `.workbuddy/skills/`，只对该项目生效。
+- Codex 走 `$CODEX_HOME/skills`；不认 skill 的宿主把 `SKILL.md` 加 `references/` 直接喂进上下文即可，脚本照跑。
+- 需要 Python 3.8+，且**那个解释器能 `import yaml`**；导出 Word 另需 `pip install python-docx`。
+- 装完**重开一个会话**才认得到。之后说「我想学 XX」或直接 `/coursecoach`。
+
+装完先别上真课——[安装与 15 分钟试玩](packages/coursecoach/INSTALL.zh-CN.md) 里有一门试玩课，跑完就知道整套东西长什么样。
+
+深入读：[包 README（英文）](packages/coursecoach/README.md) · [包 README（中文）](packages/coursecoach/README.zh-CN.md) · [安装与 15 分钟试玩](packages/coursecoach/INSTALL.zh-CN.md) · [跨宿主用法](packages/coursecoach/PORTABLE_USAGE.md)
 
 ### engineering_subagent_workflow_kernel
 
@@ -90,8 +110,8 @@ python3 scripts/sync_to_codex_home.py
 ### Codex
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_skillhub.git
-cd alamo_skillhub/packages/memory_hotspot_repair_kernel
+git clone https://github.com/Alamoooooooo/alamo_hub.git
+cd alamo_hub/packages/memory_hotspot_repair_kernel
 python3 scripts/sync_to_codex_home.py
 ```
 
@@ -100,8 +120,8 @@ python3 scripts/sync_to_codex_home.py
 ### WorkBuddy / CodeBuddy / Claude Code / 任何读 `SKILL.md` 的宿主
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_skillhub.git
-cp -r alamo_skillhub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo_hub.git
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
 可安装单元永远是那个装着 `SKILL.md` 的目录——`coursecoach/coursecoach/`、`memory-optimizer-agent/`、`github-sync-agent/` 等等。`coursecoach` 需要 `pip install pyyaml`；`export.py --format docx` 另外需要 `python-docx`。
@@ -111,7 +131,7 @@ cp -r alamo_skillhub/packages/coursecoach/coursecoach ~/.workbuddy/skills/course
 ## 目录结构
 
 ```text
-alamo_skillhub/
+alamo_hub/
 ├── README.md                          英文首页
 ├── README.zh-CN.md                    简体中文首页（本文件）
 ├── AGENTS.md                          在这个仓库里干活时 agent 该遵守的规范
