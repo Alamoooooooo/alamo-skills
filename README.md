@@ -28,7 +28,7 @@ Current published packages:
 - [`packages/github_sync_workflow_kernel/`](packages/github_sync_workflow_kernel/)
 - [GitHub Sync Workflow Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md)
 - [`packages/engineering_subagent_workflow_kernel/`](packages/engineering_subagent_workflow_kernel/)
-- [`packages/coursecoach/`](packages/coursecoach/) — installable skill name: `study-coach` · [中文说明](packages/coursecoach/README.zh-CN.md)
+- [`packages/coursecoach/`](packages/coursecoach/) — installable skill name: `coursecoach` · [中文说明](packages/coursecoach/README.zh-CN.md)
 
 ## Discovery Positioning
 
@@ -101,7 +101,7 @@ alamo_skillhub/
 │   │   ├── README.md
 │   │   └── PORTABLE_USAGE.md
 │   └── coursecoach/
-│       ├── study-coach/
+│       ├── coursecoach/
 │       │   ├── SKILL.md
 │       │   ├── references/
 │       │   ├── scripts/

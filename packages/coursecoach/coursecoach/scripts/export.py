@@ -63,7 +63,7 @@ def build_md(course, title):
         f"# {title} · 学习教材",
         "",
         f"> 导出于 {now} · 共 {len(nodes)} 个模块 / {len(hws)} 份作业",
-        "> 由 study-coach 的 `export.py` 生成。作答与批改均取自作业笔记原文。",
+        "> 由 coursecoach 的 `export.py` 生成。作答与批改均取自作业笔记原文。",
         "",
         "---",
         "",

@@ -16,8 +16,8 @@
 你只需要给一个主题和一个每天可投入的时长。它会先跟你确认目标，起草大纲，编译看板，写讲义，
 出作业并按写好的评分标准批改，把分数写回，解锁下一节，再排好复习时间。
 
-> **名字说明**：包名是 `coursecoach`，装进去的 skill 叫 `study-coach`。两个名字是刻意的——
-> 包名负责被搜到，skill 名负责好敲。整包没有第二份拷贝：那个目录就是 skill 本体加一层包元数据。
+> **名字说明**：包名和 skill 名是同一个词 `coursecoach`——搜到的、装上的、敲的是同一个名字。
+> 整包没有第二份拷贝：那个目录就是 skill 本体加一层包元数据。
 
 ## 它跟"让 AI 写个学习计划"有什么不同
 
@@ -101,11 +101,11 @@ YAML 字段。
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/study-coach ~/.workbuddy/skills/study-coach
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
-然后说一句"我想学 XXX，每天一小时"，或直接 `/study-coach`。
+然后说一句"我想学 XXX，每天一小时"，或直接 `/coursecoach`。
 
 非 Codex 类宿主见 [`PORTABLE_USAGE.md`](PORTABLE_USAGE.md)，逐步试玩见
 [`INSTALL.zh-CN.md`](INSTALL.zh-CN.md)。
@@ -120,7 +120,7 @@ packages/coursecoach/
 ├── INSTALL.zh-CN.md        安装与 15 分钟试玩
 ├── metadata.json           机器可读的包描述
 ├── docs/board.png          课程看板截图
-└── study-coach/            skill 本体（安装时用这个名字）
+└── coursecoach/            skill 本体（安装时用这个名字）
     ├── SKILL.md            7 个阶段、动作协议、批改口径、脚本参数
     ├── references/         8 份分册，按需加载
     ├── scripts/            9 个确定性脚本
@@ -130,9 +130,9 @@ packages/coursecoach/
 
 ## 从这里开始
 
-1. [`study-coach/SKILL.md`](study-coach/SKILL.md) —— AI 按这份说明书干活。
-2. `study-coach/examples/ai-fullstack/课程主页.html` —— 双击它，看一门课跑一段时间后长什么样。
-3. [`study-coach/references/portability.md`](study-coach/references/portability.md) —— 搬到别的
+1. [`coursecoach/SKILL.md`](coursecoach/SKILL.md) —— AI 按这份说明书干活。
+2. `coursecoach/examples/ai-fullstack/课程主页.html` —— 双击它，看一门课跑一段时间后长什么样。
+3. [`coursecoach/references/portability.md`](coursecoach/references/portability.md) —— 搬到别的
    agent 或操作系统。
 
 ## 许可

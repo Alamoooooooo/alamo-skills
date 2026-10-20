@@ -9,7 +9,7 @@ The primary packages in this repository are:
 - `packages/memory_hotspot_repair_kernel/`
 - `packages/github_sync_workflow_kernel/`
 - `packages/engineering_subagent_workflow_kernel/`
-- `packages/coursecoach/` (installed skill name: `study-coach`)
+- `packages/coursecoach/`
 
 ## What It Does
 
@@ -37,7 +37,7 @@ The primary packages in this repository are:
 - simplify scoped code while preserving behavior
 - delegate through host-native subagents without an external runner
 
-`coursecoach` (skill name `study-coach`) helps a learner and their agent:
+`coursecoach` helps a learner and their agent:
 
 - clarify a learning goal into a syllabus with prerequisites and three pace tracks
 - compile a self-contained interactive board from that syllabus
@@ -55,7 +55,7 @@ The recommended primary entry points are:
 - `github-sync-agent`
 - `code-explorer`, `code-architect`, `code-reviewer`, `code-simplifier`, and
   `pr-test-analyzer` as independent task entry points
-- `study-coach` for the learning-course workflow
+- `coursecoach` for the learning-course workflow
 
 `memory-optimizer-agent` orchestrates a bounded workflow:
 
@@ -118,7 +118,7 @@ Read these files first:
 - `packages/coursecoach/README.md`
 - `packages/coursecoach/README.zh-CN.md`
 - `packages/coursecoach/INSTALL.zh-CN.md`
-- `packages/coursecoach/study-coach/SKILL.md`
+- `packages/coursecoach/coursecoach/SKILL.md`
 
 ## Installation
 
@@ -146,7 +146,7 @@ python3 scripts/sync_to_codex_home.py
 For the learning-course skill:
 
 ```bash
-cp -r packages/coursecoach/study-coach ~/.workbuddy/skills/study-coach
+cp -r packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 

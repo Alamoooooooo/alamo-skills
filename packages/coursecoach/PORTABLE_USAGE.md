@@ -9,23 +9,23 @@ Use this guide when:
 
 - the target environment is not WorkBuddy / CodeBuddy / Codex
 - the host has no `~/.workbuddy/skills` directory
-- the host cannot resolve a slash-command token such as `/study-coach`
+- the host cannot resolve a slash-command token such as `/coursecoach`
 - you want the workflow as a prompt bundle driven by your own runner
 
 ## What Is Portable
 
-- `study-coach/SKILL.md` — a plain Markdown operating manual, no host syntax required
-- `study-coach/references/` — eight attachments loaded on demand
-- `study-coach/scripts/` — Python 3.8+, standard library plus `pyyaml`
-- `study-coach/assets/` — blank templates
+- `coursecoach/SKILL.md` — a plain Markdown operating manual, no host syntax required
+- `coursecoach/references/` — eight attachments loaded on demand
+- `coursecoach/scripts/` — Python 3.8+, standard library plus `pyyaml`
+- `coursecoach/assets/` — blank templates
 - the process itself: clarify -> syllabus -> compile -> lesson -> homework -> grade -> review
 
 ## What Is Not Portable
 
 - **Skill installation.** Copying into `~/.workbuddy/skills/` is one host's convention. On other
   hosts, inject `SKILL.md` into the system prompt or context instead.
-- **The slash token.** `/study-coach` works only where skills are registered. Elsewhere, the same
-  effect comes from saying "follow study-coach/SKILL.md phase 1" and pointing at the file.
+- **The slash token.** `/coursecoach` works only where skills are registered. Elsewhere, the same
+  effect comes from saying "follow coursecoach/SKILL.md phase 1" and pointing at the file.
 - **Scheduled tasks.** Two automations are optional and are *host state*, not files. They do not
   travel with the package. See "Scheduling" below.
 - **The `obsidian://` lesson links.** Compiled automatically when the course directory sits inside
@@ -46,9 +46,9 @@ path (which is what the recipe generator does by default, via `sys.executable`).
 
 ## Recommended Entry Point
 
-The logical entry point is unchanged: the `study-coach` skill.
+The logical entry point is unchanged: the `coursecoach` skill.
 
-1. Read `study-coach/SKILL.md`.
+1. Read `coursecoach/SKILL.md`.
 2. Do not skip Phase 1 (clarify) or Phase 3 (plan confirmation). The rest of the workflow assumes
    a confirmed syllabus; skipping it produces a course nobody agreed to.
 3. Keep the deterministic/judgment split. Scripts own YAML writes, mastery, the unlock chain and
@@ -63,8 +63,8 @@ is host state, and a fake one inside a package is worse than none.
 The package ships the **recipe** instead:
 
 ```bash
-python study-coach/scripts/schedule.py --course <course-dir> --check   # is it worth creating?
-python study-coach/scripts/schedule.py --course <course-dir> --json    # full spec
+python coursecoach/scripts/schedule.py --course <course-dir> --check   # is it worth creating?
+python coursecoach/scripts/schedule.py --course <course-dir> --json    # full spec
 ```
 
 `--json` returns `name`, `rrule`, `prompt` and `cwds` computed from `__file__` and
@@ -96,8 +96,8 @@ output to an agent with a scheduling primitive and it creates the tasks.
 4. Run one end-to-end trial on a throwaway course before committing a real study plan:
 
 ```bash
-python study-coach/scripts/init_course.py --dir ./demo --title "Trial" --stages stages.json
-python study-coach/scripts/sync.py --course ./demo
+python coursecoach/scripts/init_course.py --dir ./demo --title "Trial" --stages stages.json
+python coursecoach/scripts/sync.py --course ./demo
 ```
 
 If `demo/课程主页.html` opens and shows a collapsible syllabus, the environment is ready.

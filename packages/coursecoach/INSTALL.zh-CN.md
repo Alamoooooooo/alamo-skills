@@ -6,8 +6,8 @@
 
 全部是本地文件。**不需要联网、不需要数据库、不需要注册。**
 
-> **名字说明**：包名是 `coursecoach`，装进去的 skill 叫 `study-coach`。两个名字是刻意的——
-> 包名负责被搜到，skill 名负责好敲。目录 `study-coach/` 就是 skill 本体，整包没有第二份拷贝。
+> **名字说明**：包名和 skill 名是同一个词 `coursecoach`——搜到的、装上的、敲的是同一个名字。
+> 目录 `coursecoach/` 就是 skill 本体，整包没有第二份拷贝。
 
 ---
 
@@ -17,14 +17,14 @@
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/study-coach ~/.workbuddy/skills/study-coach
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
-Windows 上目标路径是 `C:\Users\<你的用户名>\.workbuddy\skills\study-coach\`。
+Windows 上目标路径是 `C:\Users\<你的用户名>\.workbuddy\skills\coursecoach\`。
 也可以放到项目内的 `<项目>/.workbuddy/skills/`，只对该项目生效。
 
-放好后重开一个会话，说「我想学 XXX」或直接 `/study-coach` 即可触发。
+放好后重开一个会话，说「我想学 XXX」或直接 `/coursecoach` 即可触发。
 
 **在别的 agent / 模型里**（Claude Code、Cursor、自建 pipeline 都行）：
 `SKILL.md` 是一份纯 Markdown 说明书，`references/` 是它的附件。把它们喂进 system prompt
@@ -67,7 +67,7 @@ AI 按指令写讲义、出作业、批改，再重跑 `sync.py`，页面上就�
 **这是整套设计的核心**：静态页不假装自己是后端，只负责攒动作、拼指令，
 真正的判断与写作交给 AI，确定性的计算交给脚本。
 
-想看"学了一段时间之后"长什么样，双击 `study-coach/examples/ai-fullstack/课程主页.html`
+想看"学了一段时间之后"长什么样，双击 `coursecoach/examples/ai-fullstack/课程主页.html`
 （一份真实课程快照，作答已清空）。
 
 日常三条命令：
@@ -96,17 +96,17 @@ python <skill>/scripts/schedule.py --course <课程目录> --json     # 完整�
 | 前沿周更 | 周一 09:00 | 只在这门课涉及快速演进的领域时才建 |
 
 宿主没有定时能力时（例如纯 CLI 环境）**降级不报错**：`review.py list` 照样算得出来，
-只是没人主动叫你。详见 `study-coach/references/portability.md`。
+只是没人主动叫你。详见 `coursecoach/references/portability.md`。
 
 ## 五、目录里都是什么
 
 | 路径 | 作用 |
 |:--|:--|
-| `study-coach/SKILL.md` | 主说明书：7 个阶段、动作协议、批改口径、脚本参数 |
-| `study-coach/references/` | 8 份分册：数据模型 / 课程设计 / 评分标准 / 并行调研 / 交付面 / 可移植性 / 动作篮协议 / 前沿周更 |
-| `study-coach/scripts/` | 9 个确定性脚本：建课、改大纲、编译主页、批改、复习队列、导出、清空、打包、排期配方 |
-| `study-coach/assets/` | 大纲与作业的空白模板 |
-| `study-coach/examples/ai-fullstack/` | 一份真实课程快照（作答已清空），可直接双击看效果 |
+| `coursecoach/SKILL.md` | 主说明书：7 个阶段、动作协议、批改口径、脚本参数 |
+| `coursecoach/references/` | 8 份分册：数据模型 / 课程设计 / 评分标准 / 并行调研 / 交付面 / 可移植性 / 动作篮协议 / 前沿周更 |
+| `coursecoach/scripts/` | 9 个确定性脚本：建课、改大纲、编译主页、批改、复习队列、导出、清空、打包、排期配方 |
+| `coursecoach/assets/` | 大纲与作业的空白模板 |
+| `coursecoach/examples/ai-fullstack/` | 一份真实课程快照（作答已清空），可直接双击看效果 |
 
 ## 六、边界（先说清楚，免得期待过高）
 
@@ -132,5 +132,5 @@ python <skill>/scripts/schedule.py --course <课程目录> --json     # 完整�
 
 ---
 
-协议细节在 `study-coach/SKILL.md`，实现取舍在 `study-coach/references/`。
+协议细节在 `coursecoach/SKILL.md`，实现取舍在 `coursecoach/references/`。
 改动脚本前先读一遍，里面有若干"看起来可以简化、其实一改就退化"的地方。

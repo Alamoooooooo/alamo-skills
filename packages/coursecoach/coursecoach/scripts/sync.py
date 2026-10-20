@@ -721,7 +721,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 
 <script>
 const DATA = __DATA__;
-const LS = "study-coach:" + DATA.course;
+const LS = "coursecoach:" + DATA.course;
 /* 隐私模式 / 禁存储环境下 localStorage 会抛异常，这里降级为「不记忆 UI 状态」，绝不白屏 */
 const saved = (function(){ try { return JSON.parse(localStorage.getItem(LS) || "{}") || {}; } catch(e){ return {}; } })();
 const store = {
@@ -1087,7 +1087,7 @@ function renderDock(){
     : '<div class="item" style="color:var(--muted)">还没选动作。点章节里的按钮，或点知识点标签。</div>';
 }
 function buildCommand(){
-  const L = ["/study-coach 执行动作", "课程：" + DATA.course];
+  const L = ["/coursecoach 执行动作", "课程：" + DATA.course];
   if (DATA.dir) L.push("目录：" + DATA.dir);
   const order = ["grade", "lesson", "hw", "research"];
   const head = {grade: "批改作业", lesson: "生成/补充讲解", hw: "出作业", research: "补资料"};

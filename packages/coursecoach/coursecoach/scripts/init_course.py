@@ -97,7 +97,7 @@ def main():
     fm_text = yaml.safe_dump(fm, allow_unicode=True, sort_keys=False, default_flow_style=False)
     body = (
         f"# {args.title}\n\n"
-        f"> 由 study-coach 生成（slug: {slug}）。Skill Graph 见上方 frontmatter；"
+        f"> 由 coursecoach 生成（slug: {slug}）。Skill Graph 见上方 frontmatter；"
         f"节点按先修链串联，mastery ≥ {0.6} 解锁后继。\n\n"
         "## 使用说明\n\n"
         "- 做作业：打开 `homework/hw-*.md`，在「我的作答」区作答。\n"

@@ -107,7 +107,7 @@ def check(course):
 
     has_hw = [r for r in names if r.startswith("homework/") and r.endswith(".md")]
     if not has_hw:
-        warns.append("没有作业文件：课程能看不能考。用 study-coach 出作业后再分享。")
+        warns.append("没有作业文件：课程能看不能考。用 coursecoach 出作业后再分享。")
 
     # 作答 / 批改残留（分享前最该查的东西）
     answered, graded = [], []
@@ -154,7 +154,7 @@ def check(course):
 def make_readme(course, title, node_count, hw_count):
     return f"""# {title} · 课程包
 
-这是一个 **study-coach** 课程实例，整门课就是一个文件夹：读完、考完、改完都只发生在这里，
+这是一个 **coursecoach** 课程实例，整门课就是一个文件夹：读完、考完、改完都只发生在这里，
 删掉这个文件夹就等于删掉整门课，没有别的目录残留。
 
 ## 里面有什么

@@ -8,7 +8,7 @@
 标准 **Agent Skills** 结构：一个目录，入口是 `SKILL.md`，开头 YAML frontmatter 只要求 `name` + `description`，正文是给 AI 读的说明书。`scripts/` 是可选附件（普通 Python 脚本），`references/` 是按需加载的深文档，`assets/` 是模板，`examples/` 是可运行的真实样例。
 
 ```
-study-coach/
+coursecoach/
 ├── SKILL.md              # 入口：7 阶段流程 + 分工原则 + 工具等价表
 ├── scripts/*.py          # 7 个确定性脚本，全部 --course 参数化
 ├── references/*.md       # data-model / course-design / grading-rubric / parallel-research / delivery / portability
@@ -20,8 +20,8 @@ study-coach/
 
 | 环境 | 放到哪 | 触发方式 |
 |---|---|---|
-| WorkBuddy | `~/.workbuddy/skills/study-coach/`（用户级）或 `<项目>/.workbuddy/skills/` | 说「我想学 XX」或 `/study-coach` |
-| Claude Code | `~/.claude/skills/study-coach/` 或 `<repo>/.claude/skills/` | 自动按 description 匹配；也可 `/study-coach` |
+| WorkBuddy | `~/.workbuddy/skills/coursecoach/`（用户级）或 `<项目>/.workbuddy/skills/` | 说「我想学 XX」或 `/coursecoach` |
+| Claude Code | `~/.claude/skills/coursecoach/` 或 `<repo>/.claude/skills/` | 自动按 description 匹配；也可 `/coursecoach` |
 | 其他支持 Agent Skills 的（Cursor / Windsurf / 各家 IDE agent） | 各自约定的 `skills/` 目录 | 同上 |
 | 不支持 skills 的（ChatGPT / 本地模型 / 自写 loop） | 不进目录，**把 `SKILL.md` 全文注入 system prompt 或首条消息** | 用户直接说「按这个流程帮我建课」 |
 | 纯命令行（无人值守） | 直接调用 `scripts/*.py`，不依赖任何 AI | `init_course.py` → `sync.py` → `grade.py` |

@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](../../LICENSE)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-3776AB?logo=python&logoColor=white)](PORTABLE_USAGE.md#dependencies)
-[![Backend: none](https://img.shields.io/badge/backend-none-2ea44f)](#why-it-is-not-another-study-coach-prompt)
+[![Backend: none](https://img.shields.io/badge/backend-none-2ea44f)](#why-it-is-not-another-coursecoach-prompt)
 [![Portable agent skill](https://img.shields.io/badge/agent%20skill-portable-6f42c1)](PORTABLE_USAGE.md)
 
 **English** | [简体中文](README.zh-CN.md)
@@ -18,9 +18,9 @@ Give it a topic and a daily time budget. It clarifies the goal with you, drafts 
 compiles a board you can double-click, writes the lesson, sets the homework, grades it against
 a written rubric, writes the score back, unlocks the next node, and schedules the review.
 
-**The installed skill is named `study-coach`.** `coursecoach` is the package name; the skill inside
-it keeps its short call name so invoking it stays cheap. There is no second copy — the package
-directory *is* the skill directory plus package metadata.
+**The package name and the skill name are the same word: `coursecoach`.** One name to search,
+one name to install, one name to type. There is no second copy — the package directory *is* the
+skill directory plus a layer of package metadata.
 
 ## Why It Is Not Another Study-Coach Prompt
 
@@ -112,11 +112,11 @@ Skill directory (WorkBuddy / CodeBuddy / any host that reads `SKILL.md`):
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/study-coach ~/.workbuddy/skills/study-coach
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
-Then say "I want to learn X, one hour a day" or invoke `/study-coach`.
+Then say "I want to learn X, one hour a day" or invoke `/coursecoach`.
 
 For non-Codex hosts, see [`PORTABLE_USAGE.md`](PORTABLE_USAGE.md).
 中文安装与试玩步骤见 [`INSTALL.zh-CN.md`](INSTALL.zh-CN.md).
@@ -129,7 +129,7 @@ packages/coursecoach/
 ├── PORTABLE_USAGE.md       host-agnostic usage and degradation notes
 ├── INSTALL.zh-CN.md        install + 15-minute trial run (Chinese)
 ├── metadata.json           machine-readable package descriptor
-└── study-coach/            the skill itself (installed under this name)
+└── coursecoach/            the skill itself (installed under this name)
     ├── SKILL.md            7 phases, action protocol, grading rules, script parameters
     ├── references/         8 deep docs, loaded on demand
     ├── scripts/            9 deterministic scripts
@@ -139,10 +139,10 @@ packages/coursecoach/
 
 ## Start Here
 
-1. [`study-coach/SKILL.md`](study-coach/SKILL.md) — the operating manual the agent follows.
-2. `study-coach/examples/ai-fullstack/课程主页.html` — open it to see what a board looks like
+1. [`coursecoach/SKILL.md`](coursecoach/SKILL.md) — the operating manual the agent follows.
+2. `coursecoach/examples/ai-fullstack/课程主页.html` — open it to see what a board looks like
    after a course has been running.
-3. [`study-coach/references/portability.md`](study-coach/references/portability.md) — moving the
+3. [`coursecoach/references/portability.md`](coursecoach/references/portability.md) — moving the
    skill to another agent or operating system.
 
 ## License
