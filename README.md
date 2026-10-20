@@ -6,6 +6,16 @@ The current flagship package is `memory_hotspot_repair_kernel`: a memory optimiz
 
 This repository also includes `github_sync_workflow_kernel`: a reusable Git / GitHub synchronization workflow package for repository discovery, auth inspection, commit-scope review, push, and verification.
 
+The `engineering_subagent_workflow_kernel` package provides self-contained
+development Skills for code exploration, architecture, review, simplification,
+and test-gap analysis through a host-native subagent interface.
+
+The `coursekit` package goes beyond coding work: it turns a learning goal into a course that
+actually runs. A dependency-ordered syllabus, a compiled interactive board, lessons, gradable
+homework, mastery-gated progression, spaced review, and a periodic frontier pass. The syllabus is
+the only source of truth, the board is a build artifact that is never hand-edited, and scores have
+exactly one entry point so a grade stays auditable.
+
 This repository is designed to support two usage modes:
 
 - Codex users can install one package and then call the installed skills directly.
@@ -17,6 +27,8 @@ Current published packages:
 - [Memory Skill Suite Wiki](packages/memory_hotspot_repair_kernel/wiki/memory-skill-suite-wiki.md)
 - [`packages/github_sync_workflow_kernel/`](packages/github_sync_workflow_kernel/)
 - [GitHub Sync Workflow Wiki](packages/github_sync_workflow_kernel/wiki/github-sync-workflow-wiki.md)
+- [`packages/engineering_subagent_workflow_kernel/`](packages/engineering_subagent_workflow_kernel/)
+- [`packages/coursekit/`](packages/coursekit/) — installable skill name: `study-coach`
 
 ## Discovery Positioning
 
@@ -27,6 +39,10 @@ If someone asks an AI or searches GitHub for any of the following, this reposito
 - automatic memory leak and allocation analysis workflow
 - bounded check-fix-review loop for Python memory bottlenecks
 - portable coding-agent skill for memory optimization
+- AI skill that turns a learning goal into a full course
+- adaptive study plan agent with homework grading and spaced review
+- mastery-based progression skill with a generated progress dashboard
+- portable self-study curriculum generator without a backend
 
 In practical terms, this repository is not just "a prompt".
 
@@ -68,12 +84,33 @@ alamo_skillhub/
 │   │   ├── scripts/
 │   │   ├── wiki/
 │   │   └── PORTABLE_USAGE.md
-│   └── github_sync_workflow_kernel/
-│       ├── github-sync-agent/
-│       ├── scripts/
+│   ├── github_sync_workflow_kernel/
+│   │   ├── github-sync-agent/
+│   │   ├── scripts/
+│   │   ├── metadata.json
+│   │   ├── README.md
+│   │   └── PORTABLE_USAGE.md
+│   ├── engineering_subagent_workflow_kernel/
+│   │   ├── code-explorer/
+│   │   ├── code-architect/
+│   │   ├── code-reviewer/
+│   │   ├── code-simplifier/
+│   │   ├── pr-test-analyzer/
+│   │   ├── scripts/
+│   │   ├── metadata.json
+│   │   ├── README.md
+│   │   └── PORTABLE_USAGE.md
+│   └── coursekit/
+│       ├── study-coach/
+│       │   ├── SKILL.md
+│       │   ├── references/
+│       │   ├── scripts/
+│       │   ├── assets/
+│       │   └── examples/ai-fullstack/
 │       ├── metadata.json
 │       ├── README.md
-│       └── PORTABLE_USAGE.md
+│       ├── PORTABLE_USAGE.md
+│       └── INSTALL.zh-CN.md
 └── examples/
     └── memory_hotspot_repair_kernel/
         └── partitioned_batch_pipeline/
@@ -111,6 +148,7 @@ The installable packages currently included are:
 
 - `packages/memory_hotspot_repair_kernel/`
 - `packages/github_sync_workflow_kernel/`
+- `packages/engineering_subagent_workflow_kernel/`
 
 This package contains four coordinated skills:
 
@@ -122,6 +160,14 @@ This package contains four coordinated skills:
 The GitHub sync package contains one coordinated entry point:
 
 - `github-sync-agent`
+
+The engineering subagent package contains five independent development Skills:
+
+- `code-explorer`
+- `code-architect`
+- `code-reviewer`
+- `code-simplifier`
+- `pr-test-analyzer`
 
 If you want the long-form background, design rationale, or sharing-style writeups, jump to:
 
@@ -165,7 +211,7 @@ Use it when you want one reusable workflow that can:
 This repository includes multiple machine-readable discovery surfaces:
 
 - root `llms.txt` for AI-readable repository summary
-- package metadata in `packages/memory_hotspot_repair_kernel/metadata.json`
+- package metadata in each package's `metadata.json`
 - skill frontmatter in each `SKILL.md`
 - host adapter descriptors in `agents/openai.yaml`
 
@@ -254,6 +300,18 @@ After installation, the recommended main entry point is:
 - `$memory-optimizer-agent`
 
 You do not need to install the four skills one by one. The sync script installs the whole package in one step.
+
+To install or update the five host-native development Skills:
+
+```bash
+cd packages/engineering_subagent_workflow_kernel
+python3 scripts/sync_to_codex_home.py --dry-run
+python3 scripts/sync_to_codex_home.py
+```
+
+This replaces wrappers with the same names. Each installed Skill includes its
+own role reference and uses native subagent tools when available, with an
+explicit `fallback_in_session` path otherwise.
 
 ### For Other Agents
 

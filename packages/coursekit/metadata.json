@@ -1,0 +1,75 @@
+{
+  "name": "coursekit",
+  "display_name": "Coursekit",
+  "summary": "Installable and portable agent skill package that turns a learning goal into a runnable course: dependency-ordered syllabus, compiled interactive board, lessons, gradable homework, mastery-gated progression, spaced review, and a periodic frontier pass.",
+  "primary_entry_point": "study-coach",
+  "repository_role": "skill-package",
+  "problem_domains": [
+    "self-directed learning",
+    "curriculum design",
+    "homework grading and feedback",
+    "spaced review scheduling",
+    "progress tracking",
+    "keeping a syllabus current"
+  ],
+  "keywords": [
+    "AI study coach",
+    "adaptive learning",
+    "curriculum generator",
+    "study plan generator",
+    "spaced repetition",
+    "automated homework grading",
+    "mastery learning",
+    "self-study roadmap",
+    "learning progress dashboard",
+    "agent skill",
+    "portable skill",
+    "Obsidian study vault",
+    "rubric based grading"
+  ],
+  "hosts": {
+    "native": [
+      "WorkBuddy",
+      "CodeBuddy",
+      "Claude Code (SKILL.md based)"
+    ],
+    "portable": [
+      "generic prompt-bundle host",
+      "script-driven local runner"
+    ]
+  },
+  "skills": [
+    {
+      "name": "study-coach",
+      "role": "orchestrator",
+      "path": "study-coach/SKILL.md"
+    }
+  ],
+  "start_here": [
+    "README.md",
+    "PORTABLE_USAGE.md",
+    "INSTALL.zh-CN.md",
+    "study-coach/SKILL.md",
+    "study-coach/examples/ai-fullstack/课程主页.html"
+  ],
+  "installation": {
+    "workbuddy": "cp -r study-coach ~/.workbuddy/skills/study-coach && pip install pyyaml",
+    "portable": "Feed study-coach/SKILL.md into the host context and load study-coach/references/*.md on demand; run scripts with any python3 that can import yaml"
+  },
+  "deterministic_scripts": [
+    "init_course.py",
+    "syllabus.py",
+    "sync.py",
+    "grade.py",
+    "review.py",
+    "export.py",
+    "reset.py",
+    "pack.py",
+    "schedule.py"
+  ],
+  "notes": {
+    "package_vs_skill_name": "The package is coursekit; the installed skill is study-coach. The skill directory keeps the short call name so invocation stays cheap.",
+    "build_artifacts": "课程主页.html and 课程进度.md are compiled by sync.py and must never be hand-edited.",
+    "scheduling": "No automations are shipped. schedule.py emits a rebuildable recipe because automations are host state."
+  }
+}

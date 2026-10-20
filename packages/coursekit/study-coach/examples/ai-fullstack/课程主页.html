@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 全栈学习路线</title>
+<style>
+  :root{
+    --bg:#f5f6fa; --card:#fff; --ink:#111827; --ink2:#374151; --muted:#6b7280;
+    --line:#e6e8ef; --line2:#eef0f6; --accent:#4f46e5; --accent-soft:#eef2ff; --tag-ink:#4338ca;
+    --ok:#16a34a; --ok-soft:#e8f7ee; --warn:#d97706; --warn-soft:#fef4e6;
+    --bad:#dc2626; --bad-soft:#fdecec; --lock:#9ca3af; --lock-soft:#f3f4f6;
+    --blue:#2563eb; --radius:14px; --shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px -12px rgba(16,24,40,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0f1115; --card:#171a21; --ink:#e8eaef; --ink2:#c9ced9; --muted:#8b93a3;
+      --line:#262b36; --line2:#1f242e; --accent:#8b8cf7; --accent-soft:#232746; --tag-ink:#b3b8fb;
+      --ok:#4ade80; --ok-soft:#16301f; --warn:#fbbf24; --warn-soft:#33260c;
+      --bad:#f87171; --bad-soft:#331a1a; --lock:#6b7280; --lock-soft:#1c212b;
+      --blue:#60a5fa; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;scroll-padding-top:16px}
+  body{margin:0;background:var(--bg);color:var(--ink);line-height:1.65;
+       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+       -webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code{background:var(--accent-soft);color:var(--ink2);padding:1px 5px;border-radius:5px;font-size:12px}
+
+  .layout{display:grid;grid-template-columns:264px minmax(0,1fr);gap:0;align-items:start}
+  /* ---------- 侧栏 ---------- */
+  .side{position:sticky;top:0;height:100vh;overflow:auto;padding:24px 18px;
+        border-right:1px solid var(--line);background:var(--card)}
+  .brand{font-size:14px;font-weight:700;letter-spacing:.02em}
+  .brand small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .ringbox{display:flex;align-items:center;gap:12px;margin:18px 0 14px}
+  .ring{width:64px;height:64px;flex:0 0 64px;position:relative}
+  .ring svg{transform:rotate(-90deg)}
+  .ring .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+             font-size:14px;font-weight:700}
+  .ringtxt{font-size:12px;color:var(--muted);line-height:1.5}
+  .ringtxt b{display:block;color:var(--ink);font-size:12.5px}
+  .toc{list-style:none;margin:0;padding:0;border-top:1px solid var(--line2)}
+  .toc li{margin:0}
+  .toc a{display:flex;gap:8px;align-items:flex-start;padding:7px 8px;border-radius:8px;
+         font-size:12.5px;color:var(--ink2);line-height:1.4;transition:background .12s}
+  .toc a:hover{background:var(--accent-soft);text-decoration:none}
+  .toc a.active{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .toc .n{color:var(--muted);font-variant-numeric:tabular-nums;font-size:11px;padding-top:1px;min-width:15px}
+  .toc .dot{width:7px;height:7px;border-radius:50%;margin-left:auto;margin-top:5px;flex:0 0 7px;background:var(--line)}
+  .toc .dot.ok{background:var(--ok)} .toc .dot.cur{background:var(--accent)} .toc .dot.lock{background:var(--lock)}
+  .side-foot{margin-top:14px;padding-top:12px;border-top:1px solid var(--line2);
+             font-size:11px;color:var(--muted);line-height:1.6}
+
+  /* ---------- 主区 ---------- */
+  main{padding:28px 32px 72px;max-width:1000px}
+  .hero h1{margin:0;font-size:26px;letter-spacing:-.01em}
+  .hero .sub{margin:6px 0 0;color:var(--muted);font-size:13px}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .hero .row{margin-top:16px}
+  .chip{border:1px solid var(--line);background:var(--card);color:var(--ink2);border-radius:999px;
+        padding:5px 12px;font-size:12.5px;cursor:pointer;transition:.13s;user-select:none}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .chip.ghost{background:transparent}
+  .sep{width:1px;height:20px;background:var(--line);margin:0 4px}
+  .search{flex:1;min-width:180px;display:flex;align-items:center;gap:6px;background:var(--card);
+          border:1px solid var(--line);border-radius:10px;padding:7px 11px}
+  .search input{border:0;outline:0;background:transparent;color:var(--ink);font-size:13px;width:100%}
+  .search kbd{font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:12px;margin:20px 0 6px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+        padding:14px 16px;box-shadow:var(--shadow)}
+  .stat b{display:block;font-size:23px;line-height:1.2;letter-spacing:-.02em}
+  .stat b small{font-size:12px;font-weight:500;color:var(--muted)}
+  .stat span{color:var(--muted);font-size:12px}
+
+  .timeline{margin-top:18px;position:relative}
+  .stage{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+         margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+  .stage:hover{border-color:#d6d9e6}
+  .stage.locked{background:linear-gradient(0deg,var(--lock-soft),var(--lock-soft)) , var(--card);opacity:.86}
+  .stage.flash{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .shead{display:flex;align-items:center;gap:12px;width:100%;padding:14px 16px;border:0;
+         background:transparent;color:inherit;cursor:pointer;text-align:left;font:inherit;transition:background .12s}
+  .shead:hover{background:var(--accent-soft)}
+  .idx{font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:700;
+       min-width:22px;letter-spacing:.04em}
+  .stitle{font-size:15px;font-weight:650;flex:1;min-width:0}
+  .stitle em{font-style:normal;font-weight:400;color:var(--muted);font-size:12px;margin-left:7px}
+  .meta{display:flex;align-items:center;gap:10px;flex:0 0 auto}
+  .pill{font-size:11px;padding:2px 9px;border-radius:999px;white-space:nowrap;font-weight:600}
+  .pill.ok{color:var(--ok);background:var(--ok-soft)}
+  .pill.cur{color:var(--accent);background:var(--accent-soft)}
+  .pill.lock{color:var(--lock);background:var(--lock-soft)}
+  .pill.wk{color:var(--muted);background:transparent;border:1px solid var(--line);font-weight:500}
+  .mb{width:56px;height:5px;border-radius:999px;background:var(--line2);overflow:hidden;flex:0 0 56px}
+  .mb i{display:block;height:100%;background:var(--accent);border-radius:999px}
+  .mb.full i{background:var(--ok)}
+  .chev{color:var(--muted);transition:transform .2s,color .15s;font-size:13px;opacity:.55}
+  .shead:hover .chev{opacity:1;color:var(--accent)}
+  .stage.open .chev{transform:rotate(90deg);opacity:.9}
+
+  .sbody{display:none;padding:0 16px 16px 50px;border-top:1px solid var(--line2)}
+  .stage.open .sbody{display:block;animation:fade .18s ease-out}
+  @keyframes fade{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+  .sum{margin:12px 0 12px;color:var(--ink2);font-size:13px}
+  .kw{font-size:11px;color:var(--muted);letter-spacing:.08em;margin:0 0 7px;font-weight:600}
+  .tags{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{font-size:12px;padding:3px 10px;border-radius:7px;background:var(--accent-soft);
+       color:var(--tag-ink);border:1px solid transparent;cursor:default;transition:.12s;font-weight:500}
+  .tag.link{cursor:pointer}
+  .tag.link:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 2px 8px -4px var(--accent)}
+  .tag.link::after{content:"↗";font-size:9px;opacity:.6;margin-left:4px}
+  .tag.dim{opacity:.35}
+  .tag.hit{background:var(--warn-soft);color:var(--warn)}
+  .tag.picked{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 0 0 2px var(--accent-soft)}
+  .tag.haslesson::before{content:"📄";font-size:9px;margin-right:4px;opacity:.8}
+  .hwlist{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+  .hw{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:6px 0}
+  .hw .t{font-weight:600;font-size:13px}
+  .hw .sub{font-size:11.5px;color:var(--muted)}
+  .g{font-size:11px;padding:2px 9px;border-radius:999px;font-weight:700;letter-spacing:.01em}
+  .g.优秀{background:var(--ok-soft);color:var(--ok)} .g.良好{background:var(--accent-soft);color:var(--blue)}
+  .g.及格{background:var(--warn-soft);color:var(--warn)} .g.不及格{background:var(--bad-soft);color:var(--bad)}
+  .g.pending{background:var(--lock-soft);color:var(--muted)}
+  .linkbtn{font-size:12px;padding:3px 10px;border:1px solid var(--line);border-radius:8px;
+           color:var(--ink2);white-space:nowrap}
+  .linkbtn:hover{border-color:var(--accent);color:var(--accent);text-decoration:none}
+  .due{color:var(--bad);font-size:11.5px;font-weight:600}
+  .empty{color:var(--muted);font-size:12.5px;margin-top:12px}
+  .nores{color:var(--muted);font-size:13px;padding:28px;text-align:center;
+         border:1px dashed var(--line);border-radius:var(--radius);display:none}
+  footer{margin-top:26px;font-size:11.5px;color:var(--muted);line-height:1.8;
+         border-top:1px solid var(--line);padding-top:14px}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:8px}
+
+  /* ---------- 动作按钮 ---------- */
+  .act{display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:4px 10px;border-radius:8px;
+       border:1px solid var(--line);background:var(--card);color:var(--ink2);cursor:pointer;font-family:inherit;
+       transition:.13s;white-space:nowrap;line-height:1.5}
+  .act:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
+  .act:active{transform:none}
+  .act.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .act.mini{padding:2px 7px;font-size:11px;border-radius:6px;gap:3px}
+  .actrow{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+  .actrow .hint{font-size:11.5px;color:var(--muted);margin-left:auto;align-self:center}
+
+  /* ---------- 知识点浮动菜单 ---------- */
+  .pop{position:fixed;z-index:80;background:var(--card);border:1px solid var(--line);border-radius:11px;
+       box-shadow:0 14px 36px -14px rgba(16,24,40,.4);padding:5px;display:none;min-width:196px}
+  .pop.show{display:block;animation:fade .12s ease-out}
+  .pop .ttl{font-size:11px;color:var(--muted);padding:6px 10px 4px;letter-spacing:.04em;
+            max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .pop button{display:flex;gap:8px;align-items:center;width:100%;text-align:left;border:0;background:transparent;
+              color:var(--ink2);font:inherit;font-size:12.5px;padding:7px 10px;border-radius:7px;cursor:pointer}
+  .pop button:hover{background:var(--accent-soft);color:var(--accent)}
+  .pop .hr{height:1px;background:var(--line2);margin:4px 6px}
+
+  /* ---------- 动作篮 ---------- */
+  /* 动作篮：整体固定右下角；只有中间的列表滚动，标题条与底部按钮永不移动 */
+  .dock{position:fixed;right:20px;bottom:20px;z-index:70;width:min(380px,calc(100vw - 32px));
+        display:none;flex-direction:column;max-height:calc(100vh - 40px)}
+  .dock.show{display:flex}
+  .dock .bar{flex:0 0 auto;display:flex;align-items:center;gap:8px;background:var(--accent);color:#fff;
+             border-radius:999px;padding:9px 12px 9px 15px;
+             box-shadow:0 10px 30px -10px rgba(79,70,229,.7);cursor:pointer;
+             font-size:13px;font-weight:600;user-select:none}
+  .dock .bar .n{background:rgba(255,255,255,.26);border-radius:999px;padding:1px 8px;font-size:12px}
+  .dock .bar .arw{margin-left:auto;transition:transform .18s}
+  .dock.open .bar .arw{transform:rotate(180deg)}
+  .dock .panel{display:none;margin-top:8px;background:var(--card);border:1px solid var(--line);
+               border-radius:14px;box-shadow:var(--shadow);padding:12px;
+               flex-direction:column;min-height:0;max-height:min(62vh,calc(100vh - 110px));overflow:hidden}
+  .dock.open .panel{display:flex}
+  /* 列表单独滚动：按钮区固定，不必滚到面板最底部 */
+  .dock .list{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+              margin:0 -2px;padding:0 2px;scrollbar-width:thin}
+  .dock .list::-webkit-scrollbar{width:7px}
+  .dock .list::-webkit-scrollbar-thumb{background:var(--line);border-radius:99px}
+  .dock .item{display:flex;gap:8px;align-items:flex-start;padding:6px 2px;border-bottom:1px dashed var(--line2);
+              font-size:12.5px;color:var(--ink2);line-height:1.5}
+  .dock .item:last-of-type{border-bottom:0}
+  .dock .item .k{font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:5px;flex:0 0 auto;
+                 background:var(--accent-soft);color:var(--tag-ink)}
+  .dock .item .t{flex:1;min-width:0;word-break:break-word}
+  .dock .item .x{border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;padding:0 3px;line-height:1}
+  .dock .item .x:hover{color:var(--bad)}
+  .dock .foot{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)}
+  .dock .foot .act.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .dock .foot .act.primary:hover{color:#fff;filter:brightness(1.06)}
+  .dock .bulk{flex:0 0 auto;display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+  .dock .cmd{flex:0 0 auto;width:100%;height:96px;margin-top:8px;display:none;
+             font-family:ui-monospace,Consolas,"Courier New",monospace;
+             font-size:11px;line-height:1.55;border:1px solid var(--line);border-radius:9px;padding:8px;
+             background:var(--bg);color:var(--ink2);resize:vertical}
+  .dock .cmd.show{display:block}
+  .dock .tip{flex:0 0 auto;font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6}
+
+  @media (max-width:900px){
+    .layout{grid-template-columns:1fr}
+    .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:16px}
+    .toc{display:none}
+    main{padding:20px 16px 56px}
+    .sbody{padding-left:16px}
+    .mb{display:none}
+  }
+  @media print{
+    .side,.chev,.search,.row.ctrl,.dock,.pop,.actrow{display:none!important}
+    .layout{grid-template-columns:1fr}
+    .sbody{display:block!important;padding-left:0}
+    .stage{break-inside:avoid;box-shadow:none}
+    body{background:#fff}
+  }
+</style>
+</head>
+<body>
+<div id="top"></div>
+<div class="layout">
+  <aside class="side">
+    <div class="brand" id="brand"></div>
+    <div class="ringbox">
+      <div class="ring">
+        <svg width="64" height="64" viewBox="0 0 64 64">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="var(--line)" stroke-width="6"/>
+          <circle id="ringArc" cx="32" cy="32" r="27" fill="none" stroke="var(--accent)"
+                  stroke-width="6" stroke-linecap="round" stroke-dasharray="169.6" stroke-dashoffset="169.6"/>
+        </svg>
+        <div class="pct" id="ringPct">0%</div>
+      </div>
+      <div class="ringtxt"><b>课时进度</b><span id="ringSub">—</span></div>
+    </div>
+    <ul class="toc" id="toc"></ul>
+    <div class="side-foot">
+      作业写在 <code>homework/hw-*.md</code> 的「我的作答」区<br>
+      点页内按钮进「动作篮」→ 复制指令 → 发给我执行
+    </div>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <h1 id="h1"></h1>
+      <p class="sub" id="sub"></p>
+      <div class="row ctrl">
+        <span class="chip ghost" style="cursor:default;border-style:dashed">节奏</span>
+        <button class="chip" data-pace="sprint">冲刺</button>
+        <button class="chip" data-pace="standard">标准</button>
+        <button class="chip" data-pace="long">长线</button>
+      </div>
+      <div class="row ctrl">
+        <span class="chip ghost" style="cursor:default;border-style:dashed">筛选</span>
+        <button class="chip on" data-filter="all">全部</button>
+        <button class="chip" data-filter="open">进行中</button>
+        <button class="chip" data-filter="done">已达标</button>
+        <button class="chip" data-filter="lock">未解锁</button>
+        <span class="sep"></span>
+        <button class="chip" id="expandAll">全部展开</button>
+        <button class="chip" id="collapseAll">全部收起</button>
+      </div>
+      <div class="row ctrl">
+        <label class="search">
+          <span style="color:var(--muted)">🔍</span>
+          <input id="q" placeholder="搜索章节或知识点…（按 / 聚焦）">
+          <kbd>/</kbd>
+        </label>
+      </div>
+    </header>
+
+    <section class="stats" id="stats"></section>
+    <section class="timeline" id="timeline"></section>
+    <div class="nores" id="nores">没有匹配的章节 / 知识点</div>
+
+    <footer>
+      <div class="legend">
+        <span>✅ 已达标（掌握度 ≥ 60%）</span>
+        <span>🔓 已解锁</span>
+        <span>🔒 未解锁（先修未达标）</span>
+      </div>
+      本页由 <code>sync.py</code> 从 <code>syllabus.md</code> 与作业 frontmatter 编译，数据内联、双击可用、无需联网。<br>
+      大纲与知识点在 <code>syllabus.md</code> 维护；分数与掌握度由 <code>grade.py</code> 回写。<br>
+      页面按钮只负责「攒动作 + 生成指令」，真正执行交给 AI —— 纯静态页不假装能批改。
+      <span id="stamp"></span>
+    </footer>
+  </main>
+</div>
+
+<!-- 知识点浮动菜单 -->
+<div class="pop" id="pop"></div>
+
+<!-- 动作篮：选中 → 复制指令 → 粘贴到对话里执行 -->
+<div class="dock" id="dock">
+  <div class="bar" id="dockBar">
+    <span>动作篮</span><span class="n" id="dockN">0</span>
+    <span class="arw">▲</span>
+  </div>
+  <div class="panel">
+    <div class="bulk">
+      <button class="act mini" id="bulkAllPoints" type="button">全选知识点</button>
+      <button class="act mini" id="bulkUngraded" type="button">全选待批改</button>
+      <button class="act mini" id="bulkOutdated" type="button">全选无作业章节</button>
+    </div>
+    <div class="list" id="dockList"></div>
+    <div class="foot">
+      <button class="act primary" id="dockCopy" type="button">复制指令</button>
+      <button class="act" id="dockClear" type="button">清空</button>
+    </div>
+    <textarea class="cmd" id="dockCmd" readonly></textarea>
+    <div class="tip" id="dockTip">勾选后点「复制指令」，把结果粘贴到对话框发给我，我来执行。</div>
+  </div>
+</div>
+
+<script>
+const DATA = {"course": "AI 全栈学习路线", "track": "冲刺", "start": "2026-10-14", "dir": "你的课程目录", "vault": "AI-Vault", "nodes": [{"id": "stage0-math", "title": "数学重启（线代优先）", "prereqs": [], "homework": ["hw-stage0-vec"], "mastery": null, "summary": "不重刷教材，只补「看不见的地方」：向量是方向，矩阵是变换，导数就是斜率。", "points": [{"t": "向量与线性组合", "note": null, "lesson": null}, {"t": "矩阵乘法的几何意义", "note": null, "lesson": null}, {"t": "列空间与秩", "note": null, "lesson": null}, {"t": "特征值直觉", "note": null, "lesson": null}, {"t": "链式法则", "note": null, "lesson": null}, {"t": "矩阵求导", "note": null, "lesson": null}, {"t": "概率与期望", "note": null, "lesson": null}, {"t": "梯度下降直觉", "note": null, "lesson": null}, {"t": "形状心算", "note": null, "lesson": null}], "weeks": {"sprint": 3.0, "standard": 3.0, "long": 4.0}, "lesson": null, "unlocked": true, "mastered": false}, {"id": "stage1-ml", "title": "机器学习速通", "prereqs": ["stage0-math"], "homework": [], "mastery": null, "summary": "先建立「什么问题该用什么模型」的判断力，而不是刷算法。", "points": [{"t": "过拟合与泛化", "note": "20-概念/过拟合与泛化", "lesson": null}, {"t": "偏差-方差权衡", "note": null, "lesson": null}, {"t": "正则化", "note": null, "lesson": null}, {"t": "数据泄漏", "note": null, "lesson": null}, {"t": "交叉验证", "note": null, "lesson": null}, {"t": "树模型 vs 线性模型", "note": null, "lesson": null}, {"t": "评估指标", "note": null, "lesson": null}, {"t": "基线优先", "note": null, "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage2-dl", "title": "深度学习速通", "prereqs": ["stage1-ml"], "homework": [], "mastery": null, "summary": "手写一遍反向传播，你就再也不会把框架当黑箱。", "points": [{"t": "反向传播", "note": null, "lesson": null}, {"t": "计算图", "note": null, "lesson": null}, {"t": "SGD 与 AdamW", "note": null, "lesson": null}, {"t": "参数初始化", "note": null, "lesson": null}, {"t": "BatchNorm 与 LayerNorm", "note": null, "lesson": null}, {"t": "Dropout", "note": null, "lesson": null}, {"t": "学习率调度", "note": null, "lesson": null}, {"t": "训练调试（loss 不降）", "note": null, "lesson": null}, {"t": "过拟合与欠拟合", "note": null, "lesson": null}], "weeks": {"sprint": 2.0, "standard": 2.5, "long": 4.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage3-transformer", "title": "Transformer 精读", "prereqs": ["stage2-dl"], "homework": [], "mastery": null, "summary": "精学起点。每个部件都要能回答「为什么这样设计」。", "points": [{"t": "自注意力", "note": "20-概念/自注意力", "lesson": null}, {"t": "QKV", "note": null, "lesson": null}, {"t": "多头注意力", "note": null, "lesson": null}, {"t": "缩放点积", "note": null, "lesson": null}, {"t": "位置编码", "note": "20-概念/位置编码", "lesson": null}, {"t": "RoPE", "note": null, "lesson": null}, {"t": "残差与 Pre-LN", "note": null, "lesson": null}, {"t": "因果掩码", "note": null, "lesson": null}, {"t": "从零实现小 GPT", "note": null, "lesson": null}], "weeks": {"sprint": 2.0, "standard": 2.5, "long": 4.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage4-pretrain", "title": "预训练与 Scaling", "prereqs": ["stage3-transformer"], "homework": [], "mastery": null, "summary": "从 tokenizer 到训练成本，理解大模型是怎么被造出来的。", "points": [{"t": "Scaling Laws", "note": "20-概念/Scaling Law", "lesson": null}, {"t": "Chinchilla 配比", "note": null, "lesson": null}, {"t": "Tokenizer", "note": "20-概念/Tokenizer", "lesson": null}, {"t": "BPE", "note": null, "lesson": null}, {"t": "数据清洗与去重", "note": null, "lesson": null}, {"t": "数据墙与合成数据", "note": null, "lesson": null}, {"t": "nanochat 全链路", "note": null, "lesson": null}, {"t": "训练成本量级", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage5-post-transformer", "title": "后 Transformer 架构", "prereqs": ["stage4-pretrain"], "homework": [], "mastery": null, "summary": "2026 必补：注意力之后的架构，真正的敌人是 KV Cache。", "points": [{"t": "KV Cache", "note": "20-概念/KV Cache", "lesson": null}, {"t": "SSM 与 Mamba", "note": "20-概念/SSM 与 Mamba", "lesson": null}, {"t": "线性注意力", "note": "20-概念/线性注意力", "lesson": null}, {"t": "MLA", "note": "20-概念/MLA 多头潜在注意力", "lesson": null}, {"t": "稀疏注意力", "note": null, "lesson": null}, {"t": "混合架构", "note": null, "lesson": null}, {"t": "硬件感知实现", "note": null, "lesson": null}, {"t": "注意力失忆", "note": "20-概念/注意力失忆", "lesson": null}, {"t": "有效上下文长度", "note": "20-概念/有效上下文长度", "lesson": null}, {"t": "MoE", "note": "20-概念/MoE 混合专家", "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.5, "long": 4.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage6-rl", "title": "强化学习基础", "prereqs": ["stage5-post-transformer"], "homework": [], "mastery": null, "summary": "策略梯度到 PPO，为后训练打地基。", "points": [{"t": "MDP 与回报", "note": null, "lesson": null}, {"t": "策略梯度", "note": null, "lesson": null}, {"t": "优势函数", "note": null, "lesson": null}, {"t": "PPO", "note": "20-概念/PPO", "lesson": null}, {"t": "值函数（critic）", "note": null, "lesson": null}, {"t": "探索与稳定性", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage7-posttrain", "title": "后训练与对齐", "prereqs": ["stage6-rl"], "homework": [], "mastery": null, "summary": "现代大模型的核心：SFT → 偏好优化 → 可验证奖励。", "points": [{"t": "SFT", "note": null, "lesson": null}, {"t": "RLHF", "note": "20-概念/RLHF", "lesson": null}, {"t": "DPO", "note": "20-概念/DPO", "lesson": null}, {"t": "GRPO", "note": "20-概念/GRPO", "lesson": null}, {"t": "RLVR", "note": "20-概念/RLVR", "lesson": null}, {"t": "奖励模型", "note": null, "lesson": null}, {"t": "推理模型与测试时计算", "note": "20-概念/推理模型与测试时计算", "lesson": null}, {"t": "RLCD", "note": null, "lesson": null}, {"t": "置信度校准", "note": null, "lesson": null}, {"t": "后训练的隐藏代价", "note": null, "lesson": null}], "weeks": {"sprint": 2.0, "standard": 3.0, "long": 5.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage8-inference", "title": "推理 / 测试时计算 / 效率", "prereqs": ["stage7-posttrain"], "homework": [], "mastery": null, "summary": "推理为什么贵、怎么便宜，全在 KV Cache 与内存带宽里。", "points": [{"t": "KV Cache", "note": "20-概念/KV Cache", "lesson": null}, {"t": "PagedAttention", "note": null, "lesson": null}, {"t": "投机解码", "note": null, "lesson": null}, {"t": "量化（INT8/FP8）", "note": "20-概念/LoRA 与量化", "lesson": null}, {"t": "批处理与吞吐", "note": null, "lesson": null}, {"t": "显存-带宽-算力", "note": null, "lesson": null}, {"t": "测试时计算", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 3.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage9-rag", "title": "RAG 与检索", "prereqs": ["stage8-inference"], "homework": [], "mastery": null, "summary": "检索不是外挂，是把「不知道」变成「查得到」。", "points": [{"t": "切分与嵌入", "note": null, "lesson": null}, {"t": "向量检索", "note": null, "lesson": null}, {"t": "混合检索与重排", "note": null, "lesson": null}, {"t": "查询改写", "note": null, "lesson": null}, {"t": "忠实度与召回评估", "note": null, "lesson": null}, {"t": "长上下文 vs RAG", "note": null, "lesson": null}], "weeks": {"sprint": 1.0, "standard": 1.5, "long": 2.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage10-agent", "title": "Agent 开发", "prereqs": ["stage9-rag"], "homework": [], "mastery": null, "summary": "Agent = Model + Harness。循环、工具、记忆、评估。", "points": [{"t": "Agent 循环", "note": "20-概念/Agent 循环", "lesson": null}, {"t": "ReAct", "note": null, "lesson": null}, {"t": "上下文工程", "note": "20-概念/上下文工程", "lesson": null}, {"t": "工具设计", "note": null, "lesson": null}, {"t": "MCP", "note": "20-概念/MCP 协议", "lesson": null}, {"t": "A2A", "note": "20-概念/A2A 协议", "lesson": null}, {"t": "多智能体", "note": null, "lesson": null}, {"t": "记忆与状态", "note": null, "lesson": null}, {"t": "τ-bench", "note": "20-概念/τ-bench 与 agent 评估", "lesson": null}, {"t": "轨迹准确率", "note": null, "lesson": null}, {"t": "可观测性", "note": null, "lesson": null}], "weeks": {"sprint": 2.5, "standard": 3.5, "long": 6.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage11-harness", "title": "Harness 工程", "prereqs": ["stage10-agent"], "homework": [], "mastery": null, "summary": "harness 决定行为，而不是单个 prompt。", "points": [{"t": "Agent = Model + Harness", "note": null, "lesson": null}, {"t": "五功能闭环", "note": null, "lesson": null}, {"t": "工具工效学", "note": null, "lesson": null}, {"t": "沙箱与权限", "note": null, "lesson": null}, {"t": "错误恢复", "note": null, "lesson": null}, {"t": "压缩（compaction）", "note": null, "lesson": null}, {"t": "子 agent 调度", "note": null, "lesson": null}, {"t": "内层与外层 harness", "note": null, "lesson": null}, {"t": "决策层分离", "note": "20-概念/决策层分离", "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.5}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage12-loopgraph", "title": "Loop 与 Graph 工程", "prereqs": ["stage11-harness"], "homework": [], "mastery": null, "summary": "从「跑一次」到「跑得住」：循环与图的手艺。", "points": [{"t": "Self-Improvement Loop", "note": null, "lesson": null}, {"t": "Self-Correction Loop", "note": null, "lesson": null}, {"t": "验证器与外部检查", "note": null, "lesson": null}, {"t": "停止条件", "note": null, "lesson": null}, {"t": "反馈设计", "note": null, "lesson": null}, {"t": "Loop 工程", "note": "20-概念/Loop 工程", "lesson": null}, {"t": "Graph 工程", "note": "20-概念/Graph 工程", "lesson": null}, {"t": "共享状态与冲突", "note": null, "lesson": null}, {"t": "确定性 vs 概率性控制", "note": null, "lesson": null}], "weeks": {"sprint": 1.5, "standard": 2.0, "long": 3.0}, "lesson": null, "unlocked": false, "mastered": false}, {"id": "stage13-frontier", "title": "前沿追踪 + Capstone", "prereqs": ["stage12-loopgraph"], "homework": [], "mastery": null, "summary": "每周 1–2 小时：读论文 + 写三句话 + 做一个 Capstone。", "points": [{"t": "论文三句话摘要", "note": null, "lesson": null}, {"t": "多模态与空间感知", "note": null, "lesson": null}, {"t": "具身智能四条路线", "note": null, "lesson": null}, {"t": "世界模型", "note": null, "lesson": null}, {"t": "Agentic RL", "note": null, "lesson": null}, {"t": "可解释性", "note": null, "lesson": null}, {"t": "Capstone 项目", "note": null, "lesson": null}], "weeks": {"sprint": 0.0, "standard": 0.0, "long": 0.0}, "lesson": null, "unlocked": false, "mastered": false}], "homeworks": [{"id": "hw-stage0-vec", "title": "向量与线性组合小测", "topic": "线性代数·向量与线性组合", "stage": "stage0-math", "status": "pending", "score": null, "grade": null, "rubric": 5, "attempts": 0, "graded_at": null, "review_due": null, "review_count": 0, "fileurl": "file:///你的 Obsidian 库/60-%E8%AF%BE%E7%A8%8B/AI%E5%85%A8%E6%A0%88/homework/hw-stage0-vec.md", "filepath": "你的课程目录\\homework\\hw-stage0-vec.md", "notename": "hw-stage0-vec"}], "stats": {"hw_total": 1, "hw_graded": 0, "avg_mastery": 0.0, "nodes_total": 14, "nodes_done": 0, "nodes_open": 1, "due": 0}};
+const LS = "study-coach:" + DATA.course;
+/* 隐私模式 / 禁存储环境下 localStorage 会抛异常，这里降级为「不记忆 UI 状态」，绝不白屏 */
+const saved = (function(){ try { return JSON.parse(localStorage.getItem(LS) || "{}") || {}; } catch(e){ return {}; } })();
+const store = {
+  pace: saved.pace || (DATA.track === "标准" ? "standard" : DATA.track === "长线" ? "long" : "sprint"),
+  open: new Set(saved.open || []),
+  acts: Array.isArray(saved.acts) ? saved.acts : [],
+  filter: "all",
+  q: ""
+};
+function saveLS(){
+  try { localStorage.setItem(LS, JSON.stringify({pace: store.pace, open: [...store.open], acts: store.acts})); } catch(e){}
+}
+const el = (t, h) => { const e = document.createElement(t); if (h != null) e.innerHTML = h; return e; };
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const wk = n => (n.weeks && n.weeks[store.pace]) || 0;
+const totalWeeks = p => DATA.nodes.reduce((a, n) => a + ((n.weeks && n.weeks[p]) || 0), 0);
+const fmtW = w => (Math.round(w * 10) / 10).toString().replace(/\.0$/, "");
+const obs = (rel) => DATA.vault ? "obsidian://open?vault=" + encodeURIComponent(DATA.vault) + "&file=" + encodeURIComponent(rel) : null;
+
+/* ---------- 头部 ---------- */
+document.getElementById("h1").textContent = DATA.course;
+document.getElementById("brand").innerHTML = esc(DATA.course) + "<small>自适应学习助教 · 课程主页</small>";
+document.title = DATA.course + " · 课程主页";
+
+function startDates(){
+  // 每个节点在当前节奏下的起始周
+  let acc = 1; const map = {};
+  DATA.nodes.forEach(n => { map[n.id] = acc; acc += wk(n); });
+  return map;
+}
+function renderHero(){
+  const start = startDates(), tot = totalWeeks(store.pace);
+  const s = DATA.nodes.length;
+  const doneN = DATA.nodes.filter(n => n.mastered).length;
+  let endTxt = "";
+  if (DATA.start && tot) {
+    const d = new Date(DATA.start + "T00:00:00");
+    d.setDate(d.getDate() + Math.round(tot * 7));
+    endTxt = " · 预计 " + d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + " 收尾";
+  }
+  document.getElementById("sub").innerHTML =
+    esc(s + " 个阶段 · " + fmtW(tot) + " 周 · " + ({"sprint":"冲刺","standard":"标准","long":"长线"}[store.pace]) + "档") +
+    (DATA.start ? " · 起点 " + esc(DATA.start) : "") + esc(endTxt) +
+    " · 已达标 " + doneN + "/" + s;
+  document.querySelectorAll("[data-pace]").forEach(b => b.classList.toggle("on", b.dataset.pace === store.pace));
+}
+
+/* ---------- 统计卡 ---------- */
+function renderStats(){
+  const s = DATA.stats, tot = totalWeeks(store.pace) || 1;
+  let got = 0;
+  DATA.nodes.forEach(n => { got += wk(n) * (n.mastery || 0); });
+  const pct = Math.round(got / tot * 100);
+  const arc = document.getElementById("ringArc");
+  arc.style.strokeDashoffset = (169.6 * (1 - pct / 100)).toFixed(1);
+  arc.style.stroke = pct >= 100 ? "var(--ok)" : "var(--accent)";
+  document.getElementById("ringPct").textContent = pct + "%";
+  document.getElementById("ringSub").textContent = "约 " + fmtW(got) + " / " + fmtW(tot) + " 周";
+
+  document.getElementById("stats").innerHTML = [
+    ["<b>" + s.nodes_done + "<small> / " + s.nodes_total + "</small></b><span>已达标阶段</span>", ""],
+    ["<b>" + Math.round((s.avg_mastery || 0) * 100) + "<small>%</small></b><span>平均掌握度（已学）</span>", ""],
+    ["<b>" + s.hw_graded + "<small> / " + s.hw_total + "</small></b><span>作业已批改</span>", ""],
+    ["<b style=\"color:" + (s.due ? "var(--bad)" : "inherit") + "\">" + s.due + "</b><span>待复习</span>", ""]
+  ].map(([inner]) => '<div class="stat">' + inner + "</div>").join("");
+}
+
+/* ---------- 章节 ---------- */
+function statusOf(n){
+  if (!n.unlocked) return ["lock", "🔒 未解锁"];
+  if (n.mastered) return ["ok", "✅ 已达标"];
+  return ["cur", (n.mastery ? "进行中" : "🔓 可开始")];
+}
+function hwRows(nid){
+  const list = DATA.homeworks.filter(h => h.stage === nid);
+  if (!list.length) {
+    return '<div class="empty">本节点暂未布置作业 —— 点下面的「给这一章出作业」。</div>';
+  }
+  const today = new Date().toISOString().slice(0, 10);
+  return '<div class="hwlist">' + list.map(h => {
+    const grade = h.grade
+      ? '<span class="g ' + esc(h.grade) + '">' + esc(h.grade) + " " + esc(h.score) + "</span>"
+      : '<span class="g pending">未批改</span>';
+    const st = h.status === "graded" ? "已批改 · 第 " + h.attempts + " 次" : (h.status === "submitted" ? "已提交" : "待作答");
+    const due = (h.review_due && h.status === "graded" && h.review_due.slice(0, 10) <= today)
+      ? '<span class="due">⚠ 复习到期 ' + esc(h.review_due.slice(0, 10)) + "</span>" : "";
+    const rb = h.rubric ? '<span class="sub">rubric ' + h.rubric + " 条</span>" : "";
+    const btn = '<button class="act mini" type="button" data-act="grade" data-hw="' + esc(h.id) + '">' +
+      (h.status === "graded" ? "✎ 重批" : "✎ 批改") + "</button>";
+    return '<div class="hw">' + grade + '<span class="t">' + esc(h.title) + "</span>" +
+      '<span class="sub">' + esc(st) + "</span>" + rb + due +
+      '<a class="linkbtn" href="' + h.fileurl + '" target="_blank" rel="noopener">打开作业 ↗</a>' + btn + '</div>';
+  }).join("") + "</div>";
+}
+function tagsHtml(n){
+  const q = store.q.trim().toLowerCase();
+  return '<div class="kw">知识点</div><div class="tags">' + n.points.map((p, pi) => {
+    const hit = q && p.t.toLowerCase().includes(q);
+    const cls = "tag" + (p.note ? " link" : "") + (p.lesson ? " haslesson" : "") + (hit ? " hit" : "");
+    const attrs = (p.note ? ' data-note="' + esc(p.note) + '"' : "") +
+                  (p.lesson ? ' data-lesson="' + esc(p.lesson) + '"' : "") +
+                  ' data-term="' + esc(p.t) + '" data-nid="' + esc(n.id) + '" data-pt="' + pi + '"';
+    return '<span class="' + cls + '"' + attrs + ' title="点击：生成讲解 / 出题 / 筛选相关章节">' + esc(p.t) + "</span>";
+  }).join("") + "</div>";
+}
+function actRow(n){
+  return '<div class="actrow">' +
+    (n.lesson ? '<a class="act on" href="' + n.lesson + '" target="_blank" rel="noopener">📄 打开本章讲义</a>' : "") +
+    '<button class="act" type="button" data-act="lesson" data-nid="' + esc(n.id) + '">' +
+      (n.lesson ? "📖 重写这一章讲解" : "📖 补这一章讲解") + '</button>' +
+    '<button class="act" type="button" data-act="hw" data-nid="' + esc(n.id) + '">📝 给这一章出作业</button>' +
+    '<button class="act" type="button" data-act="research" data-nid="' + esc(n.id) + '">🔗 补资料</button>' +
+    '<button class="act" type="button" data-act="selall" data-nid="' + esc(n.id) + '">☑ 本章全部知识点</button>' +
+    '<span class="hint">点按加入动作篮，可多选</span></div>';
+}
+function renderNodes(){
+  const tl = document.getElementById("timeline");
+  const start = startDates();
+  let shown = 0;
+  tl.innerHTML = "";
+  DATA.nodes.forEach((n, i) => {
+    const [cls, label] = statusOf(n);
+    const m = n.mastery || 0;
+    const w = wk(n);
+    const wkTxt = w ? ("第 " + fmtW(start[n.id]) + " 周起 · " + fmtW(w) + " 周") : "持续";
+    const stageNo = (n.id.match(/stage(\d+)/) || [])[1];
+    const art = el("article", "");
+    art.className = "stage" + (n.unlocked ? "" : " locked") + (store.open.has(n.id) ? " open" : "");
+    art.id = n.id;
+    art.dataset.state = cls;
+    art.dataset.search = (n.title + " " + (n.summary || "") + " " + n.points.map(p => p.t).join(" ")).toLowerCase();
+
+    const head = el("button", "");
+    head.className = "shead";
+    head.innerHTML =
+      '<span class="idx">' + String(i + 1).padStart(2, "0") + "</span>" +
+      '<span class="stitle">' + esc(n.title) + (stageNo ? "<em>Stage " + stageNo + "</em>" : "") + "</span>" +
+      '<span class="meta">' +
+        '<span class="mb' + (m >= 0.6 ? " full" : "") + '"><i style="width:' + Math.round(m * 100) + '%"></i></span>' +
+        '<span class="pill ' + cls + '">' + label + "</span>" +
+        '<span class="pill wk">' + wkTxt + "</span>" +
+        '<span class="chev">❯</span>' +
+      "</span>";
+    head.addEventListener("click", () => {
+      if (art.classList.contains("open")) { art.classList.remove("open"); store.open.delete(n.id); }
+      else { art.classList.add("open"); store.open.add(n.id); }
+      saveLS();
+    });
+    art.appendChild(head);
+
+    const body = el("div", "");
+    body.className = "sbody";
+    body.innerHTML =
+      (n.summary ? '<p class="sum">' + esc(n.summary) + "</p>" : "") +
+      tagsHtml(n) +
+      ((n.prereqs && n.prereqs.length)
+        ? '<p class="sum" style="font-size:12px;color:var(--muted);margin:10px 0 0">先修：' +
+          n.prereqs.map(pid => {
+            const p = DATA.nodes.find(x => x.id === pid);
+            return '<a href="#' + esc(pid) + '" class="pre">' + esc(p ? p.title : pid) + "</a>";
+          }).join(" → ") + "</p>"
+        : "") +
+      hwRows(n.id) + actRow(n);
+    art.appendChild(body);
+    tl.appendChild(art);
+    if (matches(art)) shown++;
+  });
+  document.getElementById("nores").style.display = shown ? "none" : "block";
+  bindTags();
+  bindPre();
+  bindActions();
+  renderDock();
+}
+function matches(art){
+  const q = store.q.trim().toLowerCase();
+  const f = store.filter;
+  if (f !== "all" && art.dataset.state !== f) return false;
+  if (q && !art.dataset.search.includes(q)) return false;
+  return true;
+}
+function applyFilters(){
+  let shown = 0;
+  document.querySelectorAll(".stage").forEach(art => {
+    const ok = matches(art);
+    art.style.display = ok ? "" : "none";
+    if (ok) shown++;
+    if (ok && store.q.trim()) { art.classList.add("open"); }
+  });
+  document.getElementById("nores").style.display = shown ? "none" : "block";
+}
+function bindTags(){
+  document.querySelectorAll(".tag").forEach(t => {
+    t.addEventListener("click", e => {
+      e.stopPropagation();
+      /* Ctrl / ⌘ + 点击 = 直接开概念卡，省一次点击 */
+      if ((e.ctrlKey || e.metaKey) && t.dataset.note) {
+        const u = obs(t.dataset.note);
+        if (u) window.location.href = u;
+        return;
+      }
+      openPop(t);
+    });
+  });
+}
+function bindPre(){
+  document.querySelectorAll("a.pre").forEach(a => {
+    a.addEventListener("click", e => {
+      e.preventDefault();
+      const id = a.getAttribute("href").slice(1);
+      jump(id);
+    });
+  });
+}
+
+/* ---------- 动作：选中 → 拼指令 ---------- */
+const KNAME = {grade: "批改", lesson: "讲解", hw: "出题", research: "补资料"};
+const nodeOf = id => DATA.nodes.find(n => n.id === id);
+const hwOf = id => DATA.homeworks.find(h => h.id === id);
+const actKey = a => a.k + "|" + (a.hw || a.nid || "") + "|" + (a.term || "");
+const hasAct = a => store.acts.some(x => actKey(x) === actKey(a));
+
+function actDesc(a){
+  if (a.k === "grade") { const h = hwOf(a.hw); return h ? h.title + "（" + a.hw + "）" : a.hw; }
+  const n = nodeOf(a.nid), nt = n ? n.title : a.nid;
+  if (a.term) return nt + " · 「" + a.term + "」";
+  return nt + (a.k === "hw" ? "（整章出题）" : a.k === "research" ? "（整章资料）" : "（整章讲解）");
+}
+function paintActs(){
+  document.querySelectorAll("[data-act]").forEach(b => {
+    const k = b.dataset.act;
+    if (k === "selall") {
+      const n = nodeOf(b.dataset.nid);
+      const all = n && n.points.length && n.points.every(p => hasAct({k: "lesson", nid: n.id, term: p.t}));
+      b.classList.toggle("on", !!all);
+      return;
+    }
+    const a = k === "grade" ? {k: "grade", hw: b.dataset.hw} : {k: k, nid: b.dataset.nid};
+    b.classList.toggle("on", hasAct(a));
+  });
+  document.querySelectorAll(".tag[data-nid]").forEach(t => {
+    const on = store.acts.some(x => x.nid === t.dataset.nid && x.term === t.dataset.term);
+    t.classList.toggle("picked", on);
+  });
+}
+const DEF_TIP = "勾选后点「复制指令」，把结果粘贴到对话框发给我，我来执行。";
+/* 动作一改，上一次生成的指令就作废：清掉文本、收回复选框、恢复提示语 */
+function resetCmd(){
+  const ta = document.getElementById("dockCmd");
+  if (ta) { ta.value = ""; ta.classList.remove("show"); }
+  const tip = document.getElementById("dockTip");
+  if (tip) tip.textContent = DEF_TIP;
+}
+function commit(){
+  resetCmd(); saveLS(); renderDock(); paintActs();
+}
+function toggleAct(a){
+  const k = actKey(a);
+  store.acts = hasAct(a) ? store.acts.filter(x => actKey(x) !== k) : store.acts.concat([a]);
+  commit();
+}
+function addMany(list){
+  let n = 0;
+  list.forEach(a => { if (!hasAct(a)) { store.acts.push(a); n++; } });
+  if (n) commit();
+  return n;
+}
+function bindActions(){
+  document.querySelectorAll("[data-act]").forEach(b => {
+    if (b.dataset.bound) return;
+    b.dataset.bound = "1";
+    b.addEventListener("click", e => {
+      e.stopPropagation();
+      const k = b.dataset.act, nid = b.dataset.nid;
+      if (k === "selall") {
+        const n = nodeOf(nid);
+        if (!n) return;
+        const all = n.points.length && n.points.every(p => hasAct({k: "lesson", nid: nid, term: p.t}));
+        if (all) {
+          store.acts = store.acts.filter(x => !(x.nid === nid && x.term));
+          commit();
+        } else addMany(n.points.map(p => ({k: "lesson", nid: nid, term: p.t})));
+        return;
+      }
+      if (k === "grade") toggleAct({k: "grade", hw: b.dataset.hw});
+      else toggleAct({k: k, nid: nid});
+    });
+  });
+}
+
+/* ---------- 知识点浮动菜单 ---------- */
+const pop = document.getElementById("pop");
+let popTag = null;
+function openPop(t){
+  popTag = t;
+  const note = t.dataset.note, term = t.dataset.term;
+  pop.innerHTML =
+    '<div class="ttl">' + esc(term) + "</div>" +
+    (t.dataset.lesson ? '<button type="button" data-p="lessonfile">📄 打开已生成的讲义</button>' : "") +
+    '<button type="button" data-p="lesson">📖 生成讲解</button>' +
+    '<button type="button" data-p="hw">📝 出题</button>' +
+    '<button type="button" data-p="research">🔗 补资料</button>' +
+    '<div class="hr"></div>' +
+    (note ? '<button type="button" data-p="note">↗ 打开概念卡</button>' : "") +
+    '<button type="button" data-p="filter">🔎 筛选相关章节</button>';
+  pop.classList.add("show");
+  const r = t.getBoundingClientRect();
+  const pw = pop.offsetWidth, ph = pop.offsetHeight;
+  let left = Math.min(r.left, window.innerWidth - pw - 12);
+  let top = r.bottom + 6;
+  if (top + ph > window.innerHeight - 12) top = Math.max(12, r.top - ph - 6);
+  pop.style.left = Math.max(12, left) + "px";
+  pop.style.top = top + "px";
+}
+function closePop(){ pop.classList.remove("show"); popTag = null; }
+pop.addEventListener("click", e => {
+  const b = e.target.closest("[data-p]");
+  if (!b || !popTag) return;
+  const p = b.dataset.p, nid = popTag.dataset.nid, term = popTag.dataset.term;
+  if (p === "note") {
+    const u = obs(popTag.dataset.note);
+    if (u) window.location.href = u;
+  } else if (p === "lessonfile") {
+    window.location.href = popTag.dataset.lesson;
+  } else if (p === "filter") {
+    store.q = term; document.getElementById("q").value = term; applyFilters();
+  } else {
+    toggleAct({k: p, nid: nid, term: term});
+  }
+  closePop();
+});
+document.addEventListener("click", e => { if (!pop.contains(e.target)) closePop(); });
+window.addEventListener("scroll", () => { if (pop.classList.contains("show")) closePop(); }, {passive: true});
+window.addEventListener("resize", () => closePop());
+
+/* ---------- 动作篮 ---------- */
+let dockPrev = -1;
+function renderDock(){
+  const dock = document.getElementById("dock");
+  const n = store.acts.length;
+  dock.classList.toggle("show", n > 0);
+  if (n === 0) {
+    dock.classList.remove("open");
+  } else if (dockPrev <= 0) {
+    // 从空到有（含清空后再选）：自动展开，让「复制指令」立刻可见
+    dock.classList.add("open");
+  }
+  dockPrev = n;
+  document.getElementById("dockN").textContent = n;
+  const list = document.getElementById("dockList");
+  list.innerHTML = store.acts.length ? store.acts.map((a, i) =>
+    '<div class="item"><span class="k">' + KNAME[a.k] + '</span><span class="t">' + esc(actDesc(a)) +
+    '</span><button class="x" type="button" data-i="' + i + '" title="移除">×</button></div>').join("")
+    : '<div class="item" style="color:var(--muted)">还没选动作。点章节里的按钮，或点知识点标签。</div>';
+}
+function buildCommand(){
+  const L = ["/study-coach 执行动作", "课程：" + DATA.course];
+  if (DATA.dir) L.push("目录：" + DATA.dir);
+  const order = ["grade", "lesson", "hw", "research"];
+  const head = {grade: "批改作业", lesson: "生成/补充讲解", hw: "出作业", research: "补资料"};
+  L.push("共 " + store.acts.length + " 项，按类型分组：");
+  let i = 0;
+  order.forEach(k => {
+    const grp = store.acts.filter(a => a.k === k);
+    if (!grp.length) return;
+    L.push("");
+    L.push("【" + head[k] + "】" + grp.length + " 项");
+    grp.forEach(a => {
+      i++;
+      let s;
+      if (k === "grade") s = a.hw;
+      else if (a.term) s = a.nid + " · 知识点「" + a.term + "」";
+      else s = a.nid + "（整章）";
+      L.push(i + ") " + s);
+    });
+  });
+  return L.join("\n");
+}
+function cmdTip(){
+  const n = store.acts.length;
+  return n > 25
+    ? "共 " + n + " 项，量较大：建议先复制让 AI 分批做，或只留最需要的几项。"
+    : "已复制，粘贴到对话框发给我即可。";
+}
+function copyCmd(){
+  const ta = document.getElementById("dockCmd");
+  const tip = document.getElementById("dockTip");
+  if (!store.acts.length) {
+    ta.value = ""; ta.classList.remove("show");
+    tip.textContent = "动作篮是空的，先点章节按钮或知识点标签选几项。";
+    return;
+  }
+  const txt = buildCommand();
+  ta.value = txt; ta.classList.add("show");
+  // 生成的框始终可见：面板变高时把列表压一压，不把按钮挤出视口
+  try { ta.scrollIntoView({block: "nearest"}); } catch (e) {}
+  const done = () => { tip.textContent = cmdTip(); };
+  const fallback = () => {
+    try {
+      ta.removeAttribute("readonly"); ta.focus(); ta.select();
+      const ok = document.execCommand("copy");
+      ta.setAttribute("readonly", "readonly");
+      tip.textContent = ok ? cmdTip() : "自动复制被拦，请手动全选上面文本复制。";
+    } catch (e) { tip.textContent = "自动复制被拦，请手动全选上面文本复制。"; }
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(done, fallback);
+  } else fallback();
+}
+
+/* ---------- 目录 ---------- */
+function renderToc(){
+  const toc = document.getElementById("toc");
+  toc.innerHTML = "";
+  DATA.nodes.forEach((n, i) => {
+    const [cls] = statusOf(n);
+    const li = el("li", "");
+    li.innerHTML = '<a href="#' + n.id + '"><span class="n">' + String(i + 1).padStart(2, "0") +
+      "</span><span>" + esc(n.title) + '</span><span class="dot ' + (cls === "lock" ? "lock" : cls === "cur" ? "cur" : "ok") + '"></span></a>';
+    li.querySelector("a").addEventListener("click", e => { e.preventDefault(); jump(n.id); });
+    toc.appendChild(li);
+  });
+}
+
+/* ---------- 跳转 ---------- */
+function jump(id){
+  const art = document.getElementById(id);
+  if (!art) return;
+  art.style.display = "";
+  art.classList.add("open"); store.open.add(id); saveLS();
+  art.classList.add("flash");
+  try { art.scrollIntoView({behavior: "smooth", block: "start"}); } catch (e) {}
+  setTimeout(() => art.classList.remove("flash"), 1400);
+  try { history.replaceState(null, "", "#" + id); } catch (e) {}
+}
+
+/* ---------- 交互绑定 ---------- */
+document.getElementById("dockBar").addEventListener("click", () => {
+  document.getElementById("dock").classList.toggle("open");
+});
+document.getElementById("dockList").addEventListener("click", e => {
+  const x = e.target.closest(".x");
+  if (!x) return;
+  store.acts.splice(+x.dataset.i, 1);
+  commit();
+});
+document.getElementById("dockCopy").addEventListener("click", copyCmd);
+document.getElementById("dockClear").addEventListener("click", () => {
+  store.acts = [];
+  commit();                       // 内部会收起面板、清掉旧指令与提示、隐藏动作篮
+});
+function bulkSay(n){
+  const tip = document.getElementById("dockTip");
+  if (n) tip.textContent = "已加入 " + n + " 项，共 " + store.acts.length + " 项。点「复制指令」即可。";
+  else if (!store.acts.length) tip.textContent = "没有符合条件的项目。";
+  else tip.textContent = "这些都已在篮子里（共 " + store.acts.length + " 项），直接点「复制指令」。";
+}
+document.getElementById("bulkAllPoints").addEventListener("click", () => {
+  const list = [];
+  DATA.nodes.forEach(nd => nd.points.forEach(p => list.push({k: "lesson", nid: nd.id, term: p.t})));
+  bulkSay(addMany(list));
+});
+document.getElementById("bulkUngraded").addEventListener("click", () => {
+  bulkSay(addMany(DATA.homeworks.filter(h => h.status !== "graded").map(h => ({k: "grade", hw: h.id}))));
+});
+document.getElementById("bulkOutdated").addEventListener("click", () => {
+  bulkSay(addMany(DATA.nodes.filter(nd => !DATA.homeworks.some(h => h.stage === nd.id)).map(nd => ({k: "hw", nid: nd.id}))));
+});
+
+document.querySelectorAll("[data-pace]").forEach(b => b.addEventListener("click", () => {
+  store.pace = b.dataset.pace; saveLS(); renderHero(); renderStats(); renderNodes(); applyFilters(); setActive();
+}));
+document.querySelectorAll("[data-filter]").forEach(b => b.addEventListener("click", () => {
+  store.filter = b.dataset.filter;
+  document.querySelectorAll("[data-filter]").forEach(x => x.classList.toggle("on", x === b));
+  applyFilters();
+}));
+document.getElementById("expandAll").addEventListener("click", () => {
+  DATA.nodes.forEach(n => store.open.add(n.id));
+  document.querySelectorAll(".stage").forEach(a => a.classList.add("open"));
+  saveLS();
+});
+document.getElementById("collapseAll").addEventListener("click", () => {
+  store.open.clear();
+  document.querySelectorAll(".stage").forEach(a => a.classList.remove("open"));
+  saveLS();
+});
+const q = document.getElementById("q");
+q.addEventListener("input", () => { store.q = q.value; applyFilters(); renderNodes(); applyFilters(); });
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+  if (e.key === "Escape" && document.activeElement === q) { q.value = ""; store.q = ""; applyFilters(); }
+});
+
+/* ---------- 高亮当前章节 ---------- */
+function setActive(){
+  const links = [...document.querySelectorAll("#toc a")];
+  let cur = null, best = -1e9;
+  DATA.nodes.forEach(n => {
+    const art = document.getElementById(n.id);
+    if (!art || art.style.display === "none") return;
+    const top = art.getBoundingClientRect().top;
+    if (top - 80 <= 0 && top > best) { best = top; cur = n.id; }
+  });
+  links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + cur));
+}
+window.addEventListener("scroll", () => { if (window.innerWidth > 900) setActive(); }, {passive: true});
+
+/* ---------- 启动 ---------- */
+renderHero(); renderStats(); renderToc(); renderNodes();
+const hasHash = location.hash.length > 1;
+if (!store.open.size && !hasHash) {
+  const cur = DATA.nodes.find(n => n.unlocked && !n.mastered) || DATA.nodes[0];
+  if (cur) { store.open.add(cur.id); saveLS(); }
+  const art = cur && document.getElementById(cur.id);
+  if (art) art.classList.add("open");
+}
+document.getElementById("stamp").innerHTML = "<br>最后同步：2026-10-18 19:02";
+// 深链：课程主页.html#stage3-transformer
+if (location.hash.length > 1) setTimeout(() => jump(decodeURIComponent(location.hash.slice(1))), 60);
+setActive();
+</script>
+</body>
+</html>
