@@ -38,6 +38,8 @@
 
 ![讲义在网页内弹出阅读面板：背景是暗下去的课程主页，中间浮层里是排好版的标题、有序列表、要点框和一段算例——机器上没有装 Obsidian](packages/coursecoach/docs/lesson-reader.png)
 
+**什么都不想装，只想先点两下？** [在线 demo](https://coursecoach-demo.app.workbuddy.host/?sharecode=DGYMO3ZV3W) 是一份真实课程的编译产物（示例课程 + 5 篇讲义内联），能展开章节、点开讲义、试搜索，不用装任何东西。
+
 **装它**（三步，约 1 分钟）：
 
 ```bash

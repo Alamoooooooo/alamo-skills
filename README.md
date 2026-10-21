@@ -38,6 +38,8 @@ It is subject-agnostic — programming, a foreign language, an instrument, accou
 
 ![A lesson opened in the in-page reader: the board dimmed behind a centred panel showing a typeset heading, a numbered list, a key-idea box and a worked example — with no Obsidian installed](packages/coursecoach/docs/lesson-reader.png)
 
+**Not installing anything yet?** The [live demo](https://coursecoach-demo.app.workbuddy.host/?sharecode=DGYMO3ZV3W) is a real course compiled from the example snapshot, with five lessons inlined: expand a stage, open a lesson, try the search. Nothing to set up.
+
 **Install it** (three steps, about a minute):
 
 ```bash
