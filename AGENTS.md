@@ -85,7 +85,7 @@
 ## 文档更新规则
 
 1. 仓库级使用说明同时更新 `README.md`（英文，GitHub 默认展示）与 `README.zh-CN.md`（中文）。两份结构一一对应、章节顺序一致，改一份就改另一份。
-2. 包级 README 同理：`packages/<包名>/README.md` 与 `README.zh-CN.md` 成对存在（目前只有 `coursecoach` 有中文版，其余以英文为准）。
+2. 包级 README 同理：`packages/<包名>/README.md` 与 `README.zh-CN.md` 成对存在（目前只有 `coursecoach` 有中文版，其余以英文为准）。`INSTALL.md` 与 `INSTALL.zh-CN.md` 一律成对，四个包都是。
 3. 非 Codex 的可移植用法更新到 `PORTABLE_USAGE.md`。
 4. 某个 skill 的方法论和输出契约更新到对应 `SKILL.md` 与 `references/`。
 5. 安装或同步方式变化时，更新脚本说明、该包的 `INSTALL.md`（若存在）与 README。

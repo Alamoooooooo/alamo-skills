@@ -1,5 +1,7 @@
 # Installing github_sync_workflow_kernel
 
+**English** | [简体中文](INSTALL.zh-CN.md)
+
 ## What gets installed
 
 One skill, `github-sync-agent`. Its `agents/` and `references/` directories ship

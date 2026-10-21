@@ -39,6 +39,7 @@ Use this package when you want:
 
 ## Start Here
 
+- To install, and for the pitfalls that only show up mid-run: read `INSTALL.md`
 - For Codex: read `../README.md`, then run `python3 scripts/sync_to_codex_home.py`
 - For other hosts: read `PORTABLE_USAGE.md`
 - For the orchestration contract: read `memory-optimizer-agent/SKILL.md`

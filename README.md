@@ -54,9 +54,9 @@ pip install pyyaml
 - Requires Python 3.8+, and **that interpreter must be able to `import yaml`**. Word export additionally needs `pip install python-docx`.
 - Reopen the session before it is recognized. Then say "I want to learn X" or `/coursecoach` directly.
 
-Do not start with a real subject — [the install guide](packages/coursecoach/INSTALL.zh-CN.md) includes a 15-minute trial course that shows the whole loop before you commit to anything.
+Do not start with a real subject — [the install guide](packages/coursecoach/INSTALL.md) includes a 15-minute trial course that shows the whole loop before you commit to anything.
 
-Read: [package README](packages/coursecoach/README.md) · [中文说明](packages/coursecoach/README.zh-CN.md) · [install and 15-minute trial](packages/coursecoach/INSTALL.zh-CN.md) · [portable usage](packages/coursecoach/PORTABLE_USAGE.md)
+Read: [package README](packages/coursecoach/README.md) · [中文说明](packages/coursecoach/README.zh-CN.md) · [install and 15-minute trial](packages/coursecoach/INSTALL.md) · [portable usage](packages/coursecoach/PORTABLE_USAGE.md)
 
 ### engineering_subagent_workflow_kernel
 
@@ -144,21 +144,21 @@ alamo_hub/
 │   ├── coursecoach/
 │   │   ├── coursecoach/               the skill itself (SKILL.md, references, scripts, examples)
 │   │   ├── docs/                      board.png, lesson-reader.png
-│   │   └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
+│   │   └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.md  INSTALL.zh-CN.md  metadata.json
 │   ├── engineering_subagent_workflow_kernel/
 │   │   ├── code-explorer/  code-architect/  code-reviewer/
 │   │   ├── code-simplifier/  pr-test-analyzer/
 │   │   ├── scripts/
-│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md  metadata.json
 │   ├── github_sync_workflow_kernel/
 │   │   ├── github-sync-agent/
 │   │   ├── scripts/  wiki/
-│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md  metadata.json
 │   └── memory_hotspot_repair_kernel/
 │       ├── memory-optimizer-agent/    orchestrator (primary entry point)
 │       ├── memory-check/  memory-fix/  memory-review/
 │       ├── references/  scripts/  wiki/
-│       └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+│       └── README.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md  metadata.json
 ├── examples/                          ← optional, never required to install
 │   ├── coursecoach/
 │   │   └── quick-trial/stages.json    the smallest input that produces a 3-node course

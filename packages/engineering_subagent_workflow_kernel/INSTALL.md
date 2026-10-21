@@ -1,5 +1,7 @@
 # Installing engineering_subagent_workflow_kernel
 
+**English** | [简体中文](INSTALL.zh-CN.md)
+
 ## What gets installed
 
 Five skills, each independent:

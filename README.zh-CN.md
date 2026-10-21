@@ -144,21 +144,21 @@ alamo_hub/
 │   ├── coursecoach/
 │   │   ├── coursecoach/               skill 本体（SKILL.md、references、scripts、examples）
 │   │   ├── docs/                      board.png、lesson-reader.png
-│   │   └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.zh-CN.md  metadata.json
+│   │   └── README.md  README.zh-CN.md  PORTABLE_USAGE.md  INSTALL.md  INSTALL.zh-CN.md  metadata.json
 │   ├── engineering_subagent_workflow_kernel/
 │   │   ├── code-explorer/  code-architect/  code-reviewer/
 │   │   ├── code-simplifier/  pr-test-analyzer/
 │   │   ├── scripts/
-│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md  metadata.json
 │   ├── github_sync_workflow_kernel/
 │   │   ├── github-sync-agent/
 │   │   ├── scripts/  wiki/
-│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md  metadata.json
 │   └── memory_hotspot_repair_kernel/
 │       ├── memory-optimizer-agent/    编排入口（主要入口）
 │       ├── memory-check/  memory-fix/  memory-review/
 │       ├── references/  scripts/  wiki/
-│       └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+│       └── README.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md  metadata.json
 ├── examples/                          ← 可选，安装时完全不需要
 │   ├── coursecoach/
 │   │   └── quick-trial/stages.json    造一门 3 节点课的最小输入

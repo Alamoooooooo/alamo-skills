@@ -23,6 +23,9 @@ Codex Skill sync path installs every resource each wrapper needs.
 
 ## Codex Installation
 
+`INSTALL.md` covers the whole picture, including what breaks when a host only
+takes the `SKILL.md` files. The short version:
+
 Preview the installation:
 
 ```bash

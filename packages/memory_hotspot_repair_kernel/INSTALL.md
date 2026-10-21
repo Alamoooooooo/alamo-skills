@@ -1,5 +1,7 @@
 # Installing memory_hotspot_repair_kernel
 
+**English** | [简体中文](INSTALL.zh-CN.md)
+
 ## What gets installed
 
 Four skills. They must end up side by side in the same parent directory:

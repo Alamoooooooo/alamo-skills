@@ -21,7 +21,7 @@ one directory.
 
 ```text
 packages/coursecoach/            ← 1. package: for reading, not for installing
-├── README.md  README.zh-CN.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md
+├── README.md  README.zh-CN.md  INSTALL.md  INSTALL.zh-CN.md  PORTABLE_USAGE.md
 ├── metadata.json
 ├── docs/board.png
 └── coursecoach/                 ← 2. installable unit: copy THIS
@@ -82,7 +82,7 @@ does not install skills at all can still use any package — read its
 | `scripts/` | optional | Deterministic work: parsing, compiling, writing files |
 | `references/` | optional | Methodology the skill loads **at run time**, on demand |
 | `wiki/` | optional | Long-form articles for **humans**, with their own assets |
-| `INSTALL.md` | optional | Install plus a trial run, when the install has real pitfalls. Written as `INSTALL.<lang>.md` when it exists in one language only (`coursecoach` ships `INSTALL.zh-CN.md`) |
+| `INSTALL.md` + `INSTALL.zh-CN.md` | optional | Install plus a trial run, when the install has real pitfalls. Both languages, like the READMEs; the English file is what GitHub shows first |
 | `docs/` | optional | Screenshots referenced from the README |
 
 `references/` and `wiki/` are not two names for one thing:
@@ -99,7 +99,7 @@ methodology inside each `SKILL.md` instead.
 
 | Package | Units | Run-time docs | Human docs | Extra |
 |:--|:--|:--|:--|:--|
-| `coursecoach` | 1, same name as package | `references/` inside the unit | `README.zh-CN.md` | `docs/` screenshots, `INSTALL.zh-CN.md` |
+| `coursecoach` | 1, same name as package | `references/` inside the unit | `README.zh-CN.md` | `docs/` screenshots |
 | `memory_hotspot_repair_kernel` | 4 | package-level `references/` | `wiki/` | — |
 | `github_sync_workflow_kernel` | 1, different name | — | `wiki/` | — |
 | `engineering_subagent_workflow_kernel` | 5 | — | — | `scripts/sync_to_codex_home.py` |
