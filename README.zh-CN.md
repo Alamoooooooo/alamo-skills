@@ -136,9 +136,13 @@ cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 alamo_hub/
 ├── README.md                          英文首页
 ├── README.zh-CN.md                    简体中文首页（本文件）
+├── CONTRIBUTING.md                    怎么改这个仓库：自检、提交规范、审 PR
+├── CONTRIBUTING.zh-CN.md              简体中文
 ├── AGENTS.md                          在这个仓库里干活时 agent 该遵守的规范
 ├── llms.txt                           给 AI 爬虫/检索用的机器可读摘要
 ├── LICENSE                            Apache-2.0
+├── scripts/check.py                   仓库自检：双语配对、死链、元数据、脚本语法
+├── .github/pull_request_template.md   PR 打开时自带的检查清单
 ├── packages/                          ← 产品面
 │   ├── README.md                      包的约定：三层结构、必备文件、references 与 wiki 的区别
 │   ├── coursecoach/
@@ -174,6 +178,8 @@ alamo_hub/
 
 | 文件 | 是什么 |
 | :--- | :--- |
+| `CONTRIBUTING.md` | 改这个仓库的规范：五条硬规矩、提交信息怎么写、审 PR 看什么、动脚本之前必须怎么验证。中英双语。 |
+| `scripts/check.py` | 七项自检（双语配对、死链、元数据、脚本语法等）。提 PR 前跑一遍，退出码非零，可以直接当 CI 步骤。 |
 | `AGENTS.md` | 给**在这个仓库里干活**的 AI agent 的规范：怎么区分包和示例、怎么更新文档与安装路径。不属于任何产品。 |
 | `llms.txt` | 四个包的扁平摘要，给 AI 爬虫和检索用。内容和这份 README 一致，只是按机器读取优化过。 |
 | `todo/` | 未实施的计划，先从 `codex-plugin-packaging.md` 看起。放在这里是「想过但没承诺」，仓库里没有任何东西依赖它。 |

@@ -136,9 +136,13 @@ For hosts that understand neither skill installation nor `$name` tokens, read th
 alamo_hub/
 ├── README.md                          English (this file)
 ├── README.zh-CN.md                    简体中文
+├── CONTRIBUTING.md                    how to change this repo: checks, commits, review
+├── CONTRIBUTING.zh-CN.md              简体中文
 ├── AGENTS.md                          conventions for agents working on this repo itself
 ├── llms.txt                           machine-readable summary for AI crawlers
 ├── LICENSE                            Apache-2.0
+├── scripts/check.py                   repo self-check: pairing, dead links, metadata, syntax
+├── .github/pull_request_template.md   the checklist a PR opens with
 ├── packages/                          ← the products
 │   ├── README.md                      package conventions: three layers, required files, references vs wiki
 │   ├── coursecoach/
@@ -174,6 +178,8 @@ alamo_hub/
 
 | File | What it is |
 |:--|:--|
+| `CONTRIBUTING.md` | How to change this repository: the five load-bearing rules, commit message style, what a reviewer checks, how to verify a script change. Bilingual. |
+| `scripts/check.py` | Seven checks — bilingual pairs, dead links, metadata, script syntax and more. Run it before a PR; the non-zero exit code makes it usable as a CI step. |
 | `AGENTS.md` | Rules for an AI agent working *on this repository*: how to distinguish packages from examples, how to update docs and install paths. Not part of any product. |
 | `llms.txt` | A flat summary of all four packages for AI crawlers and search. Same content as this README, optimised for machine reading. |
 | `todo/` | Unimplemented plans, starting with `codex-plugin-packaging.md`. Read it as "considered, not promised" — nothing here depends on any of it. |

@@ -33,9 +33,10 @@
 
 1. `AGENTS.md`
 2. `README.md`
-3. `packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md`
-4. 目标 package 下的主 skill 文档
-5. 必要时再读 `examples/`
+3. `CONTRIBUTING.md`（五条硬规矩与提交规范；和本文件重复的部分，以它为准）
+4. `packages/memory_hotspot_repair_kernel/PORTABLE_USAGE.md`
+5. 目标 package 下的主 skill 文档
+6. 必要时再读 `examples/`
 
 如果任务明确是 memory skill suite，推荐继续读：
 
@@ -91,6 +92,7 @@
 5. 安装或同步方式变化时，更新脚本说明、该包的 `INSTALL.md`（若存在）与 README。
 6. 包的结构约定（三层、必备文件、`references/` 与 `wiki/` 的分工、安装拷哪一层）变化时，更新 `packages/README.md`。
 7. 如果仓库定位、消费方式或结构规则变化，再更新本文件。
+8. 提交前跑 `python3 scripts/check.py`。它是本文件与 `CONTRIBUTING.md` 的机器版：双语配对、死链、元数据、脚本语法等七项，退出码非零就别提交。
 
 ## 安装与同步规则
 
