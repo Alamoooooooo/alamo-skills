@@ -129,8 +129,8 @@ pip install pyyaml
 
 然后说一句"我想学 XXX，每天一小时"，或直接 `/coursecoach`。
 
-非 Codex 类宿主见 [`PORTABLE_USAGE.md`](PORTABLE_USAGE.md)，逐步试玩见  
-[`INSTALL.zh-CN.md`](INSTALL.zh-CN.md)。
+非 Codex 类宿主见 [`PORTABLE_USAGE.md`](PORTABLE_USAGE.md)，逐步试玩见
+[`INSTALL.zh-CN.md`](INSTALL.zh-CN.md)（[English](INSTALL.md)）。
 
 ## 目录结构
 
@@ -139,7 +139,8 @@ packages/coursecoach/
 ├── README.md               英文说明
 ├── README.zh-CN.md         中文说明（本文件）
 ├── PORTABLE_USAGE.md       跨宿主用法与降级说明
-├── INSTALL.zh-CN.md        安装与 15 分钟试玩
+├── INSTALL.md              安装与 15 分钟试玩
+├── INSTALL.zh-CN.md        安装与 15 分钟试玩（中文）
 ├── metadata.json           机器可读的包描述
 ├── docs/board.png          课程看板截图
 ├── docs/lesson-reader.png  讲义阅读面板截图

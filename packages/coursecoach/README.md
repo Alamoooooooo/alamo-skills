@@ -137,15 +137,17 @@ pip install pyyaml
 Then say "I want to learn X, one hour a day" or invoke `/coursecoach`.
 
 For non-Codex hosts, see [`PORTABLE_USAGE.md`](PORTABLE_USAGE.md).
-中文安装与试玩步骤见 [`INSTALL.zh-CN.md`](INSTALL.zh-CN.md).
+Install and a 15-minute trial run: [`INSTALL.md`](INSTALL.md) · [中文](INSTALL.zh-CN.md).
 
 ## Package Layout
 
 ```
 packages/coursecoach/
 ├── README.md               this file
+├── README.zh-CN.md         简体中文
 ├── PORTABLE_USAGE.md       host-agnostic usage and degradation notes
-├── INSTALL.zh-CN.md        install + 15-minute trial run (Chinese)
+├── INSTALL.md              install + 15-minute trial run
+├── INSTALL.zh-CN.md        安装与 15 分钟试玩
 ├── metadata.json           machine-readable package descriptor
 ├── docs/board.png          board screenshot
 ├── docs/lesson-reader.png  in-page lesson reader screenshot
