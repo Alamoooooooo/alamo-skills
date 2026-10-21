@@ -19,12 +19,25 @@
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo-skills.git
-cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
-Windows 上目标路径是 `C:\Users\<你的用户名>\.workbuddy\skills\coursecoach\`。
-也可以放到项目内的 `<项目>/.workbuddy/skills/`，只对该项目生效。
+**按你用的宿主，复制到对应的 skill 目录（三选一）：**
+
+```bash
+# Claude Code
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.claude/skills/coursecoach
+
+# Cursor
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.cursor/skills/coursecoach
+
+# WorkBuddy / CodeBuddy
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+```
+
+Windows 上目标路径分别是 `C:\Users\<你的用户名>\.claude\skills\coursecoach\`、
+`C:\Users\<你的用户名>\.cursor\skills\coursecoach\`、`C:\Users\<你的用户名>\.workbuddy\skills\coursecoach\`。
+也可以放到项目内的 `.claude/skills/` 或 `.cursor/skills/`，只对该项目生效。
 
 放好后重开一个会话，说「我想学 XXX」或直接 `/coursecoach` 即可触发。
 
@@ -71,6 +84,9 @@ AI 按指令写讲义、出作业、批改，再重跑 `sync.py`，页面上就�
 
 想看"学了一段时间之后"长什么样，双击 `coursecoach/examples/ai-fullstack/课程主页.html`
 （一份真实课程快照，作答已清空）。
+
+> **课程放哪**：skill 里内置了默认工作空间——当前工作目录的上级目录下的 `coursecoach/`，
+> 所有课程都放这里，一个课程一个目录（`<workspace>/<slug>/`）。agent 建课时自动用它，不用你操心路径。
 
 日常三条命令：
 
