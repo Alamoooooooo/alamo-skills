@@ -1,6 +1,6 @@
 # Packaging these skills as a Codex plugin
 
-This note tracks the work needed to turn `alamo_skillhub` or `memory_hotspot_repair_kernel` into a Codex plugin / marketplace-friendly distribution artifact later.
+This note tracks the work needed to turn `alamo-skills` or `memory_hotspot_repair_kernel` into a Codex plugin / marketplace-friendly distribution artifact later.
 
 Status right now:
 
@@ -23,7 +23,7 @@ The main target is:
 Prefer this split:
 
 ```text
-alamo_skillhub/
+alamo-skills/
 ├── packages/
 │   └── memory_hotspot_repair_kernel/
 └── plugins/
@@ -47,7 +47,7 @@ Reason:
 
 - Decide whether the first plugin is:
   - only `memory_hotspot_repair_kernel`
-  - or a broader `alamo_skillhub` catalog
+  - or a broader `alamo-skills` catalog
 - Decide whether the first release is:
   - `skills-only`
   - or later `app-plus-skills`

@@ -1,4 +1,4 @@
-# Alamo Skill Hub
+# Alamo Skills
 
 [![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![Packages: 4](https://img.shields.io/badge/packages-4-6f42c1)](#what-is-in-here)
@@ -43,8 +43,8 @@ It is subject-agnostic — programming, a foreign language, an instrument, accou
 **Install it** (three steps, about a minute):
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
@@ -112,8 +112,8 @@ python3 scripts/sync_to_codex_home.py
 ### Codex
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cd alamo_hub/packages/memory_hotspot_repair_kernel
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cd alamo-skills/packages/memory_hotspot_repair_kernel
 python3 scripts/sync_to_codex_home.py
 ```
 
@@ -122,8 +122,8 @@ python3 scripts/sync_to_codex_home.py
 ### WorkBuddy, CodeBuddy, Claude Code, or any host that reads `SKILL.md`
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
 The installable unit is always the directory that contains `SKILL.md` — `coursecoach/coursecoach/`, `memory-optimizer-agent/`, `github-sync-agent/`, and so on. `pip install pyyaml` is required by `coursecoach`; `export.py --format docx` additionally needs `python-docx`.
@@ -133,7 +133,7 @@ For hosts that understand neither skill installation nor `$name` tokens, read th
 ## Repository Layout
 
 ```text
-alamo_hub/
+alamo-skills/
 ├── README.md                          English (this file)
 ├── README.zh-CN.md                    简体中文
 ├── CONTRIBUTING.md                    how to change this repo: checks, commits, review

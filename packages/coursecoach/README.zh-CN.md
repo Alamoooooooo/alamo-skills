@@ -122,8 +122,8 @@ YAML 字段。
 装到 skill 目录（WorkBuddy / CodeBuddy / 任何读 `SKILL.md` 的宿主）：
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 

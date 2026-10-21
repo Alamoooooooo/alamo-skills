@@ -66,9 +66,9 @@
 - **model inference（模型推理）**
 - **GC / cleanup**
 
-试用请访问**github**：[alamo_hub](https://github.com/Alamoooooooo/alamo_hub/tree/main)/packages/memory_hotspot_repair_kernel
+试用请访问**github**：[alamo-skills](https://github.com/Alamoooooooo/alamo-skills/tree/main)/packages/memory_hotspot_repair_kernel
 
-链接：[github.com/Alamoooooooo/alamo_hub/tree/b0d932c67c69f01993d7ec2bf61d3f92e6b27d54/packages/memory_hotspot_repair_kernel](https://github.com/Alamoooooooo/alamo_hub/tree/b0d932c67c69f01993d7ec2bf61d3f92e6b27d54/packages/memory_hotspot_repair_kernel)
+链接：[github.com/Alamoooooooo/alamo-skills/tree/b0d932c67c69f01993d7ec2bf61d3f92e6b27d54/packages/memory_hotspot_repair_kernel](https://github.com/Alamoooooooo/alamo-skills/tree/b0d932c67c69f01993d7ec2bf61d3f92e6b27d54/packages/memory_hotspot_repair_kernel)
 
 ---
 
@@ -316,7 +316,7 @@ profiler 更适合回答运行期问题，例如：
 - `validation/validation.json`
 
 这些路径表示运行产物的典型形态，而不是当前分享仓库中默认随包提供的固定目录。
-在当前 `alamo_skillhub` 仓库中，`runs/` 不作为分发内容保留；运行案例主要通过文档、图示和可移植配置来说明。
+在当前 `alamo-skills` 仓库中，`runs/` 不作为分发内容保留；运行案例主要通过文档、图示和可移植配置来说明。
 
 ---
 

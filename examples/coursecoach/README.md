@@ -24,8 +24,8 @@ knowledge points each, three pace tracks. Feed it to the initializer and you get
 a working course in two commands.
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cd alamo_hub
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cd alamo-skills
 
 python3 packages/coursecoach/coursecoach/scripts/init_course.py \
   --dir /tmp/coffee \

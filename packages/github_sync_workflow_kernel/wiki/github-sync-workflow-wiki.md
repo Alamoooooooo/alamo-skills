@@ -175,7 +175,7 @@ competition-repo/main-optimizer/
 当前 package 路径是：
 
 ```text
-alamo_skillhub/packages/github_sync_workflow_kernel/
+alamo-skills/packages/github_sync_workflow_kernel/
 ```
 
 实际目录结构如下：

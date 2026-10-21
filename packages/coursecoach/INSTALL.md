@@ -21,8 +21,8 @@ Everything is local files. **No network, no database, no sign-up.**
 **From the repository:**
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 

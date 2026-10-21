@@ -1,6 +1,6 @@
-# Alamo Skill Hub
+# Alamo Skills
 
-Alamo Skill Hub is a repository of installable and portable AI coding-agent skills.
+Alamo Skills is a repository of installable and portable AI coding-agent skills.
 
 ## Primary Packages
 

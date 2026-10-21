@@ -1,4 +1,4 @@
-# Alamo Skill Hub（技能仓库）
+# Alamo Skills（技能仓库）
 
 ![License: Apache 2.0](https://img.shields.io/badge/license-Apache--2.0-blue)
 ![Packages: 4](https://img.shields.io/badge/packages-4-6f42c1)
@@ -43,8 +43,8 @@
 **装它**（三步，约 1 分钟）：
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
@@ -112,8 +112,8 @@ python3 scripts/sync_to_codex_home.py
 ### Codex
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cd alamo_hub/packages/memory_hotspot_repair_kernel
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cd alamo-skills/packages/memory_hotspot_repair_kernel
 python3 scripts/sync_to_codex_home.py
 ```
 
@@ -122,8 +122,8 @@ python3 scripts/sync_to_codex_home.py
 ### WorkBuddy / CodeBuddy / Claude Code / 任何读 `SKILL.md` 的宿主
 
 ```bash
-git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+git clone https://github.com/Alamoooooooo/alamo-skills.git
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
 可安装单元永远是那个装着 `SKILL.md` 的目录——`coursecoach/coursecoach/`、`memory-optimizer-agent/`、`github-sync-agent/` 等等。`coursecoach` 需要 `pip install pyyaml`；`export.py --format docx` 另外需要 `python-docx`。
@@ -133,7 +133,7 @@ cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ## 目录结构
 
 ```text
-alamo_hub/
+alamo-skills/
 ├── README.md                          英文首页
 ├── README.zh-CN.md                    简体中文首页（本文件）
 ├── CONTRIBUTING.md                    怎么改这个仓库：自检、提交规范、审 PR

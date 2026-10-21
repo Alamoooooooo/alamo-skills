@@ -1,8 +1,8 @@
-# Alamo Skill Hub Agent Guide
+# Alamo Skills Agent Guide
 
 ## 定位
 
-本文件是 `alamo_skillhub` 仓库的 Agent 行事规范。
+本文件是 `alamo-skills` 仓库的 Agent 行事规范。
 
 它回答的问题是：
 
@@ -12,7 +12,7 @@
 
 ## 作用范围
 
-- 适用于 `alamo_skillhub/` 下的后续 session
+- 适用于 `alamo-skills/` 下的后续 session
 - 适用于 skill 设计、skill 打包、portable workflow 说明、Codex 安装说明、示例适配
 - 作为 repo 根目录规范长期保留
 
@@ -130,4 +130,4 @@
 
 ## 一句话
 
-> `alamo_skillhub` 负责“把 skill 做成可安装、可复用、可迁移的包”，`packages/` 是产品面，`examples/` 是可选适配面，Agent 进入本仓库后应先守住这条边界。
+> `alamo-skills` 负责“把 skill 做成可安装、可复用、可迁移的包”，`packages/` 是产品面，`examples/` 是可选适配面，Agent 进入本仓库后应先守住这条边界。
