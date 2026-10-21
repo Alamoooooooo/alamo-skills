@@ -126,12 +126,24 @@ Nine scripts, all parameterised by `--course`, all standard library plus `pyyaml
 
 ## Install
 
-Skill directory (WorkBuddy / CodeBuddy / any host that reads `SKILL.md`):
+Clone the repo and install the dependency:
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo_hub.git
-cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
+```
+
+Then copy the skill into your host's skill directory (pick one):
+
+```bash
+# Claude Code
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.claude/skills/coursecoach
+
+# Cursor
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.cursor/skills/coursecoach
+
+# WorkBuddy / CodeBuddy
+cp -r alamo_hub/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
 Then say "I want to learn X, one hour a day" or invoke `/coursecoach`.

@@ -22,7 +22,8 @@ coursecoach/
 |---|---|---|
 | WorkBuddy | `~/.workbuddy/skills/coursecoach/`（用户级）或 `<项目>/.workbuddy/skills/` | 说「我想学 XX」或 `/coursecoach` |
 | Claude Code | `~/.claude/skills/coursecoach/` 或 `<repo>/.claude/skills/` | 自动按 description 匹配；也可 `/coursecoach` |
-| 其他支持 Agent Skills 的（Cursor / Windsurf / 各家 IDE agent） | 各自约定的 `skills/` 目录 | 同上 |
+| Cursor | `~/.cursor/skills/coursecoach/` 或 `<repo>/.cursor/skills/` | 同上 |
+| 其他支持 Agent Skills 的（Windsurf / 各家 IDE agent） | 各自约定的 `skills/` 目录 | 同上 |
 | 不支持 skills 的（ChatGPT / 本地模型 / 自写 loop） | 不进目录，**把 `SKILL.md` 全文注入 system prompt 或首条消息** | 用户直接说「按这个流程帮我建课」 |
 | 纯命令行（无人值守） | 直接调用 `scripts/*.py`，不依赖任何 AI | `init_course.py` → `sync.py` → `grade.py` |
 
