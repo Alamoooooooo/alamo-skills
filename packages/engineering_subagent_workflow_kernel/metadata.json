@@ -4,6 +4,7 @@
   "summary": "Five self-contained development Skills that delegate through a governed host-native subagent interface with an explicit in-session fallback.",
   "primary_entry_point": null,
   "repository_role": "skill-package",
+  "license": "Apache-2.0",
   "problem_domains": [
     "code exploration",
     "software architecture",

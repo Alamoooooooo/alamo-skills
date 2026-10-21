@@ -187,3 +187,7 @@ The learning-course workflow is designed to produce:
 - mastery values and an unlocked next step
 - a spaced-review queue
 - a curated resource list with a cost note per entry
+
+## License
+
+Apache-2.0. See `LICENSE` at the repository root. Redistribution must include a copy of it; `metadata.json` in each package declares `"license": "Apache-2.0"`.

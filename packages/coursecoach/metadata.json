@@ -4,6 +4,7 @@
   "summary": "Installable and portable agent skill package that turns a learning goal into a runnable course: dependency-ordered syllabus, compiled interactive board, lessons, gradable homework, mastery-gated progression, spaced review, and a periodic frontier pass.",
   "primary_entry_point": "coursecoach",
   "repository_role": "skill-package",
+  "license": "Apache-2.0",
   "problem_domains": [
     "self-directed learning",
     "curriculum design",
