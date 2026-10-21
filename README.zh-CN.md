@@ -138,9 +138,9 @@ alamo_hub/
 ├── README.zh-CN.md                    简体中文首页（本文件）
 ├── AGENTS.md                          在这个仓库里干活时 agent 该遵守的规范
 ├── llms.txt                           给 AI 爬虫/检索用的机器可读摘要
-├── TODO_codex_plugin_marketplace.md   把内存套件打成 Codex 插件的计划（未做）
 ├── LICENSE                            Apache-2.0
 ├── packages/                          ← 产品面
+│   ├── README.md                      包的约定：三层结构、必备文件、references 与 wiki 的区别
 │   ├── coursecoach/
 │   │   ├── coursecoach/               skill 本体（SKILL.md、references、scripts、examples）
 │   │   ├── docs/                      board.png、lesson-reader.png
@@ -149,22 +149,26 @@ alamo_hub/
 │   │   ├── code-explorer/  code-architect/  code-reviewer/
 │   │   ├── code-simplifier/  pr-test-analyzer/
 │   │   ├── scripts/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
 │   ├── github_sync_workflow_kernel/
 │   │   ├── github-sync-agent/
 │   │   ├── scripts/  wiki/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
 │   └── memory_hotspot_repair_kernel/
 │       ├── memory-optimizer-agent/    编排入口（主要入口）
 │       ├── memory-check/  memory-fix/  memory-review/
 │       ├── references/  scripts/  wiki/
-│       └── README.md  PORTABLE_USAGE.md  metadata.json
-└── examples/                          ← 可选，安装时完全不需要
-    └── memory_hotspot_repair_kernel/
-        └── partitioned_batch_pipeline/    一个具体仓库的适配：overlay + 运行配置
+│       └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+├── examples/                          ← 可选，安装时完全不需要
+│   ├── coursecoach/
+│   │   └── quick-trial/stages.json    造一门 3 节点课的最小输入
+│   └── memory_hotspot_repair_kernel/
+│       └── partitioned_batch_pipeline/    一个具体仓库的适配：overlay + 运行配置
+└── todo/                              ← 未实施的计划，没有任何东西依赖它
+    └── codex-plugin-packaging.md
 ```
 
-`packages/` 是产品。`examples/` 演示的是「通用内存包怎样适配到一个具体仓库」；你要自己写 overlay 时它有用，不写就完全无关。
+`packages/` 是产品，`examples/` 可选，`todo/` 是没做的计划。包的内部约定——三层结构、每个包必备哪些文件、`references/` 和 `wiki/` 有什么不同、安装到底该拷哪一层——都写在 **[`packages/README.md`](packages/README.md)**。
 
 ## 其他文件
 
@@ -172,7 +176,7 @@ alamo_hub/
 | :--- | :--- |
 | `AGENTS.md` | 给**在这个仓库里干活**的 AI agent 的规范：怎么区分包和示例、怎么更新文档与安装路径。不属于任何产品。 |
 | `llms.txt` | 四个包的扁平摘要，给 AI 爬虫和检索用。内容和这份 README 一致，只是按机器读取优化过。 |
-| `TODO_codex_plugin_marketplace.md` | 把内存套件打成 Codex 插件的计划，尚未实施。留作参考，仓库里没有任何东西依赖它。 |
+| `todo/` | 未实施的计划，先从 `codex-plugin-packaging.md` 看起。放在这里是「想过但没承诺」，仓库里没有任何东西依赖它。 |
 | `metadata.json`（每个包各一份） | 机器可读的包描述：入口、关键词、支持宿主、脚本清单。 |
 
 ## 许可

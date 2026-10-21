@@ -1,4 +1,4 @@
-# TODO: Codex Plugin / Marketplace Packaging
+# Packaging these skills as a Codex plugin
 
 This note tracks the work needed to turn `alamo_skillhub` or `memory_hotspot_repair_kernel` into a Codex plugin / marketplace-friendly distribution artifact later.
 

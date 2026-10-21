@@ -78,6 +78,7 @@
 - 示例 run config
 - 示例 prompt bundle
 - 演示用目录结构
+- 生成一整套产物的最小输入，例如 `examples/coursecoach/quick-trial/stages.json`
 
 这里不应该反向成为 package 的唯一真实入口。
 
@@ -87,8 +88,9 @@
 2. 包级 README 同理：`packages/<包名>/README.md` 与 `README.zh-CN.md` 成对存在（目前只有 `coursecoach` 有中文版，其余以英文为准）。
 3. 非 Codex 的可移植用法更新到 `PORTABLE_USAGE.md`。
 4. 某个 skill 的方法论和输出契约更新到对应 `SKILL.md` 与 `references/`。
-5. 安装或同步方式变化时，更新脚本说明与 README。
-6. 如果仓库定位、消费方式或结构规则变化，再更新本文件。
+5. 安装或同步方式变化时，更新脚本说明、该包的 `INSTALL.md`（若存在）与 README。
+6. 包的结构约定（三层、必备文件、`references/` 与 `wiki/` 的分工、安装拷哪一层）变化时，更新 `packages/README.md`。
+7. 如果仓库定位、消费方式或结构规则变化，再更新本文件。
 
 ## 安装与同步规则
 

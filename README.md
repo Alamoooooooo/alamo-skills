@@ -138,9 +138,9 @@ alamo_hub/
 ├── README.zh-CN.md                    简体中文
 ├── AGENTS.md                          conventions for agents working on this repo itself
 ├── llms.txt                           machine-readable summary for AI crawlers
-├── TODO_codex_plugin_marketplace.md   unfinished plan to ship these as a Codex plugin
 ├── LICENSE                            Apache-2.0
 ├── packages/                          ← the products
+│   ├── README.md                      package conventions: three layers, required files, references vs wiki
 │   ├── coursecoach/
 │   │   ├── coursecoach/               the skill itself (SKILL.md, references, scripts, examples)
 │   │   ├── docs/                      board.png, lesson-reader.png
@@ -149,22 +149,26 @@ alamo_hub/
 │   │   ├── code-explorer/  code-architect/  code-reviewer/
 │   │   ├── code-simplifier/  pr-test-analyzer/
 │   │   ├── scripts/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
 │   ├── github_sync_workflow_kernel/
 │   │   ├── github-sync-agent/
 │   │   ├── scripts/  wiki/
-│   │   └── README.md  PORTABLE_USAGE.md  metadata.json
+│   │   └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
 │   └── memory_hotspot_repair_kernel/
 │       ├── memory-optimizer-agent/    orchestrator (primary entry point)
 │       ├── memory-check/  memory-fix/  memory-review/
 │       ├── references/  scripts/  wiki/
-│       └── README.md  PORTABLE_USAGE.md  metadata.json
-└── examples/                          ← optional, never required to install
-    └── memory_hotspot_repair_kernel/
-        └── partitioned_batch_pipeline/    one repo-specific adaptation: overlays + run configs
+│       └── README.md  INSTALL.md  PORTABLE_USAGE.md  metadata.json
+├── examples/                          ← optional, never required to install
+│   ├── coursecoach/
+│   │   └── quick-trial/stages.json    the smallest input that produces a 3-node course
+│   └── memory_hotspot_repair_kernel/
+│       └── partitioned_batch_pipeline/    one repo-specific adaptation: overlays + run configs
+└── todo/                              ← unimplemented plans, nothing depends on them
+    └── codex-plugin-packaging.md
 ```
 
-`packages/` is the product. `examples/` shows one adaptation of the generic memory package to a specific repository — useful when you write your own overlays, irrelevant if you do not.
+`packages/` is the product, `examples/` is optional, `todo/` is ideas nobody has promised to build. The conventions that govern a package — the three layers, which files every package carries, what separates `references/` from `wiki/`, and which directory you are actually supposed to copy — live in **[`packages/README.md`](packages/README.md)**.
 
 ## Other Files
 
@@ -172,7 +176,7 @@ alamo_hub/
 |:--|:--|
 | `AGENTS.md` | Rules for an AI agent working *on this repository*: how to distinguish packages from examples, how to update docs and install paths. Not part of any product. |
 | `llms.txt` | A flat summary of all four packages for AI crawlers and search. Same content as this README, optimised for machine reading. |
-| `TODO_codex_plugin_marketplace.md` | An unimplemented plan to package the memory suite for the Codex plugin marketplace. Kept for reference; nothing here depends on it. |
+| `todo/` | Unimplemented plans, starting with `codex-plugin-packaging.md`. Read it as "considered, not promised" — nothing here depends on any of it. |
 | `metadata.json` (per package) | Machine-readable descriptor: entry point, keywords, supported hosts, script list. |
 
 ## License
