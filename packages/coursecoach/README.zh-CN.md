@@ -119,12 +119,24 @@ YAML 字段。
 
 ## 安装
 
-装到 skill 目录（WorkBuddy / CodeBuddy / 任何读 `SKILL.md` 的宿主）：
+从仓库取代码并装依赖：
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo-skills.git
-cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
+```
+
+按你用的宿主，复制到对应的 skill 目录（三选一）：
+
+```bash
+# Claude Code
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.claude/skills/coursecoach
+
+# Cursor
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.cursor/skills/coursecoach
+
+# WorkBuddy / CodeBuddy
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 ```
 
 然后说一句"我想学 XXX，每天一小时"，或直接 `/coursecoach`。
