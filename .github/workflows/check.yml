@@ -1,0 +1,29 @@
+name: repo checks
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: check.py
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # check.py is standard library only. The scripts it syntax-checks import
+      # yaml, but compile() never executes them, so nothing needs installing here.
+      - name: Run checks
+        run: python scripts/check.py
