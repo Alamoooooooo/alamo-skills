@@ -25,6 +25,17 @@ import yaml
 INTERVALS = [1, 3, 7, 16, 35, 75]
 
 
+def sync_page(course, enabled=True):
+    """改完 frontmatter 后重编译主页。list 不用调，mark / snooze 必须调。"""
+    if not enabled:
+        return
+    sync = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync.py")
+    if os.path.exists(sync):
+        import subprocess
+
+        subprocess.run([sys.executable, sync, "--course", course, "--if-changed"], check=False)
+
+
 def split_fm(text):
     m = re.match(r"^---\n(.*?)\n---\n", text, re.DOTALL)
     if not m:
@@ -133,7 +144,7 @@ def cmd_list(course, show_all, as_json):
     return 0
 
 
-def cmd_mark(course, hw_id):
+def cmd_mark(course, hw_id, do_sync=True):
     items = scan(course)
     hit = next((it for it in items if it["id"] == hw_id), None)
     if not hit:
@@ -150,11 +161,12 @@ def cmd_mark(course, hw_id):
 
     _, body = load_hw(hit["path"])
     save_hw(hit["path"], fm, body)
-    print(f"[ok] {hw_id} 复习记为第 {count} 次，下次到期 {due.isoformat()}（间隔 {gap} 天）")
+    print(f"[ok] {hw_id} 复习记为第 {count} 次，下次到期 {due.isoformat()}（间隔 {gap} 天）", flush=True)
+    sync_page(course, do_sync)
     return 0
 
 
-def cmd_snooze(course, hw_id, days):
+def cmd_snooze(course, hw_id, days, do_sync=True):
     """推迟复习到期日：不推进复习计数，只挪日期（'这周没时间'）。"""
     items = scan(course)
     hit = next((it for it in items if it["id"] == hw_id), None)
@@ -177,8 +189,10 @@ def cmd_snooze(course, hw_id, days):
     save_hw(hit["path"], fm, body)
     print(
         f"[ok] {hw_id} 复习推迟到 {due.isoformat()}"
-        f"（原 {hit['review_due'] or '未排'}，+{days} 天，计数仍为 {fm.get('review_count') or 0}）"
+        f"（原 {hit['review_due'] or '未排'}，+{days} 天，计数仍为 {fm.get('review_count') or 0}）",
+        flush=True,
     )
+    sync_page(course, do_sync)
     return 0
 
 
@@ -192,6 +206,7 @@ def main():
     ap.add_argument("--all", action="store_true", help="list 时列出全部已批改")
     ap.add_argument("--json", action="store_true", help="机器可读输出")
     ap.add_argument("--days", type=int, default=3, help="snooze 推迟天数，默认 3")
+    ap.add_argument("--no-sync", action="store_true", help="改完不重编译主页（批量操作时用）")
     args = ap.parse_args()
 
     course = os.path.abspath(args.course)
@@ -205,8 +220,8 @@ def main():
         print(f"[error] {args.action} 需要作业 id")
         return 2
     if args.action == "snooze":
-        return cmd_snooze(course, args.hw_id, args.days)
-    return cmd_mark(course, args.hw_id)
+        return cmd_snooze(course, args.hw_id, args.days, do_sync=not args.no_sync)
+    return cmd_mark(course, args.hw_id, do_sync=not args.no_sync)
 
 
 if __name__ == "__main__":

@@ -167,6 +167,7 @@ def main():
     ap.add_argument("--hw", default="", help="作业 md 路径或 homework/ 下文件名")
     ap.add_argument("--all", action="store_true", help="重置该课程全部作业")
     ap.add_argument("--keep-mastery", action="store_true", help="只清文字，不回退节点 mastery")
+    ap.add_argument("--no-sync", action="store_true", help="重置后不重编译主页（批量操作时用）")
     args = ap.parse_args()
 
     course = os.path.abspath(args.course)
@@ -193,9 +194,11 @@ def main():
         print("[skip] 按 --keep-mastery 保留 mastery")
 
     sync = os.path.join(HERE, "sync.py")
-    if os.path.exists(sync):
+    if not args.no_sync and os.path.exists(sync):
         print("[run] 重编译课程主页 ...")
-        subprocess.run([sys.executable, sync, "--course", course], check=False)
+        subprocess.run([sys.executable, sync, "--course", course, "--if-changed"], check=False)
+    elif args.no_sync:
+        print("[skip] 已跳过重编译（--no-sync）")
 
 
 if __name__ == "__main__":

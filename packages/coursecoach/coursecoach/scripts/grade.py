@@ -125,6 +125,7 @@ def main():
     ap.add_argument("--course", required=True, help="课程实例目录")
     ap.add_argument("--hw", required=True, help="作业 md 路径或 homework/ 下文件名")
     ap.add_argument("--result", required=True, help="评分结果 JSON")
+    ap.add_argument("--no-sync", action="store_true", help="批改后不重编译主页（批量批改时用）")
     args = ap.parse_args()
 
     course = os.path.abspath(args.course)
@@ -157,9 +158,11 @@ def main():
         update_syllabus(syllabus, stage_id, GRADE_MASTERY[grade])
 
     sync = os.path.join(HERE, "sync.py")
-    if os.path.exists(sync):
+    if not args.no_sync and os.path.exists(sync):
         print("[run] 重编译课程主页 ...")
-        subprocess.run([sys.executable, sync, "--course", course], check=False)
+        subprocess.run([sys.executable, sync, "--course", course, "--if-changed"], check=False)
+    elif args.no_sync:
+        print("[skip] 已跳过重编译（--no-sync）")
 
 
 if __name__ == "__main__":

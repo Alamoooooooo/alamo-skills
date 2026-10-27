@@ -1465,9 +1465,42 @@ setActive();
 """
 
 
+_STAMP_PATTERNS = (
+    re.compile(r"(最后同步：)\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}"),
+    re.compile(r"(?m)^(updated: )\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"),
+)
+
+
+def strip_stamp(text):
+    """抹掉生成时间戳，只留下真正的数据。用来判断「除了编译时刻，内容变没变」。"""
+    for pat in _STAMP_PATTERNS:
+        text = pat.sub(r"\1<TS>", text)
+    return text
+
+
+def write_out(path, text, if_changed=False):
+    """写产物。if_changed=True 且内容（忽略时间戳）与磁盘一致时不写，返回 False。"""
+    if if_changed and os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                old = f.read()
+        except OSError:
+            old = None
+        if old is not None and strip_stamp(old) == strip_stamp(text):
+            return False
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(text)
+    return True
+
+
 def main():
     ap = argparse.ArgumentParser(description="frontmatter -> 课程主页")
     ap.add_argument("--course", required=True, help="课程实例目录")
+    ap.add_argument(
+        "--if-changed",
+        action="store_true",
+        help="内容（忽略生成时间戳）没变就不重写文件。脚本自动调用时用它，避免每次重写 60 KB 页面",
+    )
     args = ap.parse_args()
     course = os.path.abspath(args.course)
     if not os.path.isdir(course):
@@ -1482,14 +1515,16 @@ def main():
         .replace("__STAMP__", now.strftime("%Y-%m-%d %H:%M"))
     )
     out = os.path.join(course, "课程主页.html")
-    with open(out, "w", encoding="utf-8") as f:
-        f.write(html)
-    print(f"[ok] 已生成主页: {out}")
+    if write_out(out, html, args.if_changed):
+        print(f"[ok] 已生成主页: {out}")
+    else:
+        print(f"[ok] 主页无变化，未重写: {out}")
 
     mdp = os.path.join(course, "课程进度.md")
-    with open(mdp, "w", encoding="utf-8") as f:
-        f.write(render_md(data, course))
-    print(f"[ok] 已生成进度页: {mdp}")
+    if write_out(mdp, render_md(data, course), args.if_changed):
+        print(f"[ok] 已生成进度页: {mdp}")
+    else:
+        print(f"[ok] 进度页无变化，未重写: {mdp}")
     s = data["stats"]
     print(
         f"     节点 {s['nodes_total']}（达标 {s['nodes_done']}）| 作业 {s['hw_total']}"

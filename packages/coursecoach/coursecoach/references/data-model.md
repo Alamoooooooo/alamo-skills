@@ -80,5 +80,5 @@
 ## 权威数据 vs 编译产物
 
 - **frontmatter 是唯一权威源**：分数、掌握度、先修关系都只在 md 头部。
-- `课程主页.html` 是 `sync.py` 的只读编译产物；每次 grade / syllabus 改动后自动重编译。
+- `课程主页.html` 是 `sync.py` 的只读编译产物；`grade.py` / `syllabus.py` / `review.py` / `reset.py` 改完 frontmatter 后**自动重编译**（内部带 `--if-changed`，内容没变不重写）。只有手改 `lessons/*.md` 或 `resources/资料库.md` 才需要手动跑一次 `sync.py`。在作业「我的作答」区写答案**不需要**同步——作答正文不进页面。
 - 页面用**自包含内联数据**（非 fetch、非 localStorage），双击可用。

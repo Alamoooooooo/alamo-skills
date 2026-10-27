@@ -247,6 +247,11 @@ def main():
         pass
     ap = argparse.ArgumentParser(description="Skill Graph 查询与修改")
     ap.add_argument("--course", required=True, help="课程实例目录")
+    ap.add_argument(
+        "--no-sync",
+        action="store_true",
+        help="改完不重编译主页。批量改多个节点时用它，最后自己跑一次 sync.py",
+    )
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("list")
@@ -323,10 +328,13 @@ def main():
 
     save(fm, body, path)
     # 改图后自动重编译主页
-    sync = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync.py")
-    if os.path.exists(sync):
-        import subprocess, sys
-        subprocess.run([sys.executable, sync, "--course", course], check=False)
+    if not a.no_sync:
+        sync = os.path.join(os.path.dirname(os.path.abspath(__file__)), "sync.py")
+        if os.path.exists(sync):
+            import subprocess, sys
+            subprocess.run([sys.executable, sync, "--course", course, "--if-changed"], check=False)
+    else:
+        print("[skip] 已跳过重编译（--no-sync），批量改完记得自己跑一次 sync.py")
 
 
 if __name__ == "__main__":
