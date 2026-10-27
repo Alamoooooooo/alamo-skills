@@ -24,7 +24,7 @@ agent_created: true
 1. **课程实例（course-dir）**：一个目录，存放该课程全部数据。
 2. **Skill Graph**：`syllabus.md` frontmatter 里的 `nodes`，每节点含 `id / title / prereqs / homework / mastery`，外加面向看板的 `summary`（一句话）/ `points`（知识点标签）/ `weeks`（三档周数）。
 3. **权威数据 vs 编译产物**：frontmatter 是唯一权威源；`课程主页.html` 是 `sync.py` 编译出的只读视图，绝不手改。
-4. **默认工作空间（workspace）**：所有课程的统一存放根目录，默认为**当前工作目录的上级目录下的 `coursecoach/`**（即 `<cwd>/../coursecoach/`）。所有课程都放在这个工作空间下，**一个课程一个目录**：`<workspace>/<slug>/`。用户明确指定其它位置时按用户指定。
+4. **默认课程根目录**：`~/coursecoach/`，一门课一个目录（`~/coursecoach/<slug>/`）。它只是**建议的默认值**，建课前仍要与用户确认；用户指定别处就按用户的。默认值要跨会话稳定——课程属于人，不属于当前打开的那个项目目录。
 
 课程实例目录约定：
 
@@ -103,8 +103,8 @@ agent_created: true
 
 ### Phase 0 · 定位课程实例
 
-- **新课程**：直接放进默认工作空间 `<cwd>/../coursecoach/<slug>/`（slug 由主题生成，kebab-case），**无需再向用户确认存放位置**；用户明确指定其它位置时按用户指定。工作空间不存在则先创建。**不要把课程数据塞进 skill 目录**——skill 可跨项目复用，课程数据属于具体的人。
-- **已有课程**：先列默认工作空间（`ls <cwd>/../coursecoach/`）匹配用户说的课程；匹配不到再问用户 `course-dir`。定位后读 `syllabus.md` 了解现状，再决定进入哪个阶段。
+- **新课程**：先与用户确认 `course-dir`（默认建议 `~/coursecoach/<slug>`，`slug` 由主题生成、kebab-case；用户想放别处就按用户的）。**不要把课程数据塞进 skill 目录**——skill 可跨项目复用，课程数据属于具体的人。
+- **已有课程**：定位其 `course-dir`；用户说不清位置时，先看 `~/coursecoach/` 下有没有匹配的目录，再问。定位后读 `syllabus.md` 了解现状，再决定进入哪个阶段。
 - **排期自愈（重要）**：自动化是宿主状态，**不随课程文件夹走**——换机器、复制课程、别人下载 skill 包之后，定时任务都不存在。所以进入已有课程时先跑 `scripts/schedule.py --course <dir> --check` 看值不值得建，需要就输出配方并调 `automation_update` 建（**先征得同意**）。按 name 比对，已存在则跳过，不重复建。宿主没有自动化能力时按 `references/portability.md` 降级，别硬失败。
 
 ### Phase 1 · 需求澄清（新课程必做）

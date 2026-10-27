@@ -22,13 +22,26 @@ Everything is local files. **No network, no database, no sign-up.**
 
 ```bash
 git clone https://github.com/Alamoooooooo/alamo-skills.git
-cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
 pip install pyyaml
 ```
 
-On Windows the destination is
+**Copy it into the skill directory of whichever host you use (pick one):**
+
+```bash
+# Claude Code
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.claude/skills/coursecoach
+
+# Cursor
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.cursor/skills/coursecoach
+
+# WorkBuddy / CodeBuddy
+cp -r alamo-skills/packages/coursecoach/coursecoach ~/.workbuddy/skills/coursecoach
+```
+
+On Windows the destinations are `C:\Users\<you>\.claude\skills\coursecoach\`,
+`C:\Users\<you>\.cursor\skills\coursecoach\` and
 `C:\Users\<you>\.workbuddy\skills\coursecoach\`. Dropping it in a project's
-`<project>/.workbuddy/skills/` scopes it to that project instead.
+`.claude/skills/` or `.cursor/skills/` scopes it to that project instead.
 
 Reopen the session afterwards, then say "I want to learn X" or type
 `/coursecoach` directly.
@@ -87,6 +100,11 @@ the model; deterministic computation goes to the scripts.
 To see what a course looks like after a few weeks, double-click
 `coursecoach/examples/ai-fullstack/课程主页.html` (a real course snapshot with the
 answers cleared).
+
+> **Where courses live**: the suggested default is `~/coursecoach/`, one directory
+> per course (`~/coursecoach/<slug>/`). The agent confirms the location with you
+> before creating anything — say the word if you want it elsewhere; it will not
+> write to disk unasked.
 
 Three commands you will use daily:
 
